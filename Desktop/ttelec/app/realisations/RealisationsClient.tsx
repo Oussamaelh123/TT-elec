@@ -57,6 +57,7 @@ export default function RealisationsClient() {
           <Link href="/services/domotique">Domotique</Link>
           <Link href="/services/depannage-urgence">Dépannage urgent</Link>
           <Link href="/services/mise-en-conformite">Mise en conformité</Link>
+          <Link href="/services/borne-recharge">Borne de recharge</Link>
         </div>
         <div className="mob-cta">
           <Link href="/#devis" className="mob-cta-btn">✦ Demander un devis</Link>
@@ -185,6 +186,7 @@ export default function RealisationsClient() {
             <Link href="/services/domotique">Domotique</Link>
             <Link href="/services/depannage-urgence">Dépannage</Link>
             <Link href="/services/mise-en-conformite">Conformité</Link>
+            <Link href="/services/borne-recharge">Borne EV</Link>
           </div>
           <div className="fcol">
             <h4>Contact</h4>

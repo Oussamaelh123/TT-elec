@@ -246,6 +246,7 @@ export default function Home() {
           <a href="/services/domotique">Domotique</a>
           <a href="/services/depannage-urgence">Dépannage urgent</a>
           <a href="/services/mise-en-conformite">Mise en conformité</a>
+          <a href="/services/borne-recharge">Borne de recharge</a>
         </div>
         <div className="mob-cta">
           <a href="#devis" className="mob-cta-btn">✦ Demander un devis</a>
@@ -344,21 +345,37 @@ export default function Home() {
             <div className="bcd">Automatisation intelligente : volets, éclairage et thermostats connectés.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
-          <Link href="/services/depannage-urgence" className="bc bc5 rv d4" style={{ background: 'var(--navy)' }}>
-            <div className="bc-urgence-glow" />
-            <svg className="bcsvg" style={{ width: '110px', height: '110px', opacity: '.07' }} viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth=".6"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
-            <div className="bcn" style={{ color: 'rgba(255,255,255,.04)' }}>05</div>
-            <div className="bct" style={{ color: '#fff' }}>Dépannage urgent</div>
-            <div className="bcd" style={{ color: 'rgba(255,255,255,.42)' }}>Intervention rapide 24h/24, 7j/7 dans toute la Belgique.</div>
-            <div className="bcarr" style={{ borderColor: 'rgba(200,146,30,.3)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
-          </Link>
-          <Link href="/services/mise-en-conformite" className="bc bc6 bc-has-img rv d5">
+          <Link href="/services/mise-en-conformite" className="bc bc5 bc-has-img rv d4">
             <div className="bc-bg" style={{ backgroundImage: "url('/images/mise-en-conformite.jpg')" }} />
             <div className="bc-overlay" />
-            <div className="bcn">06</div><div className="bct">Mise en conformité</div>
+            <div className="bcn">05</div><div className="bct">Mise en conformité</div>
             <div className="bcd">Diagnostic complet et mise aux normes RGIE de votre installation existante.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
+          <Link href="/services/borne-recharge" className="bc bc6 rv d5">
+            <div className="bc6-glow" />
+            <svg className="bc6-icon" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="rgba(34,197,94,.6)" strokeWidth=".5"><path d="M5 18H3a2 2 0 01-2-2V8a2 2 0 012-2h3.19M15 6h2a2 2 0 012 2v8a2 2 0 01-2 2h-3.19M23 13v-2M11 6l-4 6h6l-4 6" /></svg>
+            <div className="bcn" style={{ color: 'rgba(34,197,94,.05)' }}>06</div>
+            <div className="bct" style={{ color: '#fff' }}>Borne de recharge</div>
+            <div className="bcd" style={{ color: 'rgba(255,255,255,.42)' }}>Installation de bornes EV à domicile et en entreprise. Profitez des primes régionales.</div>
+            <div className="bcarr" style={{ borderColor: 'rgba(34,197,94,.2)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(34,197,94,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
+          </Link>
+          <div className="bc bc7 rv d6">
+            <div className="bc-urgence-glow" />
+            <svg className="bcsvg" style={{ width: '180px', height: '180px', opacity: '.04' }} viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth=".5"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+            <div className="bc7-wrap">
+              <div className="bc7-left">
+                <div className="bcn" style={{ color: 'rgba(255,255,255,.04)', position: 'relative', fontSize: '3.5rem' }}>07</div>
+                <div className="bct" style={{ color: '#fff', fontSize: '1.3rem', marginBottom: '10px' }}>⚡ Dépannage urgent</div>
+                <div className="bcd" style={{ color: 'rgba(255,255,255,.38)', maxWidth: '460px' }}>Panne totale, disjoncteur qui saute, court-circuit — nos techniciens certifiés RGIE interviennent à toute heure dans toute la Belgique.</div>
+                <Link href="/services/depannage-urgence" className="bcarr" style={{ borderColor: 'rgba(200,146,30,.3)', opacity: 1, transform: 'scale(1)', position: 'relative', display: 'inline-flex', marginTop: '18px' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></Link>
+              </div>
+              <div className="bc7-right">
+                <a href="tel:0465904372" className="bc7-tel">0465.90.43.72</a>
+                <div className="bc7-avail"><span className="ndot" />&nbsp;Disponible maintenant</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -501,7 +518,7 @@ export default function Home() {
               <div className="fg">
                 <label className="fl">Type de travaux</label>
                 <div className="svc-pick">
-                  {[['01','Tableau'],['02','Câblage'],['03','Éclairage'],['04','Domotique'],['05','Urgence'],['06','Conformité']].map(([n, l]) => (
+                  {[['01','Tableau'],['02','Câblage'],['03','Éclairage'],['04','Domotique'],['05','Urgence'],['06','Conformité'],['07','Borne EV']].map(([n, l]) => (
                     <div key={n} className="spo" onClick={e => e.currentTarget.classList.toggle('on')}>
                       <div className="spon">{n}</div><div className="spol">{l}</div>
                     </div>
@@ -550,7 +567,7 @@ export default function Home() {
             </div>
           </div>
           <div className="fcol"><h4>Navigation</h4><a href="#">Accueil</a><a href="#services">Services</a><a href="#gallery">Réalisations</a><a href="#devis">Contact</a></div>
-          <div className="fcol"><h4>Services</h4><Link href="/services/tableau-electrique">Tableau électrique</Link><Link href="/services/cablage">Câblage</Link><Link href="/services/eclairage">Éclairage</Link><Link href="/services/domotique">Domotique</Link><Link href="/services/depannage-urgence">Dépannage</Link><Link href="/services/mise-en-conformite">Conformité</Link></div>
+          <div className="fcol"><h4>Services</h4><Link href="/services/tableau-electrique">Tableau électrique</Link><Link href="/services/cablage">Câblage</Link><Link href="/services/eclairage">Éclairage</Link><Link href="/services/domotique">Domotique</Link><Link href="/services/depannage-urgence">Dépannage</Link><Link href="/services/mise-en-conformite">Conformité</Link><Link href="/services/borne-recharge">Borne EV</Link></div>
           <div className="fcol"><h4>Contact</h4><a href="tel:0465904372">0465.90.43.72</a><a href="https://wa.me/32465904372">WhatsApp</a><a href="#">Bruxelles, Belgique</a><a href="#">24h/24 — 7j/7</a></div>
         </div>
         <div className="fb2"><p>© 2026 <strong>TT Elec</strong> · Tous droits réservés</p><p><a href="#">Mentions légales</a></p></div>

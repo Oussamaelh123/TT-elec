@@ -96,6 +96,20 @@ const services: Record<string, {
     seoTitle: 'Mise en Conformité RGIE Bruxelles — Diagnostic Électrique | TT Elec',
     seoDesc: 'Mise en conformité électrique RGIE à Bruxelles. Diagnostic, travaux et attestation par TT Elec, agréé RGIE. Devis gratuit.',
   },
+  'borne-recharge': {
+    title: 'Borne de recharge',
+    subtitle: "Installation de bornes de recharge pour véhicules électriques à domicile et en entreprise.",
+    image: null,
+    description: "TT Elec installe vos bornes de recharge pour véhicules électriques à Bruxelles. Que ce soit pour votre domicile ou votre entreprise, nos électriciens agréés RGIE réalisent le câblage dédié et l'installation complète de votre borne EV en toute conformité.",
+    features: [
+      { title: 'Installation résidentielle', desc: "Borne wall-box 7 kW à domicile — câblage dédié, coffret de protection et mise en service complète.", icon: 'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z' },
+      { title: 'Installation professionnelle', desc: "Bornes de recharge pour parkings, commerces, bureaux et flottes de véhicules d'entreprise.", icon: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z' },
+      { title: 'Câblage & tableau dédié', desc: "Création d'un circuit dédié depuis le tableau électrique, protections 30mA et conformité RGIE garantie.", icon: 'M22 12h-4l-3 9L9 3l-3 9H2' },
+      { title: 'Primes & subsides', desc: "Accompagnement pour les primes de recharge disponibles en Région bruxelloise et en Belgique.", icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
+    ],
+    seoTitle: 'Borne de Recharge Bruxelles — Installation EV & Wall-Box | TT Elec',
+    seoDesc: "Installation de bornes de recharge pour voitures électriques à Bruxelles. TT Elec, agréé RGIE. Résidentiel & professionnel. Devis gratuit.",
+  },
 }
 
 const slugToLabel: Record<string, string> = {
@@ -105,6 +119,7 @@ const slugToLabel: Record<string, string> = {
   'domotique': 'Domotique',
   'depannage-urgence': 'Dépannage urgent',
   'mise-en-conformite': 'Mise en conformité',
+  'borne-recharge': 'Borne de recharge',
 }
 
 export async function generateStaticParams() {
@@ -164,6 +179,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <Link href="/services/domotique">Domotique</Link>
           <Link href="/services/depannage-urgence">Dépannage urgent</Link>
           <Link href="/services/mise-en-conformite">Mise en conformité</Link>
+          <Link href="/services/borne-recharge">Borne de recharge</Link>
         </div>
         <div className="mob-cta">
           <Link href="/#devis" className="mob-cta-btn">✦ Demander un devis</Link>
@@ -322,6 +338,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <Link href="/services/domotique">Domotique</Link>
             <Link href="/services/depannage-urgence">Dépannage</Link>
             <Link href="/services/mise-en-conformite">Conformité</Link>
+            <Link href="/services/borne-recharge">Borne EV</Link>
           </div>
           <div className="fcol">
             <h4>Contact</h4>

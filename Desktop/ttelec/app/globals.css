@@ -150,11 +150,20 @@ section{padding:120px 6%}
 .bc1{grid-column:span 5;background:var(--navy)}
 .bc2{grid-column:span 4}
 .bc3{grid-column:span 3}
-.bc4{grid-column:span 3}
-.bc5{grid-column:span 4}
-.bc6{grid-column:span 5;background:var(--warm)}
-@media(max-width:1024px){.bento{grid-template-columns:repeat(6,1fr)}.bc1,.bc6{grid-column:span 6}.bc2,.bc3,.bc4,.bc5{grid-column:span 3}}
-@media(max-width:640px){.bento{grid-template-columns:1fr}.bc1,.bc2,.bc3,.bc4,.bc5,.bc6{grid-column:span 1}}
+.bc4{grid-column:span 4}
+.bc5{grid-column:span 4;background:var(--warm)}
+.bc6{grid-column:span 4;background:linear-gradient(135deg,#0a1f10,#0c1428)}
+.bc7{grid-column:span 12;background:var(--navy);display:flex;align-items:center}
+.bc7-wrap{display:flex;align-items:center;justify-content:space-between;width:100%;position:relative;z-index:1;gap:40px}
+.bc7-left{flex:1}
+.bc7-right{flex-shrink:0;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.bc7-tel{font-family:var(--font-fraunces),'Fraunces',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:300;font-style:italic;color:var(--gold);text-decoration:none;transition:text-shadow .3s;line-height:1}
+.bc7-tel:hover{text-shadow:0 0 40px rgba(200,146,30,.3)}
+.bc7-avail{display:flex;align-items:center;gap:6px;font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.bc6-glow{position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(34,197,94,.08),transparent 65%);pointer-events:none}
+.bc6-icon{position:absolute;bottom:-10px;right:-10px;opacity:.06}
+@media(max-width:1024px){.bento{grid-template-columns:repeat(6,1fr)}.bc1{grid-column:span 6}.bc2,.bc3,.bc4,.bc5,.bc6{grid-column:span 3}.bc7{grid-column:span 6}.bc7-wrap{flex-direction:column;align-items:flex-start;gap:20px}.bc7-right{align-items:flex-start;text-align:left}}
+@media(max-width:640px){.bento{grid-template-columns:1fr}.bc1,.bc2,.bc3,.bc4,.bc5,.bc6,.bc7{grid-column:span 1}}
 .bc1 .bcn{color:rgba(255,255,255,.04)!important}
 .bc1-glow{position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(200,146,30,.12),transparent 65%);pointer-events:none}
 .btdot{width:5px;height:5px;background:var(--gold2);border-radius:50%;animation:ndp 2s ease-in-out infinite}
