@@ -1,43 +1,42 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, DM_Sans, DM_Mono } from "next/font/google";
+import { Fraunces, Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import UrgenceBar from "@/components/UrgenceBar";
-import FloatingButtons from "@/components/FloatingButtons";
 
-const bebasNeue = Bebas_Neue({
-  weight: "400",
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-bebas",
+  weight: ["300", "400"],
+  style: ["normal", "italic"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+  variable: "--font-syne",
   display: "swap",
 });
 
 const dmSans = DM_Sans({
-  weight: ["300", "400", "500", "600"],
   subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
   variable: "--font-dm-sans",
-  display: "swap",
-});
-
-const dmMono = DM_Mono({
-  weight: ["400", "500"],
-  subsets: ["latin"],
-  variable: "--font-dm-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Électricien Agréé Bruxelles | Installation, Dépannage 24/7 — TT Elec",
   description:
-    "TT Elec, électricien agréé RGIE à Bruxelles et alentours. Installation électrique, caméras de sécurité, tableau électrique, domotique. Devis gratuit sous 24h. Urgences 24h/7j.",
+    "TT Elec, électricien agréé RGIE à Bruxelles et alentours. Installation électrique, tableau, éclairage, domotique, caméras. Devis gratuit 24h. Urgences 24h/7j.",
   keywords: [
     "électricien bruxelles",
     "électricien agréé bruxelles",
     "installation électrique bruxelles",
     "tableau électrique bruxelles",
     "caméra sécurité bruxelles",
-    "électricien urgence bruxelles",
-    "dépannage électrique bruxelles",
+    "électricien urgence bruxelles 24h",
+    "domotique bruxelles",
     "RGIE bruxelles",
   ],
   openGraph: {
@@ -58,6 +57,8 @@ const schemaOrg = {
   priceRange: "€€",
   openingHours: "Mo-Su 00:00-24:00",
   hasCredential: "RGIE",
+  url: "https://tt-elec.be",
+  sameAs: ["https://www.tiktok.com/@tt.elec"],
   address: {
     "@type": "PostalAddress",
     addressLocality: "Bruxelles",
@@ -67,15 +68,9 @@ const schemaOrg = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="fr"
-      className={`${bebasNeue.variable} ${dmSans.variable} ${dmMono.variable}`}
-    >
+    <html lang="fr" className={`${fraunces.variable} ${syne.variable} ${dmSans.variable}`}>
       <body>
-        <Header />
-        <main>{children}</main>
-        <UrgenceBar />
-        <FloatingButtons />
+        {children}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
