@@ -31,7 +31,9 @@ export default function Home() {
     /* CANVAS SPARKS */
     const canvas = document.getElementById('sparks-canvas') as HTMLCanvasElement
     const ctx = canvas?.getContext('2d')
-    let W = 0, H = 0, nodes: {x:number,y:number,vx:number,vy:number,r:number,a:number}[] = [], arcs: {x1:number,y1:number,x2:number,y2:number,life:number}[] = []
+    let W = 0, H = 0
+    const nodes: {x:number,y:number,vx:number,vy:number,r:number,a:number}[] = []
+    let arcs: {x1:number,y1:number,x2:number,y2:number,life:number}[] = []
     let drawRaf: number
     if (canvas && ctx) {
       const resize = () => { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight }
@@ -240,13 +242,13 @@ export default function Home() {
         <a href="#diagnostic" className="mob-link">Diagnostic</a>
         <a href="#devis" className="mob-link">Contact</a>
         <div className="mob-sub">
-          <a href="/services/tableau-electrique">Tableau électrique</a>
-          <a href="/services/cablage">Câblage</a>
-          <a href="/services/eclairage">Éclairage</a>
-          <a href="/services/domotique">Domotique</a>
-          <a href="/services/depannage-urgence">Dépannage urgent</a>
-          <a href="/services/mise-en-conformite">Mise en conformité</a>
-          <a href="/services/borne-recharge">Borne de recharge</a>
+          <Link href="/services/tableau-electrique">Tableau électrique</Link>
+          <Link href="/services/cablage">Câblage</Link>
+          <Link href="/services/eclairage">Éclairage</Link>
+          <Link href="/services/domotique">Domotique</Link>
+          <Link href="/services/depannage-urgence">Dépannage urgent</Link>
+          <Link href="/services/mise-en-conformite">Mise en conformité</Link>
+          <Link href="/services/borne-recharge">Borne de recharge</Link>
         </div>
         <div className="mob-cta">
           <a href="#devis" className="mob-cta-btn">✦ Demander un devis</a>
