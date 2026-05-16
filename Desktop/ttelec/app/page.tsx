@@ -165,6 +165,19 @@ export default function Home() {
       })
     })
 
+    /* HAMBURGER */
+    const ham = document.getElementById('nham')
+    const mobMenu = document.getElementById('mob-menu')
+    const mobOverlay = document.getElementById('mob-overlay')
+    const navEl = document.getElementById('nav')
+    const closeMob = () => { navEl?.classList.remove('nav-open'); mobMenu?.classList.remove('open'); mobOverlay?.classList.remove('open'); document.body.style.overflow = '' }
+    ham?.addEventListener('click', () => {
+      const isOpen = mobMenu?.classList.contains('open')
+      if (isOpen) { closeMob() } else { navEl?.classList.add('nav-open'); mobMenu?.classList.add('open'); mobOverlay?.classList.add('open'); document.body.style.overflow = 'hidden' }
+    })
+    mobOverlay?.addEventListener('click', closeMob)
+    mobMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMob))
+
     /* SMOOTH SCROLL */
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => { const id = (a as HTMLAnchorElement).getAttribute('href')!; if (id === '#') return; e.preventDefault(); document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' }) })
@@ -215,8 +228,30 @@ export default function Home() {
         <div className="nright">
           <div className="nbadge"><span className="ndot" /> Disponible</div>
           <a href="#devis" className="ncta mag-btn">✦ Devis gratuit</a>
+          <button className="nham" id="nham" aria-label="Menu">
+            <span /><span /><span />
+          </button>
         </div>
       </nav>
+      <div className="mob-overlay" id="mob-overlay" />
+      <div className="mob-menu" id="mob-menu">
+        <a href="#services" className="mob-link">Services</a>
+        <a href="#gallery" className="mob-link">Réalisations</a>
+        <a href="#diagnostic" className="mob-link">Diagnostic</a>
+        <a href="#devis" className="mob-link">Contact</a>
+        <div className="mob-sub">
+          <a href="/services/tableau-electrique">Tableau électrique</a>
+          <a href="/services/cablage">Câblage</a>
+          <a href="/services/eclairage">Éclairage</a>
+          <a href="/services/domotique">Domotique</a>
+          <a href="/services/depannage-urgence">Dépannage urgent</a>
+          <a href="/services/mise-en-conformite">Mise en conformité</a>
+        </div>
+        <div className="mob-cta">
+          <a href="#devis" className="mob-cta-btn">✦ Demander un devis</a>
+          <a href="tel:0465904372" className="mob-tel">0465.90.43.72</a>
+        </div>
+      </div>
 
       <section className="hero">
         <div className="hero-bg" />

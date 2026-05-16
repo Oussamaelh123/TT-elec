@@ -33,6 +33,19 @@ export default function PageEffects() {
     const onScroll = () => document.getElementById('nav')?.classList.toggle('stuck', scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
 
+    /* HAMBURGER */
+    const ham = document.getElementById('nham')
+    const mobMenu = document.getElementById('mob-menu')
+    const mobOverlay = document.getElementById('mob-overlay')
+    const navEl = document.getElementById('nav')
+    const closeMob = () => { navEl?.classList.remove('nav-open'); mobMenu?.classList.remove('open'); mobOverlay?.classList.remove('open'); document.body.style.overflow = '' }
+    ham?.addEventListener('click', () => {
+      const isOpen = mobMenu?.classList.contains('open')
+      if (isOpen) { closeMob() } else { navEl?.classList.add('nav-open'); mobMenu?.classList.add('open'); mobOverlay?.classList.add('open'); document.body.style.overflow = 'hidden' }
+    })
+    mobOverlay?.addEventListener('click', closeMob)
+    mobMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMob))
+
     /* REVEAL */
     const ro = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on') }),

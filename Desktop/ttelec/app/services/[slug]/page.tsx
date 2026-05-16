@@ -148,8 +148,28 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         <div className="nright">
           <div className="nbadge"><span className="ndot" /> Disponible</div>
           <Link href="/#devis" className="ncta">✦ Devis gratuit</Link>
+          <button className="nham" id="nham" aria-label="Menu"><span /><span /><span /></button>
         </div>
       </nav>
+      <div className="mob-overlay" id="mob-overlay" />
+      <div className="mob-menu" id="mob-menu">
+        <Link href="/" className="mob-link">Accueil</Link>
+        <Link href="/#services" className="mob-link">Services</Link>
+        <Link href="/realisations" className="mob-link">Réalisations</Link>
+        <Link href="/#devis" className="mob-link">Contact</Link>
+        <div className="mob-sub">
+          <Link href="/services/tableau-electrique">Tableau électrique</Link>
+          <Link href="/services/cablage">Câblage</Link>
+          <Link href="/services/eclairage">Éclairage</Link>
+          <Link href="/services/domotique">Domotique</Link>
+          <Link href="/services/depannage-urgence">Dépannage urgent</Link>
+          <Link href="/services/mise-en-conformite">Mise en conformité</Link>
+        </div>
+        <div className="mob-cta">
+          <Link href="/#devis" className="mob-cta-btn">✦ Demander un devis</Link>
+          <a href="tel:0465904372" className="mob-tel">0465.90.43.72</a>
+        </div>
+      </div>
 
       {/* HERO */}
       <section
