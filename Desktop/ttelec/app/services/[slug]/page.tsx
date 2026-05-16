@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import NavScroll from './NavScroll'
+import PageEffects from '@/app/components/PageEffects'
 
 const services: Record<string, {
   title: string
@@ -130,9 +130,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
-      <NavScroll />
-      <div id="cur" />
-      <div id="curR" />
+      <PageEffects />
 
       <nav id="nav">
         <Link href="/" className="nlogo">
