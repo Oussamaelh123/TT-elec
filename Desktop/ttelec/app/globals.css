@@ -486,3 +486,6 @@ nav.stuck .nham span{background:var(--navy)}
 @media(max-width:900px){.real-grid{grid-template-columns:repeat(2,1fr)}.real-grid .gc.feat{grid-column:span 2}}
 @media(max-width:640px){.real-grid{grid-template-columns:1fr}.real-grid .gc.feat{grid-column:span 1}}
 @media(max-width:768px){.real-hero{padding:110px 5% 60px;min-height:auto}.real-stats{gap:20px}.real-stat strong{font-size:1.6rem}.real-filters{padding:20px 5%}}
+.real-filter-count{background:rgba(12,20,40,.08);color:var(--soft);font-size:.55rem;padding:1px 6px;border-radius:10px;margin-left:5px}
+.real-filter.active .real-filter-count{background:rgba(255,255,255,.15);color:rgba(255,255,255,.6)}
+.real-empty{max-width:1200px;margin:60px auto;text-align:center;color:rgba(255,255,255,.25);font-style:italic;font-family:var(--font-fraunces),'Fraunces',serif;font-size:1.1rem}
