@@ -110,6 +110,34 @@ const services: Record<string, {
     seoTitle: 'Borne de Recharge Bruxelles — Installation EV & Wall-Box | TT Elec',
     seoDesc: "Installation de bornes de recharge pour voitures électriques à Bruxelles. TT Elec, agréé RGIE. Résidentiel & professionnel. Devis gratuit.",
   },
+  'alarme-incendie': {
+    title: 'Alarme & Incendie',
+    subtitle: "Installation de systèmes d'alarme intrusion et de détection incendie certifiés.",
+    image: null,
+    description: "TT Elec installe et configure vos systèmes d'alarme anti-intrusion et de détection incendie à Bruxelles. Qu'il s'agisse d'une habitation ou d'un commerce, nous proposons des solutions filaires et sans-fil adaptées à vos besoins, conformes aux normes belges en vigueur.",
+    features: [
+      { title: 'Alarme anti-intrusion', desc: "Détecteurs de mouvement, contacts de portes et fenêtres, sirènes intérieure et extérieure. Système filaire ou sans-fil.", icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
+      { title: 'Détection incendie', desc: "Détecteurs de fumée interconnectés, centrales incendie et systèmes conformes aux normes NBN S21-100 belges.", icon: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z' },
+      { title: 'Caméras de surveillance', desc: "Installation de systèmes CCTV HD, IP et NVR pour habitations, commerces et parkings.", icon: 'M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z' },
+      { title: 'Télécommandes & application', desc: "Pilotez et recevez les alertes de votre système depuis votre smartphone, où que vous soyez.", icon: 'M12 22c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z' },
+    ],
+    seoTitle: 'Alarme & Détection Incendie Bruxelles — Installation Sécurité | TT Elec',
+    seoDesc: "Installation de systèmes d'alarme et de détection incendie à Bruxelles. TT Elec, agréé RGIE. Résidentiel & professionnel. Devis gratuit.",
+  },
+  'parlophone-visiophone': {
+    title: 'Parlophone & Visiophone',
+    subtitle: "Interphones filaires et visiophonie connectée pour un contrôle d'accès intelligent.",
+    image: null,
+    description: "TT Elec installe vos systèmes de parlophonie et visiophonie à Bruxelles. Du simple interphone filaire au visiophone connecté avec contrôle via smartphone, nous concevons et posons la solution adaptée à votre habitation ou immeuble, avec le câblage intégré.",
+    features: [
+      { title: 'Parlophone filaire', desc: "Installation complète de systèmes interphones filaires multi-appartements ou individuels, avec câblage encastré.", icon: 'M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 012 2.18 2 2 0 014 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z' },
+      { title: 'Visiophone avec écran', desc: "Visiophone couleur avec écran intérieur HD. Visualisez vos visiteurs et ouvrez à distance en toute sécurité.", icon: 'M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z' },
+      { title: 'Visiophone connecté', desc: "Contrôle d'accès via application smartphone — recevez les appels et ouvrez votre porte de n'importe où.", icon: 'M12 22c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z' },
+      { title: 'Contrôle d\'accès', desc: "Gâches électriques, lecteurs de badges et systèmes de contrôle d'accès pour immeubles et bureaux.", icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
+    ],
+    seoTitle: 'Parlophone & Visiophone Bruxelles — Installation Interphone | TT Elec',
+    seoDesc: "Installation de parlophones et visiophones à Bruxelles. TT Elec, agréé RGIE. Filaire & connecté. Devis gratuit sous 24h.",
+  },
 }
 
 const slugToLabel: Record<string, string> = {
@@ -120,6 +148,8 @@ const slugToLabel: Record<string, string> = {
   'depannage-urgence': 'Dépannage urgent',
   'mise-en-conformite': 'Mise en conformité',
   'borne-recharge': 'Borne de recharge',
+  'alarme-incendie': 'Alarme & Incendie',
+  'parlophone-visiophone': 'Parlophone & Visiophone',
 }
 
 export async function generateStaticParams() {
@@ -180,6 +210,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <Link href="/services/depannage-urgence">Dépannage urgent</Link>
           <Link href="/services/mise-en-conformite">Mise en conformité</Link>
           <Link href="/services/borne-recharge">Borne de recharge</Link>
+          <Link href="/services/alarme-incendie">Alarme & Incendie</Link>
+          <Link href="/services/parlophone-visiophone">Parlophone & Visiophone</Link>
         </div>
         <div className="mob-cta">
           <Link href="/#devis" className="mob-cta-btn">✦ Demander un devis</Link>
@@ -339,6 +371,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <Link href="/services/depannage-urgence">Dépannage</Link>
             <Link href="/services/mise-en-conformite">Conformité</Link>
             <Link href="/services/borne-recharge">Borne EV</Link>
+            <Link href="/services/alarme-incendie">Alarme</Link>
+            <Link href="/services/parlophone-visiophone">Parlophone</Link>
           </div>
           <div className="fcol">
             <h4>Contact</h4>

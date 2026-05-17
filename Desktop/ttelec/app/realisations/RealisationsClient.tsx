@@ -82,6 +82,8 @@ export default function RealisationsClient() {
           <Link href="/services/depannage-urgence">Dépannage urgent</Link>
           <Link href="/services/mise-en-conformite">Mise en conformité</Link>
           <Link href="/services/borne-recharge">Borne de recharge</Link>
+          <Link href="/services/alarme-incendie">Alarme & Incendie</Link>
+          <Link href="/services/parlophone-visiophone">Parlophone & Visiophone</Link>
         </div>
         <div className="mob-cta">
           <Link href="/#devis" className="mob-cta-btn">✦ Demander un devis</Link>
@@ -216,6 +218,8 @@ export default function RealisationsClient() {
             <Link href="/services/depannage-urgence">Dépannage</Link>
             <Link href="/services/mise-en-conformite">Conformité</Link>
             <Link href="/services/borne-recharge">Borne EV</Link>
+            <Link href="/services/alarme-incendie">Alarme</Link>
+            <Link href="/services/parlophone-visiophone">Parlophone</Link>
           </div>
           <div className="fcol">
             <h4>Contact</h4>

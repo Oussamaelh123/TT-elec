@@ -249,6 +249,8 @@ export default function Home() {
           <Link href="/services/depannage-urgence">Dépannage urgent</Link>
           <Link href="/services/mise-en-conformite">Mise en conformité</Link>
           <Link href="/services/borne-recharge">Borne de recharge</Link>
+          <Link href="/services/alarme-incendie">Alarme & Incendie</Link>
+          <Link href="/services/parlophone-visiophone">Parlophone & Visiophone</Link>
         </div>
         <div className="mob-cta">
           <a href="#devis" className="mob-cta-btn">✦ Demander un devis</a>
@@ -362,19 +364,41 @@ export default function Home() {
             <div className="bcd" style={{ color: 'rgba(255,255,255,.42)' }}>Installation de bornes EV à domicile et en entreprise. Profitez des primes régionales.</div>
             <div className="bcarr" style={{ borderColor: 'rgba(34,197,94,.2)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(34,197,94,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
-          <div className="bc bc7 rv d6">
+          <Link href="/services/alarme-incendie" className="bc bc7 rv d6">
+            <div className="bc7-rings">
+              <div className="bc7-ring" /><div className="bc7-ring" /><div className="bc7-ring" /><div className="bc7-ring" />
+            </div>
+            <div className="bc7-dot" />
+            <div className="bcn" style={{ color: 'rgba(220,38,38,.05)' }}>07</div>
+            <div className="bc-tag-img" style={{ color: 'rgba(239,68,68,.85)', background: 'rgba(220,38,38,.08)', borderColor: 'rgba(220,38,38,.22)' }}><span className="btdot" style={{ background: '#ef4444' }} />&nbsp;Sécurité</div>
+            <div className="bct" style={{ color: '#fff' }}>Alarme &amp; Incendie</div>
+            <div className="bcd" style={{ color: 'rgba(255,255,255,.38)' }}>Installation de systèmes d&apos;alarme intrusion et détection incendie. Protection certifiée pour votre domicile ou entreprise.</div>
+            <div className="bcarr" style={{ borderColor: 'rgba(220,38,38,.25)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(239,68,68,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
+          </Link>
+          <Link href="/services/parlophone-visiophone" className="bc bc8 rv d7">
+            <div className="bc8-waves">
+              <div className="bc8-wave" /><div className="bc8-wave" /><div className="bc8-wave" /><div className="bc8-wave" />
+            </div>
+            <div className="bc8-dot" />
+            <div className="bcn" style={{ color: 'rgba(59,130,246,.05)' }}>08</div>
+            <div className="bc-tag-img" style={{ color: 'rgba(96,165,250,.85)', background: 'rgba(59,130,246,.08)', borderColor: 'rgba(59,130,246,.22)' }}><span className="btdot" style={{ background: '#60a5fa' }} />&nbsp;Contrôle accès</div>
+            <div className="bct" style={{ color: '#fff' }}>Parlophone &amp; Visiophone</div>
+            <div className="bcd" style={{ color: 'rgba(255,255,255,.38)' }}>Interphones filaires et visiophonie connectée. Contrôle d&apos;accès intelligent pour sécuriser vos entrées.</div>
+            <div className="bcarr" style={{ borderColor: 'rgba(59,130,246,.25)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
+          </Link>
+          <div className="bc bc9 rv">
             <div className="bc-urgence-glow" />
             <svg className="bcsvg" style={{ width: '180px', height: '180px', opacity: '.04' }} viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth=".5"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
-            <div className="bc7-wrap">
-              <div className="bc7-left">
-                <div className="bcn" style={{ color: 'rgba(255,255,255,.04)', position: 'relative', fontSize: '3.5rem' }}>07</div>
+            <div className="bc9-wrap">
+              <div className="bc9-left">
+                <div className="bcn" style={{ color: 'rgba(255,255,255,.04)', position: 'relative', fontSize: '3.5rem' }}>09</div>
                 <div className="bct" style={{ color: '#fff', fontSize: '1.3rem', marginBottom: '10px' }}>⚡ Dépannage urgent</div>
                 <div className="bcd" style={{ color: 'rgba(255,255,255,.38)', maxWidth: '460px' }}>Panne totale, disjoncteur qui saute, court-circuit — nos techniciens certifiés RGIE interviennent à toute heure dans toute la Belgique.</div>
                 <Link href="/services/depannage-urgence" className="bcarr" style={{ borderColor: 'rgba(200,146,30,.3)', opacity: 1, transform: 'scale(1)', position: 'relative', display: 'inline-flex', marginTop: '18px' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></Link>
               </div>
-              <div className="bc7-right">
-                <a href="tel:0465904372" className="bc7-tel">0465.90.43.72</a>
-                <div className="bc7-avail"><span className="ndot" />&nbsp;Disponible maintenant</div>
+              <div className="bc9-right">
+                <a href="tel:0465904372" className="bc9-tel">0465.90.43.72</a>
+                <div className="bc9-avail"><span className="ndot" />&nbsp;Disponible maintenant</div>
               </div>
             </div>
           </div>
@@ -465,12 +489,19 @@ export default function Home() {
           <a href="https://www.tiktok.com/@tt.elec" target="_blank" rel="noopener noreferrer" className="sh-link">Voir TikTok&nbsp;<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
         </div>
         <div className="tk-grid">
-          {['12.4k', '8.2k', '15.1k', '6.7k'].map((v, i) => (
-            <div key={i} className={`tkc rv${i > 0 ? ` d${i}` : ''}`}>
-              <div className="tkn">0{i + 1}</div>
-              <div className="tkp"><svg width="13" height="13" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3" /></svg></div>
-              <span className="tkl">Chantier TikTok</span>
-              <span className="tkv">{v} vues</span>
+          {[
+            '7560636547653995808',
+            '7571231023543880992',
+            '7610946594627783969',
+            '7609836996000894241',
+          ].map((videoId, i) => (
+            <div key={videoId} className={`tkc rv${i > 0 ? ` d${i}` : ''}`}>
+              <iframe
+                src={`https://www.tiktok.com/embed/v2/${videoId}`}
+                className="tk-iframe"
+                allow="encrypted-media; fullscreen"
+                allowFullScreen
+              />
             </div>
           ))}
         </div>
@@ -520,7 +551,7 @@ export default function Home() {
               <div className="fg">
                 <label className="fl">Type de travaux</label>
                 <div className="svc-pick">
-                  {[['01','Tableau'],['02','Câblage'],['03','Éclairage'],['04','Domotique'],['05','Urgence'],['06','Conformité'],['07','Borne EV']].map(([n, l]) => (
+                  {[['01','Tableau'],['02','Câblage'],['03','Éclairage'],['04','Domotique'],['05','Urgence'],['06','Conformité'],['07','Borne EV'],['08','Alarme'],['09','Parlophone']].map(([n, l]) => (
                     <div key={n} className="spo" onClick={e => e.currentTarget.classList.toggle('on')}>
                       <div className="spon">{n}</div><div className="spol">{l}</div>
                     </div>
@@ -569,7 +600,7 @@ export default function Home() {
             </div>
           </div>
           <div className="fcol"><h4>Navigation</h4><a href="#">Accueil</a><a href="#services">Services</a><a href="#gallery">Réalisations</a><a href="#devis">Contact</a></div>
-          <div className="fcol"><h4>Services</h4><Link href="/services/tableau-electrique">Tableau électrique</Link><Link href="/services/cablage">Câblage</Link><Link href="/services/eclairage">Éclairage</Link><Link href="/services/domotique">Domotique</Link><Link href="/services/depannage-urgence">Dépannage</Link><Link href="/services/mise-en-conformite">Conformité</Link><Link href="/services/borne-recharge">Borne EV</Link></div>
+          <div className="fcol"><h4>Services</h4><Link href="/services/tableau-electrique">Tableau électrique</Link><Link href="/services/cablage">Câblage</Link><Link href="/services/eclairage">Éclairage</Link><Link href="/services/domotique">Domotique</Link><Link href="/services/depannage-urgence">Dépannage</Link><Link href="/services/mise-en-conformite">Conformité</Link><Link href="/services/borne-recharge">Borne EV</Link><Link href="/services/alarme-incendie">Alarme & Incendie</Link><Link href="/services/parlophone-visiophone">Parlophone</Link></div>
           <div className="fcol"><h4>Contact</h4><a href="tel:0465904372">0465.90.43.72</a><a href="https://wa.me/32465904372">WhatsApp</a><a href="#">Bruxelles, Belgique</a><a href="#">24h/24 — 7j/7</a></div>
         </div>
         <div className="fb2"><p>© 2026 <strong>TT Elec</strong> · Tous droits réservés</p><p><a href="#">Mentions légales</a></p></div>
