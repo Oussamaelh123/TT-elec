@@ -1,25 +1,49 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import PageEffects from '@/app/components/PageEffects'
+import { supabase } from '@/lib/supabase'
 
-const realisations = [
-  { id: 1, titre: 'Remplacement tableau électrique complet', lieu: 'Ixelles, Bruxelles', categorie: 'Tableau', date: 'Janvier 2025', tags: ['Tableau', 'Résidentiel', 'RGIE'], feat: true },
-  { id: 2, titre: 'Rénovation câblage appartement', lieu: 'Anderlecht', categorie: 'Câblage', date: 'Février 2025', tags: ['Câblage', 'Rénovation'], feat: false },
-  { id: 3, titre: 'Installation éclairage LED spots', lieu: 'Etterbeek', categorie: 'Éclairage', date: 'Mars 2025', tags: ['Éclairage', 'LED'], feat: false },
-  { id: 4, titre: 'Système domotique complet', lieu: 'Uccle', categorie: 'Domotique', date: 'Avril 2025', tags: ['Domotique', 'Smart home'], feat: false },
-  { id: 5, titre: 'Mise en conformité RGIE', lieu: 'Schaerbeek', categorie: 'Conformité', date: 'Avril 2025', tags: ['Conformité', 'RGIE'], feat: false },
-  { id: 6, titre: 'Câblage bureaux & commerces', lieu: 'Saint-Gilles', categorie: 'Câblage', date: 'Mai 2025', tags: ['Câblage', 'Commercial'], feat: false },
-  { id: 7, titre: 'Éclairage extérieur terrasse', lieu: 'Watermael-Boitsfort', categorie: 'Éclairage', date: 'Mai 2025', tags: ['Éclairage', 'Extérieur'], feat: false },
-  { id: 8, titre: 'Installation caméras de sécurité', lieu: 'Molenbeek', categorie: 'Caméras', date: 'Juin 2025', tags: ['Caméras', 'Sécurité'], feat: false },
-]
+type Realisation = {
+  id: string
+  titre: string
+  lieu: string
+  categorie: string
+  date_chantier: string
+  tags: string[]
+  images: string[]
+  publie: boolean
+}
 
-const categories = ['Tous', 'Tableau', 'Câblage', 'Éclairage', 'Domotique', 'Caméras', 'Conformité']
+const categories = ['Tous', 'Tableau', 'Câblage', 'Éclairage', 'Domotique', 'Caméras', 'Conformité', 'Installation', 'Dépannage']
 
 export default function RealisationsClient() {
   const [active, setActive] = useState('Tous')
+  const [realisations, setRealisations] = useState<Realisation[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const filtered = active === 'Tous' ? realisations : realisations.filter(r => r.categorie === active)
+  useEffect(() => {
+    async function load() {
+      const { data } = await supabase
+        .from('realisations')
+        .select('*')
+        .eq('publie', true)
+        .order('created_at', { ascending: false })
+      setRealisations(data ?? [])
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  const filtered = active === 'Tous'
+    ? realisations
+    : realisations.filter(r => r.categorie?.toLowerCase() === active.toLowerCase())
+
+  const formatDate = (d: string) => {
+    if (!d) return ''
+    const date = new Date(d)
+    return date.toLocaleDateString('fr-BE', { month: 'long', year: 'numeric' })
+  }
 
   return (
     <>
@@ -93,9 +117,9 @@ export default function RealisationsClient() {
             onClick={() => setActive(cat)}
           >
             {cat}
-            {cat !== 'Tous' && (
+            {cat !== 'Tous' && realisations.filter(r => r.categorie?.toLowerCase() === cat.toLowerCase()).length > 0 && (
               <span className="real-filter-count">
-                {realisations.filter(r => r.categorie === cat).length}
+                {realisations.filter(r => r.categorie?.toLowerCase() === cat.toLowerCase()).length}
               </span>
             )}
           </button>
@@ -104,32 +128,37 @@ export default function RealisationsClient() {
 
       {/* GRID */}
       <section className="real-sec">
-        <div className="real-grid">
-          {filtered.map((r, i) => (
-            <div key={r.id} className={`gc rv${i > 0 ? ` d${Math.min(i, 6)}` : ''}${r.feat && active === 'Tous' ? ' feat' : ''}`}>
-              <div className="gv">
-                <div className="gv-bg" />
-                <div className="gv-grid" />
-                <span className="gv-label">{r.titre} — {r.lieu}</span>
-                <div className="gv-line" />
-                <div className="gv-handle">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
+        {loading ? (
+          <div className="real-empty"><p>Chargement des réalisations...</p></div>
+        ) : (
+          <div className="real-grid">
+            {filtered.map((r, i) => (
+              <div key={r.id} className={`gc rv${i > 0 ? ` d${Math.min(i, 6)}` : ''}`}>
+                <div className="gv">
+                  <div className="gv-bg" style={r.images?.[0] ? { backgroundImage: `url(${r.images[0]})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                  <div className="gv-grid" />
+                  <span className="gv-label">{r.titre} — {r.lieu}</span>
+                  <div className="gv-line" />
+                  <div className="gv-handle">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
+                  </div>
+                  {r.images?.[0] && r.images?.[1] && (
+                    <div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div>
+                  )}
                 </div>
-                <div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div>
-                {r.feat && active === 'Tous' && <span className="gnew">Récent</span>}
-              </div>
-              <div className="gi">
-                <div className="git">{r.titre}</div>
-                <div className="gim">{r.lieu} · {r.date}</div>
-                <div className="gchips">
-                  {r.tags.map(t => <span key={t} className="gchip">{t}</span>)}
+                <div className="gi">
+                  <div className="git">{r.titre}</div>
+                  <div className="gim">{r.lieu} · {formatDate(r.date_chantier)}</div>
+                  <div className="gchips">
+                    {r.tags?.map(t => <span key={t} className="gchip">{t}</span>)}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        {filtered.length === 0 && (
+        {!loading && filtered.length === 0 && (
           <div className="real-empty">
             <p>Aucun chantier dans cette catégorie pour le moment.</p>
           </div>
@@ -203,7 +232,7 @@ export default function RealisationsClient() {
       </footer>
 
       <a href="https://wa.me/32465904372" target="_blank" rel="noopener noreferrer" className="wa" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" /></svg>
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
       </a>
     </>
   )
