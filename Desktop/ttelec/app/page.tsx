@@ -384,35 +384,39 @@ export default function Home() {
             <div className="bcd">Diagnostic complet et mise aux normes RGIE de votre installation existante.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
-          <Link href="/services/borne-recharge" className="bc bc6 rv d5">
-            <div className="bc6-glow" />
-            <svg className="bc6-icon" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="rgba(34,197,94,.6)" strokeWidth=".5"><path d="M5 18H3a2 2 0 01-2-2V8a2 2 0 012-2h3.19M15 6h2a2 2 0 012 2v8a2 2 0 01-2 2h-3.19M23 13v-2M11 6l-4 6h6l-4 6" /></svg>
-            <div className="bcn" style={{ color: 'rgba(34,197,94,.05)' }}>06</div>
-            <div className="bct" style={{ color: '#fff' }}>Borne de recharge</div>
-            <div className="bcd" style={{ color: 'rgba(255,255,255,.42)' }}>Installation de bornes EV à domicile et en entreprise. Profitez des primes régionales.</div>
-            <div className="bcarr" style={{ borderColor: 'rgba(34,197,94,.2)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(34,197,94,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
+          <Link href="/services/borne-recharge" className="bc bc6 bc-has-img rv d5">
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/borne-recharge.jpg')" }} />
+            <div className="bc-overlay" />
+            <div className="bcn">06</div>
+            <div className="bct">Borne de recharge</div>
+            <div className="bcd">Installation de bornes EV à domicile et en entreprise. Profitez des primes régionales.</div>
+            <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
-          <Link href="/services/alarme-incendie" className="bc bc7 rv d6">
+          <Link href="/services/alarme-incendie" className="bc bc7 bc-has-img rv d6">
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/alarme-incendie.jpg')" }} />
+            <div className="bc-overlay" style={{ background: 'linear-gradient(170deg,rgba(20,4,6,.5) 0%,rgba(8,2,3,.85) 65%,rgba(8,2,3,.97) 100%)' }} />
             <div className="bc7-rings">
               <div className="bc7-ring" /><div className="bc7-ring" /><div className="bc7-ring" /><div className="bc7-ring" />
             </div>
             <div className="bc7-dot" />
-            <div className="bcn" style={{ color: 'rgba(220,38,38,.05)' }}>07</div>
-            <div className="bc-tag-img" style={{ color: 'rgba(239,68,68,.85)', background: 'rgba(220,38,38,.08)', borderColor: 'rgba(220,38,38,.22)' }}><span className="btdot" style={{ background: '#ef4444' }} />&nbsp;Sécurité</div>
-            <div className="bct" style={{ color: '#fff' }}>Alarme &amp; Incendie</div>
-            <div className="bcd" style={{ color: 'rgba(255,255,255,.38)' }}>Installation de systèmes d&apos;alarme intrusion et détection incendie. Protection certifiée pour votre domicile ou entreprise.</div>
-            <div className="bcarr" style={{ borderColor: 'rgba(220,38,38,.25)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(239,68,68,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
+            <div className="bcn">07</div>
+            <div className="bc-tag-img" style={{ color: 'rgba(239,68,68,.9)', background: 'rgba(220,38,38,.1)', borderColor: 'rgba(220,38,38,.25)' }}><span className="btdot" style={{ background: '#ef4444' }} />&nbsp;Sécurité</div>
+            <div className="bct">Alarme &amp; Incendie</div>
+            <div className="bcd">Installation de systèmes d&apos;alarme intrusion et détection incendie. Protection certifiée pour votre domicile ou entreprise.</div>
+            <div className="bcarr" style={{ borderColor: 'rgba(220,38,38,.3)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(239,68,68,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
-          <Link href="/services/parlophone-visiophone" className="bc bc8 rv d7">
+          <Link href="/services/parlophone-visiophone" className="bc bc8 bc-has-img rv d7">
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/parlophone-visiophone.png')" }} />
+            <div className="bc-overlay" style={{ background: 'linear-gradient(170deg,rgba(2,6,18,.5) 0%,rgba(2,4,14,.85) 65%,rgba(2,4,14,.97) 100%)' }} />
             <div className="bc8-waves">
               <div className="bc8-wave" /><div className="bc8-wave" /><div className="bc8-wave" /><div className="bc8-wave" />
             </div>
             <div className="bc8-dot" />
-            <div className="bcn" style={{ color: 'rgba(59,130,246,.05)' }}>08</div>
-            <div className="bc-tag-img" style={{ color: 'rgba(96,165,250,.85)', background: 'rgba(59,130,246,.08)', borderColor: 'rgba(59,130,246,.22)' }}><span className="btdot" style={{ background: '#60a5fa' }} />&nbsp;Contrôle accès</div>
-            <div className="bct" style={{ color: '#fff' }}>Parlophone &amp; Visiophone</div>
-            <div className="bcd" style={{ color: 'rgba(255,255,255,.38)' }}>Interphones filaires et visiophonie connectée. Contrôle d&apos;accès intelligent pour sécuriser vos entrées.</div>
-            <div className="bcarr" style={{ borderColor: 'rgba(59,130,246,.25)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
+            <div className="bcn">08</div>
+            <div className="bc-tag-img" style={{ color: 'rgba(96,165,250,.9)', background: 'rgba(59,130,246,.1)', borderColor: 'rgba(59,130,246,.25)' }}><span className="btdot" style={{ background: '#60a5fa' }} />&nbsp;Contrôle accès</div>
+            <div className="bct">Parlophone &amp; Visiophone</div>
+            <div className="bcd">Interphones filaires et visiophonie connectée. Contrôle d&apos;accès intelligent pour sécuriser vos entrées.</div>
+            <div className="bcarr" style={{ borderColor: 'rgba(59,130,246,.3)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <div className="bc bc9 rv">
             <div className="bc-urgence-glow" />
