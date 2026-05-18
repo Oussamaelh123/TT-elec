@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import PageEffects from '@/app/components/PageEffects'
+import LogoSVG from '@/app/components/LogoSVG'
 import { supabase } from '@/lib/supabase'
 
 type Realisation = {
@@ -52,8 +53,7 @@ export default function RealisationsClient() {
       <nav id="nav">
         <Link href="/" className="nlogo">
           <div className="logo-3d-wrap">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/logo.jpeg" alt="TT Elec" className="logo-3d-img" />
+            <LogoSVG />
           </div>
         </Link>
         <div className="nlinks">
@@ -195,10 +195,7 @@ export default function RealisationsClient() {
       <footer>
         <div className="fgrid">
           <div>
-            <div className="footer-logo-wrap">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/logo.jpeg" alt="TT Elec" className="footer-logo-img" />
-          </div>
+            <LogoSVG />
             <p className="fb-desc">Électricien certifié RGIE. Installation, rénovation et dépannage à Bruxelles et dans toute la Belgique.</p>
             <div className="f-socials">
               <a href="https://www.tiktok.com/@tt.elec" target="_blank" rel="noopener noreferrer" className="fsoc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" /></svg></a>

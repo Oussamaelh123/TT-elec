@@ -36,12 +36,28 @@ nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bot
 @keyframes ndp{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
 .ncta{background:var(--navy);color:#fff;font-family:var(--font-syne),'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:20px;text-decoration:none;transition:all .3s;display:inline-block;will-change:transform}
 .ncta:hover{background:var(--gold);box-shadow:0 6px 20px rgba(200,146,30,.2)}
-/* LOGO */
-.logo-3d-wrap{display:inline-flex;align-items:center;animation:logo3d 10s ease-in-out infinite;mix-blend-mode:multiply}
-.logo-3d-img{height:46px;width:auto;display:block}
-@keyframes logo3d{0%,100%{transform:perspective(500px) rotateY(-5deg) rotateX(2deg)}33%{transform:perspective(500px) rotateY(6deg) rotateX(-2deg)}66%{transform:perspective(500px) rotateY(-3deg) rotateX(-4deg)}}
-.footer-logo-wrap{mix-blend-mode:multiply}
-.footer-logo-img{height:68px;width:auto;display:block;margin-bottom:12px}
+/* LOGO SVG */
+.logo-3d-wrap{display:inline-flex;align-items:center}
+.logo-svg{display:block;height:32px;width:auto;overflow:visible}
+footer .logo-svg{height:38px;margin-bottom:14px}
+.ls{fill:none;stroke:var(--navy);stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--dash);stroke-dashoffset:var(--dash);animation:logoDrawPath .55s cubic-bezier(.5,0,.5,1) forwards;animation-delay:var(--adel,0s)}
+.l-bolt{stroke:var(--gold);--dash:45;--adel:.3s}
+@keyframes logoDrawPath{to{stroke-dashoffset:0}}
+.l-t1c{--dash:26;--adel:0s}
+.l-t1s{--dash:36;--adel:.05s}
+.l-t2c{--dash:26;--adel:.14s}
+.l-t2s{--dash:36;--adel:.19s}
+.l-e1s{--dash:36;--adel:.42s}
+.l-e1t{--dash:22;--adel:.46s}
+.l-e1m{--dash:18;--adel:.48s}
+.l-e1b{--dash:22;--adel:.46s}
+.l-ls{--dash:36;--adel:.58s}
+.l-lb{--dash:22;--adel:.62s}
+.l-e2s{--dash:36;--adel:.72s}
+.l-e2t{--dash:22;--adel:.76s}
+.l-e2m{--dash:18;--adel:.78s}
+.l-e2b{--dash:22;--adel:.76s}
+.l-c{--dash:80;--adel:.88s}
 @media(max-width:768px){.nlinks{display:none}.nbadge{display:none}}
 
 /* HERO */
