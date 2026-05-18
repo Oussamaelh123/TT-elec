@@ -486,7 +486,10 @@ export default function Home() {
       <section className="tk-sec">
         <div className="sh rv">
           <div><div className="ovl">En vidéo</div><h2 className="stitle">Nos chantiers <em>en action</em></h2></div>
-          <a href="https://www.tiktok.com/@tt.elec" target="_blank" rel="noopener noreferrer" className="sh-link">Voir TikTok&nbsp;<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
+          <a href="https://www.tiktok.com/@tt.elec" target="_blank" rel="noopener noreferrer" className="tk-cta">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.76a8.18 8.18 0 0 0 4.84 1.55V6.85a4.86 4.86 0 0 1-1.07-.16z"/></svg>
+            @tt.elec
+          </a>
         </div>
         <div className="tk-grid">
           {[
@@ -502,6 +505,17 @@ export default function Home() {
                 allow="encrypted-media; fullscreen"
                 allowFullScreen
               />
+              <div className="tk-overlay">
+                <a
+                  href={`https://www.tiktok.com/@tt.elec/video/${videoId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tk-watch"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.76a8.18 8.18 0 0 0 4.84 1.55V6.85a4.86 4.86 0 0 1-1.07-.16z"/></svg>
+                  Voir en grand
+                </a>
+              </div>
             </div>
           ))}
         </div>
