@@ -51,7 +51,14 @@ export default function Home() {
     if (canvas && ctx) {
       const resize = () => { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight }
       window.addEventListener('resize', resize); resize()
-      for (let i = 0; i < 80; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .7, vy: (Math.random() - .5) * .7, r: Math.random() * 2.2 + .8, a: Math.random() * .6 + .2 })
+      const spawnNodes = () => {
+        if (W === 0 || H === 0) { resize() }
+        const fw = W || canvas.parentElement?.clientWidth || 900
+        const fh = H || canvas.parentElement?.clientHeight || 600
+        W = canvas.width = fw; H = canvas.height = fh
+        for (let i = 0; i < 80; i++) nodes.push({ x: Math.random() * fw, y: Math.random() * fh, vx: (Math.random() - .5) * .7, vy: (Math.random() - .5) * .7, r: Math.random() * 2.2 + .8, a: Math.random() * .6 + .2 })
+      }
+      requestAnimationFrame(spawnNodes)
       const zz = (x1: number, y1: number, x2: number, y2: number, s: number, sp: number) => { ctx.beginPath(); ctx.moveTo(x1, y1); for (let i = 1; i < s; i++) { const t = i / s; ctx.lineTo(x1 + (x2 - x1) * t + (Math.random() - .5) * sp, y1 + (y2 - y1) * t + (Math.random() - .5) * sp) } ctx.lineTo(x2, y2) }
       let tick = 0
       const draw = () => {
