@@ -1,9 +1,21 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 export default function Home() {
+  const [activeVideo, setActiveVideo] = useState<string | null>(null)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setActiveVideo(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = activeVideo ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [activeVideo])
 
   useEffect(() => {
     /* CURSOR */
@@ -211,6 +223,22 @@ export default function Home() {
 
   return (
     <>
+      {activeVideo && (
+        <div className="tk-modal" onClick={() => setActiveVideo(null)}>
+          <div className="tk-modal-inner" onClick={e => e.stopPropagation()}>
+            <button className="tk-modal-close" onClick={() => setActiveVideo(null)} aria-label="Fermer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <iframe
+              src={`https://www.tiktok.com/embed/v2/${activeVideo}`}
+              className="tk-modal-frame"
+              allow="encrypted-media; fullscreen; autoplay"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
+
       <div id="cur" />
       <div id="curR" />
 
@@ -505,6 +533,7 @@ export default function Home() {
                 allow="encrypted-media; fullscreen"
                 allowFullScreen
               />
+              <div className="tk-click-overlay" onClick={() => setActiveVideo(videoId)} />
               <div className="tk-overlay">
                 <a
                   href={`https://www.tiktok.com/@tt.elec/video/${videoId}`}
@@ -513,7 +542,7 @@ export default function Home() {
                   className="tk-watch"
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.76a8.18 8.18 0 0 0 4.84 1.55V6.85a4.86 4.86 0 0 1-1.07-.16z"/></svg>
-                  Voir en grand
+                  Voir sur TikTok
                 </a>
               </div>
             </div>
