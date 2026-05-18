@@ -29,6 +29,22 @@ export default function PageEffects() {
       })
     }
 
+    /* LOGO 3D TILT */
+    const logoWrp = document.querySelector<HTMLElement>('.logo-3d-wrap')
+    if (logoWrp) {
+      logoWrp.addEventListener('mousemove', (e: MouseEvent) => {
+        const r = logoWrp.getBoundingClientRect()
+        const x = (e.clientX - r.left) / r.width - .5
+        const y = (e.clientY - r.top) / r.height - .5
+        logoWrp.style.animation = 'none'
+        logoWrp.style.transform = `perspective(500px) rotateY(${x * 28}deg) rotateX(${-y * 28}deg) scale(1.06)`
+      })
+      logoWrp.addEventListener('mouseleave', () => {
+        logoWrp.style.animation = ''
+        logoWrp.style.transform = ''
+      })
+    }
+
     /* NAV SCROLL */
     const onScroll = () => document.getElementById('nav')?.classList.toggle('stuck', scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })

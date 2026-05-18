@@ -179,10 +179,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
       <nav id="nav">
         <Link href="/" className="nlogo">
-          <div className="nmark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#c8921e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+          <div className="logo-3d-wrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/logo.jpeg" alt="TT Elec" className="logo-3d-img" />
           </div>
-          <span className="nbrand">TT <em>Elec</em></span>
         </Link>
         <div className="nlinks">
           <Link href="/#services" className="nlink">Services</Link>
@@ -348,7 +348,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       <footer>
         <div className="fgrid">
           <div>
-            <div className="fb-logo">TT <em>Elec</em></div>
+            <div className="footer-logo-wrap">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/logo.jpeg" alt="TT Elec" className="footer-logo-img" />
+            </div>
             <p className="fb-desc">Électricien certifié RGIE. Installation, rénovation et dépannage à Bruxelles et dans toute la Belgique.</p>
             <div className="f-socials">
               <a href="https://www.tiktok.com/@tt.elec" target="_blank" rel="noopener noreferrer" className="fsoc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" /></svg></a>
