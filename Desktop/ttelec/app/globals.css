@@ -38,7 +38,7 @@ nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bot
 .ncta:hover{background:var(--gold);box-shadow:0 6px 20px rgba(200,146,30,.2)}
 /* LOGO */
 .logo-3d-wrap{display:inline-flex;align-items:center}
-.logo-img-nav{width:200px;height:70px;object-fit:cover;object-position:center 52%;display:block}
+.logo-img-nav{width:200px;height:90px;object-fit:cover;object-position:center 40%;display:block}
 .logo-img-footer{width:220px;height:auto;display:block;margin-bottom:14px}
 @media(max-width:768px){.nlinks{display:none}.nbadge{display:none}}
 
