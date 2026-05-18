@@ -45,7 +45,7 @@ nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bot
 /* HERO */
 .hero{min-height:100vh;padding:140px 6% 100px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
 .hero-bg{position:absolute;inset:0;background:var(--off)}
-#sparks-canvas{position:absolute;top:88px;left:0;right:0;bottom:0;z-index:1;pointer-events:none;opacity:.85}
+#sparks-canvas{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:75vw;max-width:1100px;height:70vh;z-index:1;pointer-events:none;opacity:.35}
 .hero-layer{position:absolute;pointer-events:none;z-index:1}
 .hl1{width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(200,146,30,.07),transparent 65%);top:-150px;right:-100px;animation:hla 14s ease-in-out infinite}
 .hl2{width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(12,20,40,.04),transparent 65%);bottom:-80px;left:-80px;animation:hla 18s ease-in-out infinite reverse}

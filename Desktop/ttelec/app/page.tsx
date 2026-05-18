@@ -49,27 +49,27 @@ export default function Home() {
     let arcs: {x1:number,y1:number,x2:number,y2:number,life:number}[] = []
     let drawRaf: number
     if (canvas && ctx) {
-      const resize = () => { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight }
-      window.addEventListener('resize', resize); resize()
-      const spawnNodes = () => {
-        if (W === 0 || H === 0) { resize() }
-        const fw = W || canvas.parentElement?.clientWidth || 900
-        const fh = H || canvas.parentElement?.clientHeight || 600
-        W = canvas.width = fw; H = canvas.height = fh
-        for (let i = 0; i < 80; i++) nodes.push({ x: Math.random() * fw, y: Math.random() * fh, vx: (Math.random() - .5) * .7, vy: (Math.random() - .5) * .7, r: Math.random() * 2.2 + .8, a: Math.random() * .6 + .2 })
+      const initCanvas = () => {
+        W = canvas.width = canvas.offsetWidth || Math.round(window.innerWidth * .75)
+        H = canvas.height = canvas.offsetHeight || Math.round(window.innerHeight * .70)
+        if (W < 10 || H < 10) { requestAnimationFrame(initCanvas); return }
+        nodes.length = 0
+        for (let i = 0; i < 80; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .7, vy: (Math.random() - .5) * .7, r: Math.random() * 2.2 + .8, a: Math.random() * .6 + .2 })
+        draw()
       }
-      requestAnimationFrame(spawnNodes)
+      const resize = () => { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight }
+      window.addEventListener('resize', resize)
       const zz = (x1: number, y1: number, x2: number, y2: number, s: number, sp: number) => { ctx.beginPath(); ctx.moveTo(x1, y1); for (let i = 1; i < s; i++) { const t = i / s; ctx.lineTo(x1 + (x2 - x1) * t + (Math.random() - .5) * sp, y1 + (y2 - y1) * t + (Math.random() - .5) * sp) } ctx.lineTo(x2, y2) }
       let tick = 0
       const draw = () => {
         ctx.clearRect(0, 0, W, H); tick++
-        nodes.forEach(n => { n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > W) n.vx *= -1; if (n.y < 0 || n.y > H) n.vy *= -1; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(200,146,30,${n.a * .45})`; ctx.fill() })
-        for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) { const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx * dx + dy * dy); if (d < 240) { ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.strokeStyle = `rgba(200,146,30,${(1 - d / 240) * .16})`; ctx.lineWidth = .7; ctx.stroke() } }
+        nodes.forEach(n => { n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > W) n.vx *= -1; if (n.y < 0 || n.y > H) n.vy *= -1; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(200,146,30,${n.a * .5})`; ctx.fill() })
+        for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) { const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx * dx + dy * dy); if (d < 240) { ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.strokeStyle = `rgba(200,146,30,${(1 - d / 240) * .18})`; ctx.lineWidth = .7; ctx.stroke() } }
         if (tick % 40 === 0 && Math.random() < .75) { const i = Math.floor(Math.random() * nodes.length), j = Math.floor(Math.random() * nodes.length); if (i !== j) arcs.push({ x1: nodes[i].x, y1: nodes[i].y, x2: nodes[j].x, y2: nodes[j].y, life: 1 }) }
         arcs = arcs.filter(f => { f.life -= .06; if (f.life <= 0) return false; ctx.save(); ctx.globalAlpha = f.life * .65; zz(f.x1, f.y1, f.x2, f.y2, 6, 22); ctx.strokeStyle = `rgba(242,208,126,${f.life * .8})`; ctx.lineWidth = 1; ctx.shadowColor = 'rgba(200,146,30,.6)'; ctx.shadowBlur = 6; ctx.stroke(); ctx.restore(); return true })
         drawRaf = requestAnimationFrame(draw)
       }
-      draw()
+      initCanvas()
     }
 
     /* HERO PARTICLES */
