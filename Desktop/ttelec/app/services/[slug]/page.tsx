@@ -348,7 +348,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       <footer>
         <div className="fgrid">
           <div>
-            <LogoSVG />
+            <LogoSVG footer />
             <p className="fb-desc">Électricien certifié RGIE. Installation, rénovation et dépannage à Bruxelles et dans toute la Belgique.</p>
             <div className="f-socials">
               <a href="https://www.tiktok.com/@tt.elec" target="_blank" rel="noopener noreferrer" className="fsoc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" /></svg></a>
