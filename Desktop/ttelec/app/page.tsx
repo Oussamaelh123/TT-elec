@@ -521,7 +521,7 @@ export default function Home() {
         </div>
         <div className="tk-grid">
           {[
-            '7560636547653995808',
+            '7538962148899163424',
             '7571231023543880992',
             '7610946594627783969',
             '7609836996000894241',
@@ -533,7 +533,11 @@ export default function Home() {
                 allow="encrypted-media; fullscreen"
                 allowFullScreen
               />
-              <div className="tk-click-overlay" onClick={() => setActiveVideo(videoId)} />
+              <div className="tk-click-overlay" onClick={() => setActiveVideo(videoId)}>
+                <div className="tk-expand-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </div>
+              </div>
               <div className="tk-overlay">
                 <a
                   href={`https://www.tiktok.com/@tt.elec/video/${videoId}`}
