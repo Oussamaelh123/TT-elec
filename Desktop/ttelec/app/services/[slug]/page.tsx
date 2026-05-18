@@ -99,7 +99,7 @@ const services: Record<string, {
   'borne-recharge': {
     title: 'Borne de recharge',
     subtitle: "Installation de bornes de recharge pour véhicules électriques à domicile et en entreprise.",
-    image: null,
+    image: '/images/borne-recharge.jpg',
     description: "TT Elec installe vos bornes de recharge pour véhicules électriques à Bruxelles. Que ce soit pour votre domicile ou votre entreprise, nos électriciens agréés RGIE réalisent le câblage dédié et l'installation complète de votre borne EV en toute conformité.",
     features: [
       { title: 'Installation résidentielle', desc: "Borne wall-box 7 kW à domicile — câblage dédié, coffret de protection et mise en service complète.", icon: 'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z' },
@@ -113,7 +113,7 @@ const services: Record<string, {
   'alarme-incendie': {
     title: 'Alarme & Incendie',
     subtitle: "Installation de systèmes d'alarme intrusion et de détection incendie certifiés.",
-    image: null,
+    image: '/images/alarme-incendie.jpg',
     description: "TT Elec installe et configure vos systèmes d'alarme anti-intrusion et de détection incendie à Bruxelles. Qu'il s'agisse d'une habitation ou d'un commerce, nous proposons des solutions filaires et sans-fil adaptées à vos besoins, conformes aux normes belges en vigueur.",
     features: [
       { title: 'Alarme anti-intrusion', desc: "Détecteurs de mouvement, contacts de portes et fenêtres, sirènes intérieure et extérieure. Système filaire ou sans-fil.", icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
@@ -127,7 +127,7 @@ const services: Record<string, {
   'parlophone-visiophone': {
     title: 'Parlophone & Visiophone',
     subtitle: "Interphones filaires et visiophonie connectée pour un contrôle d'accès intelligent.",
-    image: null,
+    image: '/images/parlophone-visiophone.png',
     description: "TT Elec installe vos systèmes de parlophonie et visiophonie à Bruxelles. Du simple interphone filaire au visiophone connecté avec contrôle via smartphone, nous concevons et posons la solution adaptée à votre habitation ou immeuble, avec le câblage intégré.",
     features: [
       { title: 'Parlophone filaire', desc: "Installation complète de systèmes interphones filaires multi-appartements ou individuels, avec câblage encastré.", icon: 'M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 012 2.18 2 2 0 014 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z' },
