@@ -34,6 +34,8 @@ nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bot
 .nbadge{display:flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:#16a34a;background:rgba(22,163,74,.06);border:1px solid rgba(22,163,74,.12);padding:5px 13px;border-radius:20px}
 .ndot{width:5px;height:5px;background:#22c55e;border-radius:50%;animation:ndp 2s ease-in-out infinite}
 @keyframes ndp{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+.nbadge-off{color:#9ca3af;background:rgba(156,163,175,.06);border-color:rgba(156,163,175,.12)}
+.ndot-off{background:#9ca3af;animation:none}
 .ncta{background:var(--navy);color:#fff;font-family:var(--font-syne),'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 22px;border-radius:20px;text-decoration:none;transition:all .3s;display:inline-block;will-change:transform}
 .ncta:hover{background:var(--gold);box-shadow:0 6px 20px rgba(200,146,30,.2)}
 /* LOGO */

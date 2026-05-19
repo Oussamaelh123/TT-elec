@@ -38,15 +38,16 @@ export default function RealisationsClient() {
   const [active, setActive] = useState('Tous')
   const [realisations, setRealisations] = useState<Realisation[]>([])
   const [loading, setLoading] = useState(true)
+  const [dispo, setDispo] = useState(true)
 
   useEffect(() => {
     async function load() {
-      const { data } = await supabase
-        .from('realisations')
-        .select('*')
-        .eq('publie', true)
-        .order('created_at', { ascending: false })
+      const [{ data }, { data: settingsData }] = await Promise.all([
+        supabase.from('realisations').select('*').eq('publie', true).order('created_at', { ascending: false }),
+        supabase.from('settings').select('valeur').eq('cle', 'disponible').single(),
+      ])
       setRealisations(data ?? [])
+      if (settingsData) setDispo(settingsData.valeur !== 'false')
       setLoading(false)
     }
     load()
@@ -79,7 +80,7 @@ export default function RealisationsClient() {
           <Link href="/#devis" className="nlink">Contact</Link>
         </div>
         <div className="nright">
-          <div className="nbadge"><span className="ndot" /> Disponible</div>
+          <div className={`nbadge${dispo ? '' : ' nbadge-off'}`}><span className={`ndot${dispo ? '' : ' ndot-off'}`} />{dispo ? ' Disponible' : ' Indisponible'}</div>
           <Link href="/#devis" className="ncta">✦ Devis gratuit</Link>
           <button className="nham" id="nham" aria-label="Menu"><span /><span /><span /></button>
         </div>

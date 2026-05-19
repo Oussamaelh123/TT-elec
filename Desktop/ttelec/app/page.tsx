@@ -23,9 +23,13 @@ const hasBA = (r: GalItem) => (r.media?.length ?? 0) >= 2 || (r.images?.length ?
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null)
   const [galReals, setGalReals] = useState<GalItem[]>([])
+  const [dispo, setDispo] = useState(true)
 
   useEffect(() => {
     supabase.from('realisations').select('id,titre,lieu,date_chantier,tags,media,images').eq('publie', true).order('created_at', { ascending: false }).limit(4).then(({ data }) => setGalReals(data ?? []))
+    supabase.from('settings').select('valeur').eq('cle', 'disponible').single().then(({ data }) => {
+      if (data) setDispo(data.valeur !== 'false')
+    })
   }, [])
 
   useEffect(() => {
@@ -300,7 +304,7 @@ export default function Home() {
           <a href="#devis" className="nlink">Contact</a>
         </div>
         <div className="nright">
-          <div className="nbadge"><span className="ndot" /> Disponible</div>
+          <div className={`nbadge${dispo ? '' : ' nbadge-off'}`}><span className={`ndot${dispo ? '' : ' ndot-off'}`} />{dispo ? ' Disponible' : ' Indisponible'}</div>
           <a href="#devis" className="ncta mag-btn">✦ Devis gratuit</a>
           <button className="nham" id="nham" aria-label="Menu">
             <span /><span /><span />
