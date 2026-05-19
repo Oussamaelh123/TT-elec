@@ -5,6 +5,12 @@ import PageEffects from '@/app/components/PageEffects'
 import LogoSVG from '@/app/components/LogoSVG'
 import { supabase } from '@/lib/supabase'
 
+type MediaItem = {
+  url: string
+  type: 'image' | 'video'
+  label?: string
+}
+
 type Realisation = {
   id: string
   titre: string
@@ -12,9 +18,19 @@ type Realisation = {
   categorie: string
   date_chantier: string
   tags: string[]
-  images: string[]
+  media: MediaItem[]
+  images: string[] // legacy fallback
   publie: boolean
 }
+
+const getFirstMedia = (r: Realisation): MediaItem | null => {
+  if (r.media?.length > 0) return r.media[0]
+  if (r.images?.length > 0) return { url: r.images[0], type: 'image' }
+  return null
+}
+
+const hasBeforeAfter = (r: Realisation): boolean =>
+  (r.media?.length ?? 0) >= 2 || (r.images?.length ?? 0) >= 2
 
 const categories = ['Tous', 'Tableau', 'Câblage', 'Éclairage', 'Domotique', 'Caméras', 'Conformité', 'Installation', 'Dépannage']
 
@@ -137,14 +153,17 @@ export default function RealisationsClient() {
             {filtered.map((r, i) => (
               <div key={r.id} className={`gc rv${i > 0 ? ` d${Math.min(i, 6)}` : ''}`}>
                 <div className="gv">
-                  <div className="gv-bg" style={r.images?.[0] ? { backgroundImage: `url(${r.images[0]})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                  {(() => { const m = getFirstMedia(r); return m?.type === 'video'
+                    ? <video src={m.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <div className="gv-bg" style={m ? { backgroundImage: `url(${m.url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                  })()}
                   <div className="gv-grid" />
                   <span className="gv-label">{r.titre} — {r.lieu}</span>
                   <div className="gv-line" />
                   <div className="gv-handle">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
                   </div>
-                  {r.images?.[0] && r.images?.[1] && (
+                  {hasBeforeAfter(r) && (
                     <div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div>
                   )}
                 </div>
