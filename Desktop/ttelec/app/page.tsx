@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import LogoSVG from '@/app/components/LogoSVG'
 import { supabase } from '@/lib/supabase'
+import DiagnosticTool from '@/app/components/DiagnosticTool'
 
 type GalItem = {
   id: string
@@ -612,29 +613,7 @@ export default function Home() {
 
       <section className="diag-sec" id="diagnostic">
         <div className="sh rv"><div><div className="ovl">Outil interactif</div><h2 className="stitle">Diagnostic <em>rapide</em></h2></div></div>
-        <div className="diag-wrap rv d1">
-          <div className="diag-head">
-            <div className="dhi"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg></div>
-            <div><h3>Diagnostic électrique en ligne</h3><p>Identifiez votre problème en 3 étapes</p></div>
-          </div>
-          <div className="diag-body">
-            <div className="diag-q">Quel problème rencontrez-vous ?</div>
-            <div className="diag-opts">
-              {[
-                { n: '1', t: 'Mon disjoncteur saute régulièrement', d: 'Coupures fréquentes, surcharge électrique possible' },
-                { n: '2', t: 'Certaines prises ne fonctionnent plus', d: 'Prise morte, câblage défaillant ou différentiel' },
-                { n: '3', t: 'Je veux rénover mon installation', d: 'Mise en conformité RGIE, modernisation complète' },
-                { n: '4', t: '⚡ Urgence — plus de courant', d: 'Panne totale, intervention immédiate requise' },
-              ].map(opt => (
-                <a key={opt.n} className="dopt" href={`https://wa.me/32465904372?text=${encodeURIComponent('Bonjour TT Elec 👋\n\nProblème rencontré : ' + opt.t)}`} target="_blank" rel="noopener noreferrer">
-                  <div className="doptn">{opt.n}</div>
-                  <div><div className="doptt">{opt.t}</div><div className="doptd">{opt.d}</div></div>
-                </a>
-              ))}
-            </div>
-          </div>
-          <div className="diag-foot"><span className="diag-step">Étape 1 / 3</span><div className="diag-bar"><div className="dbs on" /><div className="dbs" /><div className="dbs" /></div></div>
-        </div>
+        <DiagnosticTool />
       </section>
 
       <section className="dv-sec" id="devis">

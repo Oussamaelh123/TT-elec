@@ -317,6 +317,19 @@ section{padding:120px 6%}
 .diag-bar{display:flex;gap:4px}
 .dbs{width:26px;height:3px;background:var(--cream);border-radius:2px}
 .dbs.on{background:var(--gold)}
+.dopt.sel{border-color:var(--gold);background:rgba(200,146,30,.05)}
+.dopt.sel::before{transform:scaleY(1)}
+.dopt.sel .doptn{color:var(--gold)}
+.diag-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+.diag-next{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--navy);color:#fff;border:none;border-radius:50px;font-family:var(--font-syne),'Syne',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:background .2s}
+.diag-next:hover{background:var(--navy3)}
+.diag-next:disabled{opacity:.35;cursor:not-allowed}
+.diag-back{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;background:transparent;color:var(--soft);border:1px solid var(--border);border-radius:50px;font-family:var(--font-syne),'Syne',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.diag-back:hover{border-color:var(--navy);color:var(--navy)}
+.diag-input{width:100%;padding:13px 18px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-dm),'DM Sans',sans-serif;font-size:.88rem;color:var(--navy);background:var(--white);outline:none;transition:border-color .2s;margin-bottom:4px}
+.diag-input:focus{border-color:var(--gold)}
+.diag-finish{display:inline-flex;align-items:center;gap:9px;padding:12px 26px;background:#25d366;color:#fff;border-radius:50px;font-family:var(--font-syne),'Syne',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.3px;text-decoration:none;transition:background .2s}
+.diag-finish:hover{background:#1ebe5d}
 
 /* DEVIS */
 .dv-sec{background:var(--warm);border-top:1px solid var(--border)}
