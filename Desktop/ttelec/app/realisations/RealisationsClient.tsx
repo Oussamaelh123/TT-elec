@@ -109,6 +109,7 @@ export default function RealisationsClient() {
 
       {/* HERO */}
       <section className="real-hero">
+        <canvas id="real-particles" />
         <div className="real-hero-inner">
           <div className="real-bc">
             <Link href="/">Accueil</Link>

@@ -467,7 +467,7 @@ export default function Home() {
         <div className="gal-spotlight" id="gal-spotlight" />
         <div className="sh rv" style={{ maxWidth: '1200px', margin: '0 auto 52px', position: 'relative', zIndex: 2 }}>
           <div><div className="ovl" style={{ color: 'var(--gold2)' }}>Portfolio</div><h2 className="stitle stitle-wh">Avant <em>&amp; Après</em></h2></div>
-          <a href="#" className="sh-link" style={{ color: 'rgba(255,255,255,.25)' }}>Toutes les réalisations&nbsp;<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
+          <Link href="/realisations" className="sh-link" style={{ color: 'rgba(255,255,255,.25)' }}>Toutes les réalisations&nbsp;<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></Link>
         </div>
         <div className="gal-grid">
           <div className="gc feat rv">
