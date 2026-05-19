@@ -3,9 +3,29 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import LogoSVG from '@/app/components/LogoSVG'
+import { supabase } from '@/lib/supabase'
+
+type GalItem = {
+  id: string
+  titre: string
+  lieu: string
+  date_chantier: string
+  tags: string[]
+  media: { url: string; type: string; label?: string }[]
+  images: string[]
+}
+
+const fmtDate = (d: string) => d ? new Date(d).toLocaleDateString('fr-BE', { month: 'long', year: 'numeric' }) : ''
+const firstMedia = (r: GalItem) => r.media?.[0] ?? (r.images?.[0] ? { url: r.images[0], type: 'image' } : null)
+const hasBA = (r: GalItem) => (r.media?.length ?? 0) >= 2 || (r.images?.length ?? 0) >= 2
 
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null)
+  const [galReals, setGalReals] = useState<GalItem[]>([])
+
+  useEffect(() => {
+    supabase.from('realisations').select('id,titre,lieu,date_chantier,tags,media,images').eq('publie', true).order('created_at', { ascending: false }).limit(4).then(({ data }) => setGalReals(data ?? []))
+  }, [])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setActiveVideo(null) }
@@ -470,22 +490,31 @@ export default function Home() {
           <Link href="/realisations" className="sh-link" style={{ color: 'rgba(255,255,255,.25)' }}>Toutes les réalisations&nbsp;<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></Link>
         </div>
         <div className="gal-grid">
-          <div className="gc feat rv">
-            <div className="gv"><div className="gv-bg" /><div className="gv-grid" /><span className="gv-label">Tableau électrique — Ixelles</span><div className="gv-line" /><div className="gv-handle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg></div><div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div><span className="gnew">Récent</span></div>
-            <div className="gi"><div className="git">Remplacement tableau électrique complet</div><div className="gim">Ixelles, Bruxelles · Janvier 2025</div><div className="gchips"><span className="gchip">Tableau</span><span className="gchip">Résidentiel</span><span className="gchip">RGIE</span></div></div>
-          </div>
-          <div className="gc rv d1">
-            <div className="gv"><div className="gv-bg" /><div className="gv-grid" /><span className="gv-label">Câblage — Anderlecht</span><div className="gv-line" /><div className="gv-handle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg></div><div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div></div>
-            <div className="gi"><div className="git">Rénovation câblage appartement</div><div className="gim">Anderlecht · Février 2025</div><div className="gchips"><span className="gchip">Câblage</span><span className="gchip">Rénovation</span></div></div>
-          </div>
-          <div className="gc rv d2">
-            <div className="gv"><div className="gv-bg" /><div className="gv-grid" /><span className="gv-label">Éclairage — Etterbeek</span><div className="gv-line" /><div className="gv-handle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg></div><div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div></div>
-            <div className="gi"><div className="git">Installation éclairage LED</div><div className="gim">Etterbeek · Mars 2025</div><div className="gchips"><span className="gchip">Éclairage</span><span className="gchip">LED</span></div></div>
-          </div>
-          <div className="gc rv d3">
-            <div className="gv"><div className="gv-bg" /><div className="gv-grid" /><span className="gv-label">Domotique — Uccle</span><div className="gv-line" /><div className="gv-handle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg></div><div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div></div>
-            <div className="gi"><div className="git">Système domotique complet</div><div className="gim">Uccle · Avril 2025</div><div className="gchips"><span className="gchip">Domotique</span><span className="gchip">Smart home</span></div></div>
-          </div>
+          {galReals.map((r, i) => {
+            const m = firstMedia(r)
+            const cls = ['feat rv', 'rv d1', 'rv d2', 'rv d3'][i] ?? 'rv'
+            return (
+              <div key={r.id} className={`gc ${cls}`}>
+                <div className="gv">
+                  {m?.type === 'video'
+                    ? <video src={m.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <div className="gv-bg" style={m ? { backgroundImage: `url(${m.url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                  }
+                  <div className="gv-grid" />
+                  <span className="gv-label">{r.titre} — {r.lieu}</span>
+                  <div className="gv-line" />
+                  <div className="gv-handle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg></div>
+                  {hasBA(r) && <div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div>}
+                  {i === 0 && <span className="gnew">Récent</span>}
+                </div>
+                <div className="gi">
+                  <div className="git">{r.titre}</div>
+                  <div className="gim">{r.lieu} · {fmtDate(r.date_chantier)}</div>
+                  <div className="gchips">{r.tags?.map(t => <span key={t} className="gchip">{t}</span>)}</div>
+                </div>
+              </div>
+            )
+          })}
         </div>
         <div className="bot-strip rv">
           <div className="bsi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg></div>
@@ -597,10 +626,10 @@ export default function Home() {
                 { n: '3', t: 'Je veux rénover mon installation', d: 'Mise en conformité RGIE, modernisation complète' },
                 { n: '4', t: '⚡ Urgence — plus de courant', d: 'Panne totale, intervention immédiate requise' },
               ].map(opt => (
-                <div key={opt.n} className="dopt" onClick={(e) => { const el = e.currentTarget; el.style.borderColor = 'var(--gold)'; window.open(`https://wa.me/32465904372?text=${encodeURIComponent('Bonjour TT Elec, j\'ai un problème: ' + opt.t)}`, '_blank') }}>
+                <a key={opt.n} className="dopt" href={`https://wa.me/32465904372?text=${encodeURIComponent('Bonjour TT Elec 👋\n\nProblème rencontré : ' + opt.t)}`} target="_blank" rel="noopener noreferrer">
                   <div className="doptn">{opt.n}</div>
                   <div><div className="doptt">{opt.t}</div><div className="doptd">{opt.d}</div></div>
-                </div>
+                </a>
               ))}
             </div>
           </div>
