@@ -82,9 +82,10 @@ export async function POST(req: NextRequest) {
 
       // Upload vers Supabase Storage (bucket: realisations)
       const storagePath = `chantiers/${filename}`
+      const blob = new Blob([buffer], { type: mimeType })
       const { error: uploadError } = await supabaseAdmin.storage
         .from('realisations')
-        .upload(storagePath, buffer, { contentType: mimeType, upsert: false })
+        .upload(storagePath, blob, { contentType: mimeType, upsert: false })
 
       if (uploadError) throw new Error(`Storage upload: ${uploadError.message}`)
 
