@@ -22,9 +22,9 @@ export async function getMediaUrl(mediaId: string): Promise<string> {
   return data.url
 }
 
-export async function downloadMedia(url: string): Promise<Buffer> {
+export async function downloadMedia(url: string): Promise<ArrayBuffer> {
   const res = await fetch(url, {
     headers: { 'Authorization': `Bearer ${process.env.WHATSAPP_TOKEN}` },
   })
-  return Buffer.from(await res.arrayBuffer())
+  return res.arrayBuffer()
 }

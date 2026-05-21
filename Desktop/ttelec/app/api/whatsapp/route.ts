@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
 
       // Upload vers Supabase Storage (bucket: realisations)
       const storagePath = `chantiers/${filename}`
-      const blob = new Blob([buffer], { type: mimeType })
+      const blob = new Blob([buffer as ArrayBuffer], { type: mimeType })
       const { error: uploadError } = await supabaseAdmin.storage
         .from('realisations')
         .upload(storagePath, blob, { contentType: mimeType, upsert: false })
