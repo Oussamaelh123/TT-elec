@@ -145,5 +145,6 @@ Retourne UNIQUEMENT un JSON valide sans markdown :
   })
 
   const raw = msg.content[0].type === 'text' ? msg.content[0].text : '{}'
-  return JSON.parse(raw) as { titre: string; lieu: string; categorie: string; description: string; tags: string[] }
+  const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
+  return JSON.parse(cleaned) as { titre: string; lieu: string; categorie: string; description: string; tags: string[] }
 }
