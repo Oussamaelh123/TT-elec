@@ -47,18 +47,22 @@ export async function POST(req: NextRequest) {
 
       // ── Liste des chantiers numérotés ────────────────────────────────────────
       if (txt === 'liste') {
-        const { data } = await supabaseAdmin
-          .from('realisations')
-          .select('titre, lieu')
-          .eq('publie', true)
-          .order('created_at', { ascending: false })
-          .limit(10)
-        if (!data?.length) {
-          await sendWhatsApp(from, '📋 Aucun chantier publié pour le moment.')
+        const [{ data: published }, { data: drafts }] = await Promise.all([
+          supabaseAdmin.from('realisations').select('titre, lieu').eq('publie', true).order('created_at', { ascending: false }).limit(10),
+          supabaseAdmin.from('realisations').select('titre, lieu').eq('publie', false).order('created_at', { ascending: false }).limit(5),
+        ])
+        let msg = ''
+        if (!published?.length) {
+          msg = '📋 Aucun chantier publié pour le moment.'
         } else {
-          const lines = data.map((r, i) => `${i + 1}. ${r.titre} — ${r.lieu}`).join('\n')
-          await sendWhatsApp(from, `📋 *Vos derniers chantiers :*\n\n${lines}\n\n_Tapez *masque [numéro]* ou *supprime [numéro]*_`)
+          const lines = published.map((r, i) => `${i + 1}. ${r.titre} — ${r.lieu}`).join('\n')
+          msg = `📋 *Chantiers publiés :*\n\n${lines}\n\n_Tapez *masque [numéro]* ou *supprime [numéro]*_`
         }
+        if (drafts?.length) {
+          const draftLines = drafts.map(r => `⏳ ${r.titre} — ${r.lieu}`).join('\n')
+          msg += `\n\n*En attente du "après" :*\n${draftLines}`
+        }
+        await sendWhatsApp(from, msg)
         return NextResponse.json({ ok: true })
       }
 
@@ -159,40 +163,66 @@ export async function POST(req: NextRequest) {
       const { data: { publicUrl } } = supabaseAdmin.storage.from('realisations').getPublicUrl(storagePath)
 
       const mediaItem = { url: publicUrl, type: isVideo ? 'video' : 'image', label }
+      type MediaRow = { label?: string }
 
-      // Si c'est une photo "après", chercher le chantier récent qui n'a que "avant"
+      // ── Photo AVANT → crée un brouillon (publie: false) ─────────────────────
+      if (label === 'avant') {
+        const chantier = caption
+          ? await extractChantier(caption)
+          : { titre: 'Nouveau chantier', lieu: 'Bruxelles', categorie: 'installation', description: '', tags: [] as string[] }
+
+        const { error } = await supabaseAdmin.from('realisations').insert({
+          titre: chantier.titre,
+          lieu: chantier.lieu,
+          categorie: chantier.categorie,
+          description: chantier.description,
+          tags: chantier.tags,
+          media: [mediaItem],
+          publie: false,
+        })
+        if (error) throw new Error(`Insert: ${error.message}`)
+
+        await sendWhatsApp(from,
+          `📷 *Photo avant reçue !*\n\n📌 *${chantier.titre}*\n📍 ${chantier.lieu}\n\nEnvoyez maintenant la photo *après* pour publier le chantier sur le site. 👇`
+        )
+        return NextResponse.json({ ok: true })
+      }
+
+      // ── Photo APRÈS → trouve le brouillon, publie le chantier ───────────────
       if (label === 'apres') {
-        const { data: recents } = await supabaseAdmin
+        const { data: drafts } = await supabaseAdmin
           .from('realisations')
           .select('id, titre, media')
-          .eq('publie', true)
+          .eq('publie', false)
           .order('created_at', { ascending: false })
           .limit(10)
 
-        type MediaRow = { label?: string }
-        const avantOnly = recents?.find(r => {
+        const avantDraft = drafts?.find(r => {
           const labels = ((r.media as MediaRow[]) ?? []).map(m => m.label)
           return labels.includes('avant') && !labels.includes('apres')
         })
 
-        if (avantOnly) {
-          const newMedia = [...((avantOnly.media as MediaRow[]) ?? []), mediaItem]
-          const { error: updateError } = await supabaseAdmin
-            .from('realisations')
-            .update({ media: newMedia })
-            .eq('id', avantOnly.id)
-
-          if (updateError) throw new Error(`Update: ${updateError.message}`)
-
+        if (!avantDraft) {
           await sendWhatsApp(from,
-            `✅ *Photo "après" ajoutée !*\n\n📌 *${avantOnly.titre}*\n\nLe slider avant/après est maintenant visible sur le site.\n_tt-elec.be/realisations_`
+            `❓ Aucun chantier "avant" en attente trouvé.\n\nEnvoyez d'abord la photo *avant* pour créer le chantier, puis envoyez l'*après*.`
           )
           return NextResponse.json({ ok: true })
         }
-        // Pas de chantier "avant" trouvé → créer quand même
+
+        const newMedia = [...((avantDraft.media as MediaRow[]) ?? []), mediaItem]
+        const { error } = await supabaseAdmin
+          .from('realisations')
+          .update({ media: newMedia, publie: true })
+          .eq('id', avantDraft.id)
+        if (error) throw new Error(`Update: ${error.message}`)
+
+        await sendWhatsApp(from,
+          `✅ *Chantier publié !*\n\n📌 *${avantDraft.titre}*\n\nLe slider avant/après est maintenant visible sur le site.\n_tt-elec.be/realisations_`
+        )
+        return NextResponse.json({ ok: true })
       }
 
-      // Créer un nouveau chantier
+      // ── Pas de label → publie immédiatement ─────────────────────────────────
       const chantier = caption
         ? await extractChantier(caption)
         : { titre: 'Nouveau chantier', lieu: 'Bruxelles', categorie: 'installation', description: '', tags: [] as string[] }
@@ -206,11 +236,10 @@ export async function POST(req: NextRequest) {
         media: [mediaItem],
         publie: true,
       })
-
       if (insertError) throw new Error(`Insert: ${insertError.message}`)
 
       await sendWhatsApp(from,
-        `✅ *Ajouté au site !*\n\n📌 *${chantier.titre}*\n📍 ${chantier.lieu}\n🏷️ ${chantier.categorie}${label ? `\n🔖 Label : ${label}` : ''}\n\n_Visible sur tt-elec.be/realisations_`
+        `✅ *Ajouté au site !*\n\n📌 *${chantier.titre}*\n📍 ${chantier.lieu}\n🏷️ ${chantier.categorie}\n\n_Visible sur tt-elec.be/realisations_`
       )
     }
   } catch (err) {
