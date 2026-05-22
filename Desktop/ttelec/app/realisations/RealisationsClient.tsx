@@ -60,7 +60,7 @@ export default function RealisationsClient() {
         document.querySelectorAll('.rv').forEach(el => el.classList.add('on'))
       }, 100)
     }
-  }, [loading, filtered])
+  }, [loading, realisations])
 
   const filtered = active === 'Tous'
     ? realisations
