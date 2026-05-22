@@ -196,28 +196,26 @@ export default function RealisationsClient() {
                 <div key={r.id} className={`gc rv${i > 0 ? ` d${Math.min(i, 6)}` : ''}`}>
                   <div className="gv">
                     {slider ? (
-                      <BeforeAfterSlider media={media} />
-                    ) : first?.type === 'video' ? (
-                      <video src={first.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <BeforeAfterSlider media={media} onOpen={() => openLightbox(r)} />
                     ) : (
-                      <div className="gv-bg" style={first ? { backgroundImage: `url("${first.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
-                    )}
-                    <div className="gv-grid" />
-                    {!slider && <span className="gv-label">{r.titre} — {r.lieu}</span>}
-                    {!slider && <div className="gv-line" />}
-                    {!slider && (
-                      <div className="gv-handle">
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
+                      <div
+                        style={{ position: 'absolute', inset: 0, cursor: media.length > 0 ? 'zoom-in' : 'default' }}
+                        onClick={() => openLightbox(r)}
+                      >
+                        {first?.type === 'video' ? (
+                          <video src={first.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                          <div className="gv-bg" style={first ? { backgroundImage: `url("${first.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                        )}
                       </div>
                     )}
-                    {media.length > 0 && (
-                      <button
-                        className="gv-expand"
-                        onClick={e => { e.stopPropagation(); openLightbox(r) }}
-                        aria-label="Agrandir"
-                      >
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" /></svg>
-                      </button>
+                    <div className="gv-grid" style={{ pointerEvents: 'none' }} />
+                    {!slider && <span className="gv-label" style={{ pointerEvents: 'none' }}>{r.titre} — {r.lieu}</span>}
+                    {!slider && <div className="gv-line" style={{ pointerEvents: 'none' }} />}
+                    {!slider && (
+                      <div className="gv-handle" style={{ pointerEvents: 'none' }}>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
+                      </div>
                     )}
                   </div>
                   <div className="gi">

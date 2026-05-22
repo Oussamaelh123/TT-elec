@@ -3,11 +3,12 @@ import { useState, useRef, useCallback } from 'react'
 
 type MediaItem = { url: string; type: string; label?: string }
 
-export default function BeforeAfterSlider({ media }: { media: MediaItem[] }) {
+export default function BeforeAfterSlider({ media, onOpen }: { media: MediaItem[]; onOpen?: () => void }) {
   const avant = media.find(m => m.label === 'avant') ?? media[0]
   const apres = media.find(m => m.label === 'apres') ?? media[1]
   const [pos, setPos] = useState(50)
   const ref = useRef<HTMLDivElement>(null)
+  const startX = useRef<number | null>(null)
   const dragging = useRef(false)
 
   const calc = useCallback((clientX: number) => {
@@ -17,12 +18,22 @@ export default function BeforeAfterSlider({ media }: { media: MediaItem[] }) {
   }, [])
 
   const onPD = (e: React.PointerEvent) => {
-    dragging.current = true
+    startX.current = e.clientX
+    dragging.current = false
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
-    calc(e.clientX)
   }
-  const onPM = (e: React.PointerEvent) => { if (dragging.current) calc(e.clientX) }
-  const onPU = () => { dragging.current = false }
+  const onPM = (e: React.PointerEvent) => {
+    if (startX.current === null) return
+    if (!dragging.current && Math.abs(e.clientX - startX.current) > 5) {
+      dragging.current = true
+    }
+    if (dragging.current) calc(e.clientX)
+  }
+  const onPU = () => {
+    if (!dragging.current) onOpen?.()
+    dragging.current = false
+    startX.current = null
+  }
 
   const med = (item: MediaItem) => item.type === 'video'
     ? <video key={item.url} src={item.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
