@@ -45,24 +45,59 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: true })
       }
 
+      // ── Helpers liste ────────────────────────────────────────────────────────
+      type ChantierRow = { id: string; titre: string; lieu: string; publie: boolean; media?: unknown }
+      type MRow = { label?: string }
+
+      const buildList = async () => {
+        const [{ data: active }, { data: inactive }] = await Promise.all([
+          supabaseAdmin.from('realisations').select('id, titre, lieu, publie').eq('publie', true).order('created_at', { ascending: false }).limit(8),
+          supabaseAdmin.from('realisations').select('id, titre, lieu, publie, media').eq('publie', false).order('created_at', { ascending: false }).limit(10),
+        ])
+        const drafts = (inactive ?? []).filter((r: ChantierRow) => {
+          const labels = ((r.media as MRow[]) ?? []).map(m => m.label)
+          return labels.includes('avant') && !labels.includes('apres')
+        })
+        const masked = (inactive ?? []).filter((r: ChantierRow) => {
+          const labels = ((r.media as MRow[]) ?? []).map(m => m.label)
+          return !(labels.includes('avant') && !labels.includes('apres'))
+        })
+        // combined = published + masked, in order — numéros 1..N
+        const combined: ChantierRow[] = [...(active ?? []), ...masked]
+        return { combined, drafts, publishedCount: (active ?? []).length }
+      }
+
       // ── Liste des chantiers numérotés ────────────────────────────────────────
       if (txt === 'liste') {
-        const [{ data: published }, { data: drafts }] = await Promise.all([
-          supabaseAdmin.from('realisations').select('titre, lieu').eq('publie', true).order('created_at', { ascending: false }).limit(10),
-          supabaseAdmin.from('realisations').select('titre, lieu').eq('publie', false).order('created_at', { ascending: false }).limit(5),
-        ])
+        const { combined, drafts, publishedCount } = await buildList()
         let msg = ''
-        if (!published?.length) {
-          msg = '📋 Aucun chantier publié pour le moment.'
+        if (!combined.length && !drafts.length) {
+          msg = '📋 Aucun chantier pour le moment.'
         } else {
-          const lines = published.map((r, i) => `${i + 1}. ${r.titre} — ${r.lieu}`).join('\n')
-          msg = `📋 *Chantiers publiés :*\n\n${lines}\n\n_Tapez *masque [numéro]* ou *supprime [numéro]*_`
+          const lines = combined.map((r, i) => {
+            const icon = i < publishedCount ? '✅' : '🙈'
+            return `${i + 1}. ${icon} ${r.titre} — ${r.lieu}`
+          }).join('\n')
+          msg = `📋 *Vos chantiers :*\n\n${lines}\n\n_✅ publié · 🙈 masqué_\n_*masque [n°]* · *supprime [n°]* · *publier [n°]*_`
         }
-        if (drafts?.length) {
-          const draftLines = drafts.map(r => `⏳ ${r.titre} — ${r.lieu}`).join('\n')
+        if (drafts.length) {
+          const draftLines = (drafts as ChantierRow[]).map(r => `⏳ ${r.titre} — ${r.lieu}`).join('\n')
           msg += `\n\n*En attente du "après" :*\n${draftLines}`
         }
         await sendWhatsApp(from, msg)
+        return NextResponse.json({ ok: true })
+      }
+
+      // ── Annulation suppression (réponse NON) ────────────────────────────────
+      if (txt === 'non') {
+        const { data: pd } = await supabaseAdmin.from('settings').select('valeur').eq('cle', 'pending_delete').single()
+        if (!pd?.valeur) {
+          await sendWhatsApp(from, 'ℹ️ Aucune opération en attente.')
+          return NextResponse.json({ ok: true })
+        }
+        const pending = JSON.parse(pd.valeur) as { titre: string }
+        await supabaseAdmin.from('settings').delete().eq('cle', 'pending_delete')
+        await sendWhatsApp(from, `↩️ Annulé. *${pending.titre}* n'a pas été supprimé.`)
         return NextResponse.json({ ok: true })
       }
 
@@ -79,9 +114,31 @@ export async function POST(req: NextRequest) {
           await sendWhatsApp(from, '⏱️ Confirmation expirée (5 min). Recommencez avec *supprime [numéro]*.')
           return NextResponse.json({ ok: true })
         }
-        await supabaseAdmin.from('realisations').update({ publie: false }).eq('id', pending.id)
+        await supabaseAdmin.from('realisations').delete().eq('id', pending.id)
         await supabaseAdmin.from('settings').delete().eq('cle', 'pending_delete')
-        await sendWhatsApp(from, `🗑️ *${pending.titre}* supprimé du site.`)
+        await sendWhatsApp(from, `🗑️ *${pending.titre}* définitivement supprimé.`)
+        return NextResponse.json({ ok: true })
+      }
+
+      // ── Republier un chantier masqué ─────────────────────────────────────────
+      if (txt.startsWith('publier ')) {
+        const search = txt.replace('publier ', '').trim()
+        const { combined } = await buildList()
+        const num = parseInt(search)
+        const found = !isNaN(num) && num >= 1 && num <= combined.length
+          ? combined[num - 1]
+          : combined.find(r => r.titre.toLowerCase().includes(search)) ?? null
+
+        if (!found) {
+          await sendWhatsApp(from, `❌ Chantier introuvable. Tapez *liste* pour voir les numéros.`)
+          return NextResponse.json({ ok: true })
+        }
+        if (found.publie) {
+          await sendWhatsApp(from, `ℹ️ *${found.titre}* est déjà publié.`)
+          return NextResponse.json({ ok: true })
+        }
+        await supabaseAdmin.from('realisations').update({ publie: true }).eq('id', found.id)
+        await sendWhatsApp(from, `✅ *${found.titre}* remis en ligne sur le site.`)
         return NextResponse.json({ ok: true })
       }
 
@@ -89,29 +146,12 @@ export async function POST(req: NextRequest) {
       if (txt.startsWith('supprime ') || txt.startsWith('masque ')) {
         const action = txt.startsWith('supprime') ? 'supprime' : 'masque'
         const search = txt.replace(action + ' ', '').trim()
-
-        let found: { id: string; titre: string } | null = null
+        const { combined } = await buildList()
 
         const num = parseInt(search)
-        if (!isNaN(num) && num >= 1 && num <= 10) {
-          // Recherche par numéro (position dans la liste)
-          const { data } = await supabaseAdmin
-            .from('realisations')
-            .select('id, titre')
-            .eq('publie', true)
-            .order('created_at', { ascending: false })
-            .range(num - 1, num - 1)
-          found = data?.[0] ?? null
-        } else {
-          // Recherche par texte (fallback)
-          const { data } = await supabaseAdmin
-            .from('realisations')
-            .select('id, titre')
-            .eq('publie', true)
-            .ilike('titre', `%${search}%`)
-            .limit(1)
-          found = data?.[0] ?? null
-        }
+        const found = !isNaN(num) && num >= 1 && num <= combined.length
+          ? combined[num - 1]
+          : combined.find(r => r.titre.toLowerCase().includes(search)) ?? null
 
         if (!found) {
           await sendWhatsApp(from, `❌ Chantier introuvable.\n\nTapez *liste* pour voir vos chantiers et leur numéro.`)
@@ -119,17 +159,21 @@ export async function POST(req: NextRequest) {
         }
 
         if (action === 'masque') {
-          await supabaseAdmin.from('realisations').update({ publie: false }).eq('id', found.id)
-          await sendWhatsApp(from, `✅ *${found.titre}* masqué du site.`)
+          if (!found.publie) {
+            await sendWhatsApp(from, `ℹ️ *${found.titre}* est déjà masqué.\nTapez *supprime ${num || search}* pour le supprimer définitivement, ou *publier ${num || search}* pour le remettre en ligne.`)
+          } else {
+            await supabaseAdmin.from('realisations').update({ publie: false }).eq('id', found.id)
+            await sendWhatsApp(from, `🙈 *${found.titre}* masqué du site.\n\n_Tapez *publier ${num || search}* pour le remettre en ligne._`)
+          }
         } else {
           const pending = { id: found.id, titre: found.titre, expires: Date.now() + 5 * 60 * 1000 }
           await supabaseAdmin.from('settings').upsert({ cle: 'pending_delete', valeur: JSON.stringify(pending) })
-          await sendWhatsApp(from, `⚠️ Supprimer *"${found.titre}"* ?\n\nRépondez *OUI* pour confirmer _(valable 5 minutes)_.`)
+          await sendWhatsApp(from, `⚠️ Supprimer définitivement *"${found.titre}"* ?\n\n✅ *OUI* pour confirmer\n❌ *NON* pour annuler\n\n_(expire dans 5 minutes)_`)
         }
         return NextResponse.json({ ok: true })
       }
 
-      await sendWhatsApp(from, '👋 Bonjour ! Envoyez une *photo ou vidéo* de votre chantier pour l\'ajouter au site.\n\nCommandes disponibles :\n• *dispo* — badge Disponible\n• *indispo* — badge Indisponible\n• *liste* — voir vos chantiers numérotés\n• *masque [numéro ou titre]* — masquer un chantier\n• *supprime [numéro ou titre]* — supprimer (confirmation requise)')
+      await sendWhatsApp(from, '👋 Bonjour ! Envoyez une *photo ou vidéo* de votre chantier pour l\'ajouter au site.\n\nCommandes disponibles :\n• *dispo* / *indispo* — statut disponibilité\n• *liste* — voir tous vos chantiers\n• *masque [n°]* — masquer un chantier\n• *publier [n°]* — remettre en ligne\n• *supprime [n°]* — supprimer définitivement')
       return NextResponse.json({ ok: true })
     }
 
