@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import PageEffects from '@/app/components/PageEffects'
 import LogoSVG from '@/app/components/LogoSVG'
+import BeforeAfterSlider from '@/app/components/BeforeAfterSlider'
+import Lightbox from '@/app/components/Lightbox'
 import { supabase } from '@/lib/supabase'
 
 type MediaItem = {
@@ -19,18 +21,25 @@ type Realisation = {
   date_chantier: string
   tags: string[]
   media: MediaItem[]
-  images: string[] // legacy fallback
+  images: string[]
   publie: boolean
 }
 
-const getFirstMedia = (r: Realisation): MediaItem | null => {
-  if (r.media?.length > 0) return r.media[0]
-  if (r.images?.length > 0) return { url: r.images[0], type: 'image' }
-  return null
+const getMedia = (r: Realisation): MediaItem[] => {
+  if (r.media?.length > 0) return r.media
+  if (r.images?.length > 0) return r.images.map(url => ({ url, type: 'image' as const }))
+  return []
 }
 
-const hasBeforeAfter = (r: Realisation): boolean =>
-  (r.media?.length ?? 0) >= 2 || (r.images?.length ?? 0) >= 2
+const getFirstMedia = (r: Realisation): MediaItem | null => {
+  const all = getMedia(r)
+  return all[0] ?? null
+}
+
+const hasSlider = (r: Realisation): boolean => {
+  const labels = r.media?.map(m => m.label) ?? []
+  return labels.includes('avant') && labels.includes('apres')
+}
 
 const categories = ['Tous', 'Tableau', 'Câblage', 'Éclairage', 'Domotique', 'Caméras', 'Conformité', 'Installation', 'Dépannage']
 
@@ -39,15 +48,14 @@ export default function RealisationsClient() {
   const [realisations, setRealisations] = useState<Realisation[]>([])
   const [loading, setLoading] = useState(true)
   const [dispo, setDispo] = useState(true)
+  const [lightbox, setLightbox] = useState<{ media: MediaItem[], index: number } | null>(null)
 
   useEffect(() => {
     async function load() {
-      const [{ data, error }, { data: settingsData }] = await Promise.all([
+      const [{ data }, { data: settingsData }] = await Promise.all([
         supabase.from('realisations').select('*').eq('publie', true).order('created_at', { ascending: false }),
         supabase.from('settings').select('valeur').eq('cle', 'disponible').single(),
       ])
-      console.log('REALISATIONS data:', data)
-      console.log('REALISATIONS error:', error)
       setRealisations(data ?? [])
       if (settingsData) setDispo(settingsData.valeur !== 'false')
       setLoading(false)
@@ -55,7 +63,6 @@ export default function RealisationsClient() {
     load()
   }, [])
 
-  // Déclenche les animations scroll après chargement dynamique
   useEffect(() => {
     if (!loading) {
       setTimeout(() => {
@@ -70,12 +77,30 @@ export default function RealisationsClient() {
 
   const formatDate = (d: string) => {
     if (!d) return ''
-    const date = new Date(d)
-    return date.toLocaleDateString('fr-BE', { month: 'long', year: 'numeric' })
+    return new Date(d).toLocaleDateString('fr-BE', { month: 'long', year: 'numeric' })
   }
+
+  const openLightbox = (r: Realisation, index = 0) => {
+    const media = getMedia(r)
+    if (media.length > 0) setLightbox({ media, index })
+  }
+
+  const closeLightbox = () => setLightbox(null)
+  const prevLightbox = () => setLightbox(prev => prev ? { ...prev, index: (prev.index - 1 + prev.media.length) % prev.media.length } : null)
+  const nextLightbox = () => setLightbox(prev => prev ? { ...prev, index: (prev.index + 1) % prev.media.length } : null)
 
   return (
     <>
+      {lightbox && (
+        <Lightbox
+          media={lightbox.media}
+          index={lightbox.index}
+          onClose={closeLightbox}
+          onPrev={prevLightbox}
+          onNext={nextLightbox}
+        />
+      )}
+
       <PageEffects />
 
       <nav id="nav">
@@ -163,32 +188,48 @@ export default function RealisationsClient() {
           <div className="real-empty"><p>Chargement des réalisations...</p></div>
         ) : (
           <div className="real-grid">
-            {filtered.map((r, i) => (
-              <div key={r.id} className={`gc rv${i > 0 ? ` d${Math.min(i, 6)}` : ''}`}>
-                <div className="gv">
-                  {(() => { const m = getFirstMedia(r); return m?.type === 'video'
-                    ? <video src={m.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <div className="gv-bg" style={m ? { backgroundImage: `url("${m.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
-                  })()}
-                  <div className="gv-grid" />
-                  <span className="gv-label">{r.titre} — {r.lieu}</span>
-                  <div className="gv-line" />
-                  <div className="gv-handle">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
+            {filtered.map((r, i) => {
+              const media = getMedia(r)
+              const first = getFirstMedia(r)
+              const slider = hasSlider(r)
+              return (
+                <div key={r.id} className={`gc rv${i > 0 ? ` d${Math.min(i, 6)}` : ''}`}>
+                  <div className="gv">
+                    {slider ? (
+                      <BeforeAfterSlider media={media} />
+                    ) : first?.type === 'video' ? (
+                      <video src={first.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <div className="gv-bg" style={first ? { backgroundImage: `url("${first.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                    )}
+                    <div className="gv-grid" />
+                    {!slider && <span className="gv-label">{r.titre} — {r.lieu}</span>}
+                    {!slider && <div className="gv-line" />}
+                    {!slider && (
+                      <div className="gv-handle">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
+                      </div>
+                    )}
+                    {media.length > 0 && (
+                      <button
+                        className="gv-expand"
+                        onClick={e => { e.stopPropagation(); openLightbox(r) }}
+                        aria-label="Agrandir"
+                      >
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" /></svg>
+                      </button>
+                    )}
                   </div>
-                  {hasBeforeAfter(r) && (
-                    <div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div>
-                  )}
-                </div>
-                <div className="gi">
-                  <div className="git">{r.titre}</div>
-                  <div className="gim">{r.lieu} · {formatDate(r.date_chantier)}</div>
-                  <div className="gchips">
-                    {r.tags?.map(t => <span key={t} className="gchip">{t}</span>)}
+                  <div className="gi">
+                    <div className="git">{r.titre}</div>
+                    <div className="gim">{r.lieu} · {formatDate(r.date_chantier)}</div>
+                    <div className="gchips">
+                      {r.tags?.map(t => <span key={t} className="gchip">{t}</span>)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
 

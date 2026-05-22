@@ -5,6 +5,10 @@ import Link from 'next/link'
 import LogoSVG from '@/app/components/LogoSVG'
 import { supabase } from '@/lib/supabase'
 import DiagnosticTool from '@/app/components/DiagnosticTool'
+import BeforeAfterSlider from '@/app/components/BeforeAfterSlider'
+import Lightbox from '@/app/components/Lightbox'
+
+type MediaItem = { url: string; type: string; label?: string }
 
 type GalItem = {
   id: string
@@ -12,18 +16,27 @@ type GalItem = {
   lieu: string
   date_chantier: string
   tags: string[]
-  media: { url: string; type: string; label?: string }[]
+  media: MediaItem[]
   images: string[]
 }
 
 const fmtDate = (d: string) => d ? new Date(d).toLocaleDateString('fr-BE', { month: 'long', year: 'numeric' }) : ''
-const firstMedia = (r: GalItem) => r.media?.[0] ?? (r.images?.[0] ? { url: r.images[0], type: 'image' } : null)
-const hasBA = (r: GalItem) => (r.media?.length ?? 0) >= 2 || (r.images?.length ?? 0) >= 2
+const getGalMedia = (r: GalItem): MediaItem[] => {
+  if (r.media?.length > 0) return r.media
+  if (r.images?.length > 0) return r.images.map(url => ({ url, type: 'image' }))
+  return []
+}
+const firstMedia = (r: GalItem) => getGalMedia(r)[0] ?? null
+const hasSliderBA = (r: GalItem) => {
+  const labels = r.media?.map(m => m.label) ?? []
+  return labels.includes('avant') && labels.includes('apres')
+}
 
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null)
   const [galReals, setGalReals] = useState<GalItem[]>([])
   const [dispo, setDispo] = useState(true)
+  const [galLightbox, setGalLightbox] = useState<{ media: MediaItem[], index: number } | null>(null)
 
   useEffect(() => {
     supabase.from('realisations').select('id,titre,lieu,date_chantier,tags,media,images').eq('publie', true).order('created_at', { ascending: false }).limit(4).then(({ data }) => setGalReals(data ?? []))
@@ -42,6 +55,14 @@ export default function Home() {
     document.body.style.overflow = activeVideo ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [activeVideo])
+
+  const openGalLightbox = (r: GalItem, index = 0) => {
+    const media = getGalMedia(r)
+    if (media.length > 0) setGalLightbox({ media, index })
+  }
+  const closeGalLightbox = () => setGalLightbox(null)
+  const prevGalLightbox = () => setGalLightbox(prev => prev ? { ...prev, index: (prev.index - 1 + prev.media.length) % prev.media.length } : null)
+  const nextGalLightbox = () => setGalLightbox(prev => prev ? { ...prev, index: (prev.index + 1) % prev.media.length } : null)
 
   useEffect(() => {
     /* CURSOR */
@@ -272,6 +293,16 @@ export default function Home() {
 
   return (
     <>
+      {galLightbox && (
+        <Lightbox
+          media={galLightbox.media}
+          index={galLightbox.index}
+          onClose={closeGalLightbox}
+          onPrev={prevGalLightbox}
+          onNext={nextGalLightbox}
+        />
+      )}
+
       {activeVideo && (
         <div className="tk-modal" onClick={() => setActiveVideo(null)}>
           <div className="tk-modal-inner" onClick={e => e.stopPropagation()}>
@@ -496,20 +527,37 @@ export default function Home() {
         </div>
         <div className="gal-grid">
           {galReals.map((r, i) => {
+            const media = getGalMedia(r)
             const m = firstMedia(r)
+            const slider = hasSliderBA(r)
             const cls = ['feat rv', 'rv d1', 'rv d2', 'rv d3'][i] ?? 'rv'
             return (
               <div key={r.id} className={`gc ${cls}`}>
                 <div className="gv">
-                  {m?.type === 'video'
-                    ? <video src={m.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <div className="gv-bg" style={m ? { backgroundImage: `url(${m.url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
-                  }
+                  {slider ? (
+                    <BeforeAfterSlider media={media} />
+                  ) : m?.type === 'video' ? (
+                    <video src={m.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <div className="gv-bg" style={m ? { backgroundImage: `url("${m.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                  )}
                   <div className="gv-grid" />
-                  <span className="gv-label">{r.titre} — {r.lieu}</span>
-                  <div className="gv-line" />
-                  <div className="gv-handle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg></div>
-                  {hasBA(r) && <div className="gv-tags"><span className="gvt bef">Avant</span><span className="gvt aft">Après</span></div>}
+                  {!slider && <span className="gv-label">{r.titre} — {r.lieu}</span>}
+                  {!slider && <div className="gv-line" />}
+                  {!slider && (
+                    <div className="gv-handle">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
+                    </div>
+                  )}
+                  {media.length > 0 && (
+                    <button
+                      className="gv-expand"
+                      onClick={() => openGalLightbox(r)}
+                      aria-label="Agrandir"
+                    >
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" /></svg>
+                    </button>
+                  )}
                   {i === 0 && <span className="gnew">Récent</span>}
                 </div>
                 <div className="gi">
