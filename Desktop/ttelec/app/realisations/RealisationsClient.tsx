@@ -53,6 +53,15 @@ export default function RealisationsClient() {
     load()
   }, [])
 
+  // Déclenche les animations scroll après chargement dynamique
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        document.querySelectorAll('.rv').forEach(el => el.classList.add('on'))
+      }, 100)
+    }
+  }, [loading, filtered])
+
   const filtered = active === 'Tous'
     ? realisations
     : realisations.filter(r => r.categorie?.toLowerCase() === active.toLowerCase())
@@ -157,7 +166,7 @@ export default function RealisationsClient() {
                 <div className="gv">
                   {(() => { const m = getFirstMedia(r); return m?.type === 'video'
                     ? <video src={m.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <div className="gv-bg" style={m ? { backgroundImage: `url(${m.url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
+                    : <div className="gv-bg" style={m ? { backgroundImage: `url("${m.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
                   })()}
                   <div className="gv-grid" />
                   <span className="gv-label">{r.titre} — {r.lieu}</span>
