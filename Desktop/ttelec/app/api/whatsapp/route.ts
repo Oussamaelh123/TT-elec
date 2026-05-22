@@ -215,7 +215,7 @@ export async function POST(req: NextRequest) {
           ? await extractChantier(caption)
           : { titre: 'Nouveau chantier', lieu: 'Bruxelles', categorie: 'installation', description: '', tags: [] as string[] }
 
-        const { error } = await supabaseAdmin.from('realisations').insert({
+        const { data: inserted, error } = await supabaseAdmin.from('realisations').insert({
           titre: chantier.titre,
           lieu: chantier.lieu,
           categorie: chantier.categorie,
@@ -223,17 +223,54 @@ export async function POST(req: NextRequest) {
           tags: chantier.tags,
           media: [mediaItem],
           publie: false,
-        })
+        }).select('id').single()
         if (error) throw new Error(`Insert: ${error.message}`)
 
+        // Mémoriser qu'on attend le après (30 min)
+        if (inserted?.id) {
+          await supabaseAdmin.from('settings').upsert({
+            cle: 'pending_apres',
+            valeur: JSON.stringify({ draft_id: inserted.id, titre: chantier.titre, expires: Date.now() + 30 * 60 * 1000 }),
+          })
+        }
+
         await sendWhatsApp(from,
-          `📷 *Photo avant reçue !*\n\n📌 *${chantier.titre}*\n📍 ${chantier.lieu}\n\nEnvoyez maintenant la photo *après* pour publier le chantier sur le site. 👇`
+          `📷 *Photo avant reçue !*\n\n📌 *${chantier.titre}*\n📍 ${chantier.lieu}\n\nEnvoyez maintenant la photo *après* pour publier le chantier. Pas besoin d'écrire de description. 👇`
         )
         return NextResponse.json({ ok: true })
       }
 
-      // ── Photo APRÈS → trouve le brouillon, publie le chantier ───────────────
+      // ── Helper : attacher le après à un brouillon et le publier ─────────────
+      const attachApres = async (draftId: string, draftTitre: string, draftMedia: MediaRow[]) => {
+        const newMedia = [...draftMedia, { ...mediaItem, label: 'apres' }]
+        const { error } = await supabaseAdmin
+          .from('realisations')
+          .update({ media: newMedia, publie: true })
+          .eq('id', draftId)
+        if (error) throw new Error(`Update: ${error.message}`)
+        await supabaseAdmin.from('settings').delete().eq('cle', 'pending_apres')
+        await sendWhatsApp(from,
+          `✅ *Chantier publié !*\n\n📌 *${draftTitre}*\n\nLe slider avant/après est maintenant visible sur le site.\n_tt-elec.be/realisations_`
+        )
+      }
+
+      // ── Photo APRÈS (avec label explicite) ──────────────────────────────────
       if (label === 'apres') {
+        // Priorité : brouillon mémorisé via pending_apres
+        const { data: paData } = await supabaseAdmin.from('settings').select('valeur').eq('cle', 'pending_apres').single()
+        if (paData?.valeur) {
+          const pa = JSON.parse(paData.valeur) as { draft_id: string; titre: string; expires: number }
+          if (Date.now() <= pa.expires) {
+            const { data: draft } = await supabaseAdmin.from('realisations').select('id, titre, media').eq('id', pa.draft_id).single()
+            if (draft) {
+              await attachApres(draft.id, draft.titre, (draft.media as MediaRow[]) ?? [])
+              return NextResponse.json({ ok: true })
+            }
+          }
+          await supabaseAdmin.from('settings').delete().eq('cle', 'pending_apres')
+        }
+
+        // Fallback : chercher le brouillon "avant" le plus récent
         const { data: drafts } = await supabaseAdmin
           .from('realisations')
           .select('id, titre, media')
@@ -266,7 +303,21 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: true })
       }
 
-      // ── Pas de label → publie immédiatement ─────────────────────────────────
+      // ── Pas de label → vérifier si on attend un après ───────────────────────
+      const { data: paData } = await supabaseAdmin.from('settings').select('valeur').eq('cle', 'pending_apres').single()
+      if (paData?.valeur) {
+        const pa = JSON.parse(paData.valeur) as { draft_id: string; titre: string; expires: number }
+        if (Date.now() <= pa.expires) {
+          const { data: draft } = await supabaseAdmin.from('realisations').select('id, titre, media').eq('id', pa.draft_id).single()
+          if (draft) {
+            await attachApres(draft.id, draft.titre, (draft.media as MediaRow[]) ?? [])
+            return NextResponse.json({ ok: true })
+          }
+        }
+        await supabaseAdmin.from('settings').delete().eq('cle', 'pending_apres')
+      }
+
+      // ── Pas de label + pas de brouillon en attente → publie immédiatement ───
       const chantier = caption
         ? await extractChantier(caption)
         : { titre: 'Nouveau chantier', lieu: 'Bruxelles', categorie: 'installation', description: '', tags: [] as string[] }
