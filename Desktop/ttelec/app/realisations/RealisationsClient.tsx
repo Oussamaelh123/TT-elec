@@ -42,10 +42,12 @@ export default function RealisationsClient() {
 
   useEffect(() => {
     async function load() {
-      const [{ data }, { data: settingsData }] = await Promise.all([
+      const [{ data, error }, { data: settingsData }] = await Promise.all([
         supabase.from('realisations').select('*').eq('publie', true).order('created_at', { ascending: false }),
         supabase.from('settings').select('valeur').eq('cle', 'disponible').single(),
       ])
+      console.log('REALISATIONS data:', data)
+      console.log('REALISATIONS error:', error)
       setRealisations(data ?? [])
       if (settingsData) setDispo(settingsData.valeur !== 'false')
       setLoading(false)
