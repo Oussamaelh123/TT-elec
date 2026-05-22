@@ -91,13 +91,45 @@ export async function POST(req: NextRequest) {
 
       const { data: { publicUrl } } = supabaseAdmin.storage.from('realisations').getPublicUrl(storagePath)
 
-      // Extraire les infos du chantier via Claude
+      const mediaItem = { url: publicUrl, type: isVideo ? 'video' : 'image', label }
+
+      // Si c'est une photo "après", chercher le chantier récent qui n'a que "avant"
+      if (label === 'apres') {
+        const { data: recents } = await supabaseAdmin
+          .from('realisations')
+          .select('id, titre, media')
+          .eq('publie', true)
+          .order('created_at', { ascending: false })
+          .limit(10)
+
+        type MediaRow = { label?: string }
+        const avantOnly = recents?.find(r => {
+          const labels = ((r.media as MediaRow[]) ?? []).map(m => m.label)
+          return labels.includes('avant') && !labels.includes('apres')
+        })
+
+        if (avantOnly) {
+          const newMedia = [...((avantOnly.media as MediaRow[]) ?? []), mediaItem]
+          const { error: updateError } = await supabaseAdmin
+            .from('realisations')
+            .update({ media: newMedia })
+            .eq('id', avantOnly.id)
+
+          if (updateError) throw new Error(`Update: ${updateError.message}`)
+
+          await sendWhatsApp(from,
+            `✅ *Photo "après" ajoutée !*\n\n📌 *${avantOnly.titre}*\n\nLe slider avant/après est maintenant visible sur le site.\n_tt-elec.be/realisations_`
+          )
+          return NextResponse.json({ ok: true })
+        }
+        // Pas de chantier "avant" trouvé → créer quand même
+      }
+
+      // Créer un nouveau chantier
       const chantier = caption
         ? await extractChantier(caption)
         : { titre: 'Nouveau chantier', lieu: 'Bruxelles', categorie: 'installation', description: '', tags: [] as string[] }
 
-      // Insérer en base
-      const mediaItem = { url: publicUrl, type: isVideo ? 'video' : 'image', label }
       const { error: insertError } = await supabaseAdmin.from('realisations').insert({
         titre: chantier.titre,
         lieu: chantier.lieu,
