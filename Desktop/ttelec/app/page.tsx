@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase'
 import DiagnosticTool from '@/app/components/DiagnosticTool'
 import BeforeAfterSlider from '@/app/components/BeforeAfterSlider'
 import Lightbox from '@/app/components/Lightbox'
+import TikTokCard from '@/app/components/TikTokCard'
 
 type MediaItem = { url: string; type: string; label?: string }
 
@@ -669,30 +670,12 @@ export default function Home() {
             '7610946594627783969',
             '7609836996000894241',
           ].map((videoId, i) => (
-            <div key={videoId} className={`tkc rv${i > 0 ? ` d${i}` : ''}`}>
-              <iframe
-                src={`https://www.tiktok.com/embed/v2/${videoId}`}
-                className="tk-iframe"
-                allow="encrypted-media; fullscreen"
-                allowFullScreen
-              />
-              <div className="tk-click-overlay" onClick={() => setActiveVideo(videoId)}>
-                <div className="tk-expand-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                </div>
-              </div>
-              <div className="tk-overlay">
-                <a
-                  href={`https://www.tiktok.com/@tt.elec/video/${videoId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="tk-watch"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.76a8.18 8.18 0 0 0 4.84 1.55V6.85a4.86 4.86 0 0 1-1.07-.16z"/></svg>
-                  Voir sur TikTok
-                </a>
-              </div>
-            </div>
+            <TikTokCard
+              key={videoId}
+              videoId={videoId}
+              index={i}
+              onExpand={() => setActiveVideo(videoId)}
+            />
           ))}
         </div>
       </section>
