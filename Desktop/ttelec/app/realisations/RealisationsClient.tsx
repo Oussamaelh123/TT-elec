@@ -1,6 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import PageEffects from '@/app/components/PageEffects'
 import LogoSVG from '@/app/components/LogoSVG'
 import BeforeAfterSlider from '@/app/components/BeforeAfterSlider'
@@ -25,21 +26,22 @@ type Realisation = {
   publie: boolean
 }
 
+const PAGE_SIZE = 6
+
 const getMedia = (r: Realisation): MediaItem[] => {
   if (r.media?.length > 0) return r.media
   if (r.images?.length > 0) return r.images.map(url => ({ url, type: 'image' as const }))
   return []
 }
 
-const getFirstMedia = (r: Realisation): MediaItem | null => {
-  const all = getMedia(r)
-  return all[0] ?? null
-}
+const getFirstMedia = (r: Realisation): MediaItem | null => getMedia(r)[0] ?? null
 
 const hasSlider = (r: Realisation): boolean => {
   const labels = r.media?.map(m => m.label) ?? []
   return labels.includes('avant') && labels.includes('apres')
 }
+
+const isRemote = (url: string) => url.includes('supabase.co') || url.includes('cloudinary.com')
 
 const categories = ['Tous', 'Tableau', 'Câblage', 'Éclairage', 'Domotique', 'Caméras', 'Conformité', 'Installation', 'Dépannage']
 
@@ -47,29 +49,73 @@ export default function RealisationsClient() {
   const [active, setActive] = useState('Tous')
   const [realisations, setRealisations] = useState<Realisation[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
   const [dispo, setDispo] = useState(true)
   const [lightbox, setLightbox] = useState<{ media: MediaItem[], index: number } | null>(null)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const observerRef = useRef<IntersectionObserver | null>(null)
 
+  // Initial load
   useEffect(() => {
     async function load() {
       const [{ data }, { data: settingsData }] = await Promise.all([
-        supabase.from('realisations').select('*').eq('publie', true).order('created_at', { ascending: false }),
+        supabase
+          .from('realisations')
+          .select('*')
+          .eq('publie', true)
+          .order('created_at', { ascending: false })
+          .range(0, PAGE_SIZE - 1),
         supabase.from('settings').select('valeur').eq('cle', 'disponible').single(),
       ])
       setRealisations(data ?? [])
+      if ((data?.length ?? 0) < PAGE_SIZE) setHasMore(false)
       if (settingsData) setDispo(settingsData.valeur !== 'false')
       setLoading(false)
     }
     load()
   }, [])
 
-  useEffect(() => {
-    if (!loading) {
-      setTimeout(() => {
-        document.querySelectorAll('.rv').forEach(el => el.classList.add('on'))
-      }, 100)
+  const loadMore = useCallback(async () => {
+    if (loadingMore || !hasMore) return
+    setLoadingMore(true)
+    const { data } = await supabase
+      .from('realisations')
+      .select('*')
+      .eq('publie', true)
+      .order('created_at', { ascending: false })
+      .range(realisations.length, realisations.length + PAGE_SIZE - 1)
+    if (data) {
+      if (data.length < PAGE_SIZE) setHasMore(false)
+      setRealisations(prev => [...prev, ...data])
     }
-  }, [loading, realisations])
+    setLoadingMore(false)
+  }, [loadingMore, hasMore, realisations.length])
+
+  // Infinite scroll observer
+  useEffect(() => {
+    if (loading) return
+    observerRef.current?.disconnect()
+    if (!hasMore) return
+    observerRef.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) loadMore()
+    }, { rootMargin: '200px' })
+    if (sentinelRef.current) observerRef.current.observe(sentinelRef.current)
+    return () => observerRef.current?.disconnect()
+  }, [loading, hasMore, loadMore])
+
+  // Scroll reveal for dynamically loaded cards
+  useEffect(() => {
+    if (loading) return
+    const timer = setTimeout(() => {
+      const ro = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target) } }),
+        { threshold: .05, rootMargin: '0px 0px -20px 0px' }
+      )
+      document.querySelectorAll('.real-grid .rv').forEach(el => { if (!el.classList.contains('on')) ro.observe(el) })
+    }, 60)
+    return () => clearTimeout(timer)
+  }, [realisations, loading])
 
   const filtered = active === 'Tous'
     ? realisations
@@ -84,10 +130,14 @@ export default function RealisationsClient() {
     const media = getMedia(r)
     if (media.length > 0) setLightbox({ media, index })
   }
-
   const closeLightbox = () => setLightbox(null)
   const prevLightbox = () => setLightbox(prev => prev ? { ...prev, index: (prev.index - 1 + prev.media.length) % prev.media.length } : null)
   const nextLightbox = () => setLightbox(prev => prev ? { ...prev, index: (prev.index + 1) % prev.media.length } : null)
+
+  const handleCardEnter = (e: React.MouseEvent<HTMLDivElement>) =>
+    e.currentTarget.querySelectorAll('video').forEach(v => v.play().catch(() => {}))
+  const handleCardLeave = (e: React.MouseEvent<HTMLDivElement>) =>
+    e.currentTarget.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0 })
 
   return (
     <>
@@ -187,48 +237,88 @@ export default function RealisationsClient() {
         {loading ? (
           <div className="real-empty"><p>Chargement des réalisations...</p></div>
         ) : (
-          <div className="real-grid">
-            {filtered.map((r, i) => {
-              const media = getMedia(r)
-              const first = getFirstMedia(r)
-              const slider = hasSlider(r)
-              return (
-                <div key={r.id} className={`gc rv${i > 0 ? ` d${Math.min(i, 6)}` : ''}`}>
-                  <div className="gv">
-                    {slider ? (
-                      <BeforeAfterSlider media={media} onOpen={() => openLightbox(r)} />
-                    ) : (
-                      <div
-                        style={{ position: 'absolute', inset: 0, cursor: media.length > 0 ? 'zoom-in' : 'default' }}
-                        onClick={() => openLightbox(r)}
-                      >
-                        {first?.type === 'video' ? (
-                          <video src={first.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                        ) : (
-                          <div className="gv-bg" style={first ? { backgroundImage: `url("${first.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
-                        )}
+          <>
+            <div className="real-grid">
+              {filtered.map((r, i) => {
+                const media = getMedia(r)
+                const first = getFirstMedia(r)
+                const slider = hasSlider(r)
+                const isPriority = i < 3
+                return (
+                  <div
+                    key={r.id}
+                    className={`gc rv${i > 0 ? ` d${Math.min(i, 6)}` : ''}`}
+                    onMouseEnter={handleCardEnter}
+                    onMouseLeave={handleCardLeave}
+                  >
+                    <div className="gv">
+                      {slider ? (
+                        <BeforeAfterSlider media={media} onOpen={() => openLightbox(r)} />
+                      ) : (
+                        <div
+                          style={{ position: 'absolute', inset: 0, cursor: media.length > 0 ? 'zoom-in' : 'default' }}
+                          onClick={() => openLightbox(r)}
+                        >
+                          {first?.type === 'video' ? (
+                            <video
+                              src={first.url}
+                              muted
+                              loop
+                              playsInline
+                              preload="metadata"
+                              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+                            />
+                          ) : first && isRemote(first.url) ? (
+                            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                              <Image
+                                fill
+                                src={first.url}
+                                alt={r.titre}
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                style={{ objectFit: 'cover' }}
+                                quality={85}
+                                priority={isPriority}
+                                loading={isPriority ? undefined : 'lazy'}
+                              />
+                            </div>
+                          ) : (
+                            <div
+                              className="gv-bg"
+                              style={first ? { backgroundImage: `url("${first.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
+                            />
+                          )}
+                        </div>
+                      )}
+                      <div className="gv-grid" style={{ pointerEvents: 'none' }} />
+                      {!slider && <span className="gv-label" style={{ pointerEvents: 'none' }}>{r.titre} — {r.lieu}</span>}
+                      {!slider && <div className="gv-line" style={{ pointerEvents: 'none' }} />}
+                      {!slider && (
+                        <div className="gv-handle" style={{ pointerEvents: 'none' }}>
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
+                        </div>
+                      )}
+                    </div>
+                    <div className="gi">
+                      <div className="git">{r.titre}</div>
+                      <div className="gim">{r.lieu} · {formatDate(r.date_chantier)}</div>
+                      <div className="gchips">
+                        {r.tags?.map(t => <span key={t} className="gchip">{t}</span>)}
                       </div>
-                    )}
-                    <div className="gv-grid" style={{ pointerEvents: 'none' }} />
-                    {!slider && <span className="gv-label" style={{ pointerEvents: 'none' }}>{r.titre} — {r.lieu}</span>}
-                    {!slider && <div className="gv-line" style={{ pointerEvents: 'none' }} />}
-                    {!slider && (
-                      <div className="gv-handle" style={{ pointerEvents: 'none' }}>
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12H3M15 6l6 6-6 6M9 6l-6 6 6 6" /></svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="gi">
-                    <div className="git">{r.titre}</div>
-                    <div className="gim">{r.lieu} · {formatDate(r.date_chantier)}</div>
-                    <div className="gchips">
-                      {r.tags?.map(t => <span key={t} className="gchip">{t}</span>)}
                     </div>
                   </div>
-                </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
+
+            {/* Sentinel infinite scroll */}
+            {hasMore && <div ref={sentinelRef} style={{ height: 1 }} />}
+
+            {loadingMore && (
+              <div className="real-loading-more">
+                <div className="real-spinner" />
+              </div>
+            )}
+          </>
         )}
 
         {!loading && filtered.length === 0 && (

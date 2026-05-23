@@ -1,5 +1,6 @@
 'use client'
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, memo } from 'react'
+import Image from 'next/image'
 
 type MediaItem = { url: string; type: string; label?: string }
 
@@ -11,7 +12,7 @@ interface LightboxProps {
   onNext: () => void
 }
 
-export default function Lightbox({ media, index, onClose, onPrev, onNext }: LightboxProps) {
+function Lightbox({ media, index, onClose, onPrev, onNext }: LightboxProps) {
   const item = media[index]
 
   useEffect(() => {
@@ -33,6 +34,8 @@ export default function Lightbox({ media, index, onClose, onPrev, onNext }: Ligh
 
   if (!item) return null
 
+  const isSupabase = item.url.includes('supabase.co') || item.url.includes('cloudinary.com')
+
   return (
     <div className="lb-overlay" onClick={onClose}>
       <button className="lb-close" onClick={onClose} aria-label="Fermer">
@@ -46,10 +49,22 @@ export default function Lightbox({ media, index, onClose, onPrev, onNext }: Ligh
       )}
 
       <div className="lb-inner" onClick={e => e.stopPropagation()}>
-        {item.type === 'video'
-          ? <video key={item.url} src={item.url} controls autoPlay className="lb-media" />
-          : <img src={item.url} alt="" className="lb-media" />
-        }
+        {item.type === 'video' ? (
+          <video key={item.url} src={item.url} controls autoPlay className="lb-media" />
+        ) : isSupabase ? (
+          <div className="lb-img-wrap" onClick={e => e.stopPropagation()}>
+            <Image
+              src={item.url}
+              alt={item.label === 'avant' ? 'Avant' : item.label === 'apres' ? 'Après' : ''}
+              fill
+              quality={90}
+              style={{ objectFit: 'contain' }}
+              className="lb-media"
+            />
+          </div>
+        ) : (
+          <img src={item.url} alt="" className="lb-media" />
+        )}
       </div>
 
       {item.label && (
@@ -73,3 +88,5 @@ export default function Lightbox({ media, index, onClose, onPrev, onNext }: Ligh
     </div>
   )
 }
+
+export default memo(Lightbox)

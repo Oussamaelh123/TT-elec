@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import LogoSVG from '@/app/components/LogoSVG'
 import { supabase } from '@/lib/supabase'
 import DiagnosticTool from '@/app/components/DiagnosticTool'
@@ -540,8 +541,14 @@ export default function Home() {
             const m = firstMedia(r)
             const slider = hasSliderBA(r)
             const cls = ['feat rv', 'rv d1', 'rv d2', 'rv d3'][i] ?? 'rv'
+            const isRemote = m && (m.url.includes('supabase.co') || m.url.includes('cloudinary.com'))
             return (
-              <div key={r.id} className={`gc ${cls}`}>
+              <div
+                key={r.id}
+                className={`gc ${cls}`}
+                onMouseEnter={e => e.currentTarget.querySelectorAll('video').forEach(v => v.play().catch(() => {}))}
+                onMouseLeave={e => e.currentTarget.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0 })}
+              >
                 <div className="gv">
                   {slider ? (
                     <BeforeAfterSlider media={media} onOpen={() => openGalLightbox(r)} />
@@ -551,7 +558,27 @@ export default function Home() {
                       onClick={() => openGalLightbox(r)}
                     >
                       {m?.type === 'video' ? (
-                        <video src={m.url} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <video
+                          src={m.url}
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+                        />
+                      ) : m && isRemote ? (
+                        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                          <Image
+                            fill
+                            src={m.url}
+                            alt={r.titre}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            style={{ objectFit: 'cover' }}
+                            quality={85}
+                            priority={i < 2}
+                            loading={i < 2 ? undefined : 'lazy'}
+                          />
+                        </div>
                       ) : (
                         <div className="gv-bg" style={m ? { backgroundImage: `url("${m.url}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}} />
                       )}
