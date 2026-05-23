@@ -39,11 +39,20 @@ export default function Home() {
   const [galLightbox, setGalLightbox] = useState<{ media: MediaItem[], index: number } | null>(null)
 
   useEffect(() => {
-    supabase.from('realisations').select('id,titre,lieu,date_chantier,tags,media,images').eq('publie', true).order('created_at', { ascending: false }).limit(4).then(({ data }) => setGalReals(data ?? []))
+    supabase.from('realisations').select('id,titre,lieu,date_chantier,tags,media,images').eq('publie', true).order('created_at', { ascending: false }).limit(5).then(({ data }) => setGalReals(data ?? []))
     supabase.from('settings').select('valeur').eq('cle', 'disponible').single().then(({ data }) => {
       if (data) setDispo(data.valeur !== 'false')
     })
   }, [])
+
+  useEffect(() => {
+    if (galReals.length === 0) return
+    const timer = setTimeout(() => {
+      const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target) } }), { threshold: .05, rootMargin: '0px 0px -20px 0px' })
+      document.querySelectorAll('.gal-grid .rv').forEach(el => { if (!el.classList.contains('on')) ro.observe(el) })
+    }, 60)
+    return () => clearTimeout(timer)
+  }, [galReals])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setActiveVideo(null) }
