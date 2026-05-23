@@ -56,9 +56,9 @@ export default function BeforeAfterSlider({ media, onOpen }: { media: MediaItem[
       onPointerUp={onPU}
       onPointerCancel={onPU}
     >
-      {med(apres)}
-      <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        {med(avant)}
+      {med(avant)}
+      <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 0 0 ${pos}%)` }}>
+        {med(apres)}
       </div>
       <div className="bas-line" style={{ left: `${pos}%` }} />
       <div className="bas-handle" style={{ left: `${pos}%` }}>
