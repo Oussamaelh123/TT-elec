@@ -317,7 +317,25 @@ export async function POST(req: NextRequest) {
         await supabaseAdmin.from('settings').delete().eq('cle', 'pending_apres')
       }
 
-      // ── Pas de label + pas de brouillon en attente → publie immédiatement ───
+      // Fallback : brouillon "avant" créé dans les 30 dernières minutes
+      const since30 = new Date(Date.now() - 30 * 60 * 1000).toISOString()
+      const { data: recentDrafts } = await supabaseAdmin
+        .from('realisations')
+        .select('id, titre, media')
+        .eq('publie', false)
+        .gte('created_at', since30)
+        .order('created_at', { ascending: false })
+        .limit(5)
+      const recentAvant = recentDrafts?.find(r => {
+        const labels = ((r.media as MediaRow[]) ?? []).map(m => m.label)
+        return labels.includes('avant') && !labels.includes('apres')
+      })
+      if (recentAvant) {
+        await attachApres(recentAvant.id, recentAvant.titre, (recentAvant.media as MediaRow[]) ?? [])
+        return NextResponse.json({ ok: true })
+      }
+
+      // ── Pas de label + pas de brouillon récent → publie immédiatement ────────
       const chantier = caption
         ? await extractChantier(caption)
         : { titre: 'Nouveau chantier', lieu: 'Bruxelles', categorie: 'installation', description: '', tags: [] as string[] }
