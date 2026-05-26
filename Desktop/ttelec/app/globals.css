@@ -534,6 +534,20 @@ nav.stuck .nham span{background:var(--navy)}
 .svcf-desc{font-size:.82rem;color:var(--mid);line-height:1.75;font-weight:300}
 @media(max-width:900px){.svcf-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:480px){.svcf-grid{grid-template-columns:1fr}}
+/* Services list page */
+.svc-list-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.svc-list-card{border:1px solid var(--border);border-radius:var(--r2);padding:28px 24px;background:var(--white);display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;transition:border-color .3s,transform .3s,box-shadow .3s;cursor:pointer}
+.svc-list-card:hover{border-color:var(--bgold);transform:translateY(-4px);box-shadow:0 8px 32px rgba(12,20,40,.08)}
+.svc-list-top{display:flex;align-items:center;justify-content:space-between}
+.svc-list-ico{width:42px;height:42px;background:var(--navy);border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.svc-list-ico svg{color:var(--gold)}
+.svc-list-tag{font-family:var(--font-syne),'Syne',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);background:rgba(200,146,30,.08);border:1px solid rgba(200,146,30,.15);padding:4px 10px;border-radius:20px;white-space:nowrap}
+.svc-list-title{font-family:var(--font-fraunces),'Fraunces',serif;font-size:1.2rem;font-weight:400;color:var(--navy);line-height:1.2}
+.svc-list-desc{font-size:.82rem;color:var(--mid);line-height:1.7;font-weight:300;flex:1}
+.svc-list-arrow{display:flex;align-items:center;gap:7px;font-family:var(--font-syne),'Syne',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-top:6px}
+.sh-sub{font-size:.9rem;color:var(--mid);line-height:1.65;font-weight:300;max-width:500px}
+@media(max-width:900px){.svc-list-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.svc-list-grid{grid-template-columns:1fr}}
 /* Why TT Elec */
 .svcw-sec{padding:90px 6%;background:var(--white)}
 .svcw-sec .sh{max-width:1200px;margin:0 auto 50px}
