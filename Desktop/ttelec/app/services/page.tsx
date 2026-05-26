@@ -61,16 +61,16 @@ const services = [
   {
     slug: 'alarme-incendie',
     title: 'Alarme & Incendie',
-    desc: 'Systèmes d'alarme anti-intrusion et détection incendie certifiés, filaires ou sans-fil.',
+    desc: "Systèmes d'alarme anti-intrusion et détection incendie certifiés, filaires ou sans-fil.",
     icon: 'M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z',
     tag: 'Sécurité',
   },
   {
     slug: 'parlophone-visiophone',
     title: 'Parlophone & Visiophone',
-    desc: 'Interphones filaires et visiophonie connectée pour contrôle d'accès intelligent.',
+    desc: "Interphones filaires et visiophonie connectée pour contrôle d'accès intelligent.",
     icon: 'M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 012 2.18 2 2 0 014 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z',
-    tag: 'Contrôle d'accès',
+    tag: "Contrôle d'accès",
   },
 ]
 
