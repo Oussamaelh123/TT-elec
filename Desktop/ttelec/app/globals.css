@@ -40,9 +40,10 @@ nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bot
 .ncta:hover{background:var(--gold);box-shadow:0 6px 20px rgba(200,146,30,.2)}
 /* LOGO */
 .logo-3d-wrap{display:inline-flex;align-items:center}
-.logo-img-nav{width:200px;height:90px;object-fit:cover;object-position:center 40%;display:block}
+.logo-img-nav{width:170px;height:58px;object-fit:cover;object-position:center top;display:block}
 .logo-img-footer{width:220px;height:auto;display:block;margin-bottom:14px}
 @media(max-width:768px){.nlinks{display:none}.nbadge{display:none}}
+@media(max-width:480px){.logo-img-nav{width:140px;height:48px}}
 
 /* HERO */
 .hero{min-height:100vh;padding:140px 6% 100px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
