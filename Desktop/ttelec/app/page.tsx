@@ -399,7 +399,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-inner" id="hero-inner">
-          <div className="hero-geo rv"><span />&nbsp;Bruxelles · Brabant · Belgique</div>
+          <div className="hero-geo rv"><span />&nbsp;Bruxelles &amp; alentours · Belgique</div>
           <h1 id="hero-h1" className="rv d1">
             <span className="bl">Électricité</span>
             <span className="it">maîtrisée.</span>
