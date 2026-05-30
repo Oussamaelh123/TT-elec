@@ -21,7 +21,7 @@ img{display:block;max-width:100%}
 body::after{content:'';position:fixed;inset:0;z-index:9998;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.032'/%3E%3C/svg%3E");pointer-events:none;mix-blend-mode:overlay;opacity:.55}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:8px 6%;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 6% 16px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
 nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:8px 6%}
 .nlogo{display:flex;align-items:center;gap:11px;text-decoration:none}
 .nmark{width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center}
@@ -40,7 +40,7 @@ nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bot
 .ncta:hover{background:var(--gold);box-shadow:0 6px 20px rgba(200,146,30,.2)}
 /* LOGO */
 .logo-3d-wrap{display:inline-flex;align-items:center}
-.logo-img-nav{height:120px;width:auto;display:block;margin-top:-20px}
+.logo-img-nav{height:120px;width:auto;display:block}
 .logo-img-footer{width:220px;height:auto;display:block;margin-bottom:14px}
 @media(max-width:768px){.nlinks{display:none}.nbadge{display:none}}
 @media(max-width:480px){.logo-img-nav{height:48px}}
