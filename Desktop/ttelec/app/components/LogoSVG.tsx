@@ -2,7 +2,7 @@
 export default function LogoSVG({ footer = false }: { footer?: boolean }) {
   return (
     <img
-      src="/images/logo-nobg.png"
+      src={footer ? '/images/logo-nobg.png' : '/images/logo-nav.png'}
       alt="TT Elec"
       className={footer ? 'logo-img-footer' : 'logo-img-nav'}
     />
