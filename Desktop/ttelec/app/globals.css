@@ -43,7 +43,7 @@ nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bot
 .logo-img-nav{height:120px;width:auto;display:block}
 .logo-img-footer{width:220px;height:auto;display:block;margin-bottom:14px}
 @media(max-width:768px){.nlinks{display:none}.nbadge{display:none}}
-@media(max-width:480px){.logo-img-nav{height:48px}}
+@media(max-width:480px){.logo-img-nav{height:80px}}
 
 /* HERO */
 .hero{min-height:100vh;padding:110px 6% 100px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
