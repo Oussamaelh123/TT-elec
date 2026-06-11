@@ -637,7 +637,7 @@ nav.stuck .nham span{background:var(--navy)}
 .van-cta:hover{background:var(--gold);box-shadow:0 8px 28px rgba(200,146,30,.22)}
 .van-right{position:relative;display:flex;align-items:center;justify-content:center}
 .van-circle{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,146,30,.08),transparent 65%);pointer-events:none}
-.van-img-wrap{position:relative;z-index:1;width:100%;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.van-img-wrap{position:relative;z-index:1;width:100%;background:var(--warm);transition:transform .6s cubic-bezier(.16,1,.3,1)}
 .van-sec:hover .van-img-wrap{transform:scale(1.03)}
 .van-sec:hover .van-img-wrap.rv:not(.on){transform:translateY(26px) scale(1.03)}
 .van-img{width:100%;height:auto;mix-blend-mode:screen;animation:vanFloat 6s ease-in-out infinite;display:block}
