@@ -142,6 +142,18 @@ export default function Home() {
     const onScrollP = () => { const y = window.scrollY; if (y < window.innerHeight) { heroInner.style.transform = `translateY(${y * .18}px)`; heroInner.style.opacity = String(Math.max(0, 1 - Math.max(0, y - 200) / (window.innerHeight * .9))) } }
     window.addEventListener('scroll', onScrollP, { passive: true })
 
+    /* VAN PARALLAX */
+    const vanWrap = document.getElementById('van-wrap')
+    const onScrollVan = () => {
+      if (!vanWrap) return
+      const rect = vanWrap.getBoundingClientRect()
+      const viewH = window.innerHeight
+      if (rect.bottom < 0 || rect.top > viewH) return
+      const progress = (viewH / 2 - rect.top - rect.height / 2) / viewH
+      vanWrap.style.transform = `translateY(${progress * -25}px)`
+    }
+    window.addEventListener('scroll', onScrollVan, { passive: true })
+
     /* H1 LETTER SPLIT */
     const h1 = document.getElementById('hero-h1')
     h1?.querySelectorAll('span').forEach((span, si) => {
@@ -282,6 +294,7 @@ export default function Home() {
       document.removeEventListener('mousemove', onMove)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('scroll', onScrollP)
+      window.removeEventListener('scroll', onScrollVan)
       cancelAnimationFrame(rafId)
       if (drawRaf) cancelAnimationFrame(drawRaf)
       ro.disconnect()
@@ -427,6 +440,48 @@ export default function Home() {
         <div className="strip-col rv d2"><div className="sn"><em>100%</em></div><div className="sl">Conforme RGIE</div></div>
         <div className="strip-col rv d3"><div className="sn">5<em>★</em></div><div className="sl">Satisfaction client</div></div>
       </div>
+
+      <div className="e-divider" />
+
+      <section className="van-sec">
+        <div className="van-inner">
+          <div className="van-left rv">
+            <div className="ovl">Notre flotte</div>
+            <h2 className="stitle van-title">Toujours <em>en route</em> pour vous</h2>
+            <p className="van-desc">Intervention rapide dans toute la région bruxelloise avec un véhicule équipé pour tous types de chantiers — du dépannage urgent à l&apos;installation complète.</p>
+            <div className="van-badges">
+              <div className="van-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Intervention 24h/7j
+              </div>
+              <div className="van-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Bruxelles &amp; alentours
+              </div>
+              <div className="van-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Véhicule équipé RGIE
+              </div>
+            </div>
+            <a href="#devis" className="van-cta mag-btn">Demander une intervention</a>
+          </div>
+          <div className="van-right" id="van-wrap">
+            <div className="van-circle" />
+            <div className="van-img-wrap rv d1">
+              <Image
+                src="/images/camionnette-tt-elec.jpeg"
+                alt="Camionnette TT Elec — Électricien à Bruxelles"
+                width={620}
+                height={380}
+                quality={90}
+                priority={false}
+                className="van-img"
+              />
+            </div>
+            <div className="van-road" />
+          </div>
+        </div>
+      </section>
 
       <div className="e-divider" />
 
