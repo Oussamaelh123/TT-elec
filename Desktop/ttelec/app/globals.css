@@ -23,7 +23,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;background:url("data:
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 6% 16px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
 nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:8px 6%}
-.nlogo{display:flex;align-items:center;gap:11px;text-decoration:none}
+.nlogo{display:flex;align-items:center;gap:11px;text-decoration:none;position:relative;top:-12px}
 .nmark{width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center}
 .nbrand{font-family:var(--font-syne),'Syne',sans-serif;font-size:.9rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--navy)}
 .nbrand em{color:var(--gold);font-style:normal}
@@ -40,7 +40,7 @@ nav.stuck{background:rgba(248,246,242,.92);backdrop-filter:blur(24px);border-bot
 .ncta:hover{background:var(--gold);box-shadow:0 6px 20px rgba(200,146,30,.2)}
 /* LOGO */
 .logo-3d-wrap{display:inline-flex;align-items:center}
-.logo-img-nav{height:120px;width:auto;display:block;transform:translateY(-8px)}
+.logo-img-nav{height:120px;width:auto;display:block}
 .logo-img-footer{width:220px;height:auto;display:block;margin-bottom:14px}
 @media(max-width:768px){.nlinks{display:none}.nbadge{display:none}}
 @media(max-width:480px){.logo-img-nav{height:80px}}
