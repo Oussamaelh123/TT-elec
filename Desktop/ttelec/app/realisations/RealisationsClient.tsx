@@ -269,7 +269,7 @@ export default function RealisationsClient() {
                               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
                             />
                           ) : first && isRemote(first.url) ? (
-                            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                            <div style={{ position: 'relative', width: '100%', height: '100%', background: '#13203a' }}>
                               <Image
                                 fill
                                 src={first.url}

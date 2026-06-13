@@ -76,19 +76,27 @@ export default function Home() {
   const nextGalLightbox = () => setGalLightbox(prev => prev ? { ...prev, index: (prev.index + 1) % prev.media.length } : null)
 
   useEffect(() => {
+    const skipHeavy = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let onMove: ((e: MouseEvent) => void) | null = null
+    let rafId: number | undefined
+    let onScrollP: (() => void) | null = null
+    let onScrollVan: (() => void) | null = null
+    let drawRaf: number | undefined
+
     /* CURSOR */
-    const cur = document.getElementById('cur')!
-    const curR = document.getElementById('curR')!
-    let mx = 0, my = 0, rx = 0, ry = 0
-    const onMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px' }
-    document.addEventListener('mousemove', onMove)
-    let rafId: number
-    const aR = () => { rx += (mx - rx) * .1; ry += (my - ry) * .1; curR.style.left = rx + 'px'; curR.style.top = ry + 'px'; rafId = requestAnimationFrame(aR) }
-    rafId = requestAnimationFrame(aR)
-    document.querySelectorAll('a,button,.bc,.tkc,.gc,.dopt,.spo,.mag-btn').forEach(el => {
-      el.addEventListener('mouseenter', () => { cur.style.width = '15px'; cur.style.height = '15px'; curR.style.width = '52px'; curR.style.height = '52px' })
-      el.addEventListener('mouseleave', () => { cur.style.width = '9px'; cur.style.height = '9px'; curR.style.width = '34px'; curR.style.height = '34px' })
-    })
+    if (!skipHeavy) {
+      const cur = document.getElementById('cur')!
+      const curR = document.getElementById('curR')!
+      let mx = 0, my = 0, rx = 0, ry = 0
+      onMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px' }
+      document.addEventListener('mousemove', onMove)
+      const aR = () => { rx += (mx - rx) * .1; ry += (my - ry) * .1; curR.style.left = rx + 'px'; curR.style.top = ry + 'px'; rafId = requestAnimationFrame(aR) }
+      rafId = requestAnimationFrame(aR)
+      document.querySelectorAll('a,button,.bc,.tkc,.gc,.dopt,.spo,.mag-btn').forEach(el => {
+        el.addEventListener('mouseenter', () => { cur.style.width = '15px'; cur.style.height = '15px'; curR.style.width = '52px'; curR.style.height = '52px' })
+        el.addEventListener('mouseleave', () => { cur.style.width = '9px'; cur.style.height = '9px'; curR.style.width = '34px'; curR.style.height = '34px' })
+      })
+    }
 
     /* NAV */
     const onScroll = () => document.getElementById('nav')?.classList.toggle('stuck', scrollY > 40)
@@ -99,13 +107,13 @@ export default function Home() {
     document.querySelectorAll('.rv').forEach(el => ro.observe(el))
 
     /* CANVAS SPARKS */
-    const canvas = document.getElementById('sparks-canvas') as HTMLCanvasElement
-    const ctx = canvas?.getContext('2d')
-    let W = 0, H = 0
-    const nodes: {x:number,y:number,vx:number,vy:number,r:number,a:number}[] = []
-    let arcs: {x1:number,y1:number,x2:number,y2:number,life:number}[] = []
-    let drawRaf: number
-    if (canvas && ctx) {
+    if (!skipHeavy) {
+      const canvas = document.getElementById('sparks-canvas') as HTMLCanvasElement
+      const ctx = canvas?.getContext('2d')
+      let W = 0, H = 0
+      const nodes: {x:number,y:number,vx:number,vy:number,r:number,a:number}[] = []
+      let arcs: {x1:number,y1:number,x2:number,y2:number,life:number}[] = []
+      if (canvas && ctx) {
       const initCanvas = () => {
         W = canvas.width = canvas.offsetWidth || Math.round(window.innerWidth * .75)
         H = canvas.height = canvas.offsetHeight || Math.round(window.innerHeight * .70)
@@ -127,32 +135,39 @@ export default function Home() {
         drawRaf = requestAnimationFrame(draw)
       }
       initCanvas()
+      }
     }
 
     /* HERO PARTICLES */
-    const wrap = document.getElementById('hero-particles')!
-    for (let i = 0; i < 18; i++) {
-      const p = document.createElement('div'); p.className = 'fp'
-      p.style.cssText = `left:${Math.random() * 100}%;bottom:${Math.random() * 40}%;--dur:${3 + Math.random() * 5}s;--del:${Math.random() * 6}s;width:${2 + Math.random() * 3}px;height:${2 + Math.random() * 3}px`
-      wrap?.appendChild(p)
+    if (!skipHeavy) {
+      const wrap = document.getElementById('hero-particles')!
+      for (let i = 0; i < 18; i++) {
+        const p = document.createElement('div'); p.className = 'fp'
+        p.style.cssText = `left:${Math.random() * 100}%;bottom:${Math.random() * 40}%;--dur:${3 + Math.random() * 5}s;--del:${Math.random() * 6}s;width:${2 + Math.random() * 3}px;height:${2 + Math.random() * 3}px`
+        wrap?.appendChild(p)
+      }
     }
 
     /* SCROLL PARALLAX */
-    const heroInner = document.getElementById('hero-inner')!
-    const onScrollP = () => { const y = window.scrollY; if (y < window.innerHeight) { heroInner.style.transform = `translateY(${y * .18}px)`; heroInner.style.opacity = String(Math.max(0, 1 - Math.max(0, y - 200) / (window.innerHeight * .9))) } }
-    window.addEventListener('scroll', onScrollP, { passive: true })
+    if (!skipHeavy) {
+      const heroInner = document.getElementById('hero-inner')!
+      onScrollP = () => { const y = window.scrollY; if (y < window.innerHeight) { heroInner.style.transform = `translateY(${y * .18}px)`; heroInner.style.opacity = String(Math.max(0, 1 - Math.max(0, y - 200) / (window.innerHeight * .9))) } }
+      window.addEventListener('scroll', onScrollP, { passive: true })
+    }
 
     /* VAN PARALLAX */
-    const vanWrap = document.getElementById('van-wrap')
-    const onScrollVan = () => {
-      if (!vanWrap) return
-      const rect = vanWrap.getBoundingClientRect()
-      const viewH = window.innerHeight
-      if (rect.bottom < 0 || rect.top > viewH) return
-      const progress = (viewH / 2 - rect.top - rect.height / 2) / viewH
-      vanWrap.style.transform = `translateY(${progress * -25}px)`
+    if (!skipHeavy) {
+      const vanWrap = document.getElementById('van-wrap')
+      onScrollVan = () => {
+        if (!vanWrap) return
+        const rect = vanWrap.getBoundingClientRect()
+        const viewH = window.innerHeight
+        if (rect.bottom < 0 || rect.top > viewH) return
+        const progress = (viewH / 2 - rect.top - rect.height / 2) / viewH
+        vanWrap.style.transform = `translateY(${progress * -25}px)`
+      }
+      window.addEventListener('scroll', onScrollVan, { passive: true })
     }
-    window.addEventListener('scroll', onScrollVan, { passive: true })
 
     /* H1 LETTER SPLIT */
     const h1 = document.getElementById('hero-h1')
@@ -162,47 +177,55 @@ export default function Home() {
     })
 
     /* 3D TILT */
-    document.querySelectorAll<HTMLElement>('.bc,.tkc,.gc').forEach(card => {
-      const onTilt = (e: MouseEvent) => {
-        const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5
-        const deg = card.classList.contains('bc') ? 10 : 12
-        card.style.transform = `perspective(800px) rotateY(${x * deg}deg) rotateX(${-y * deg}deg) translateY(-6px) scale(1.01)`
-        card.style.boxShadow = `${-x * 20}px ${y * 20 + 20}px 50px rgba(12,20,40,${card.classList.contains('gc') ? '.35' : '.1'})`
-        card.style.setProperty('--shx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%')
-        card.style.setProperty('--shy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%')
-      }
-      const onLeave = () => { card.style.transform = ''; card.style.boxShadow = '' }
-      card.addEventListener('mousemove', onTilt)
-      card.addEventListener('mouseleave', onLeave)
-    })
-
-    /* LOGO 3D TILT */
-    const logoWrp = document.querySelector<HTMLElement>('.logo-3d-wrap')
-    if (logoWrp) {
-      logoWrp.addEventListener('mousemove', (e: MouseEvent) => {
-        const r = logoWrp.getBoundingClientRect()
-        const x = (e.clientX - r.left) / r.width - .5
-        const y = (e.clientY - r.top) / r.height - .5
-        logoWrp.style.animation = 'none'
-        logoWrp.style.transform = `perspective(500px) rotateY(${x * 28}deg) rotateX(${-y * 28}deg) scale(1.06)`
-      })
-      logoWrp.addEventListener('mouseleave', () => {
-        logoWrp.style.animation = ''
-        logoWrp.style.transform = ''
+    if (!skipHeavy) {
+      document.querySelectorAll<HTMLElement>('.bc,.tkc,.gc').forEach(card => {
+        const onTilt = (e: MouseEvent) => {
+          const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5
+          const deg = card.classList.contains('bc') ? 10 : 12
+          card.style.transform = `perspective(800px) rotateY(${x * deg}deg) rotateX(${-y * deg}deg) translateY(-6px) scale(1.01)`
+          card.style.boxShadow = `${-x * 20}px ${y * 20 + 20}px 50px rgba(12,20,40,${card.classList.contains('gc') ? '.35' : '.1'})`
+          card.style.setProperty('--shx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%')
+          card.style.setProperty('--shy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%')
+        }
+        const onLeave = () => { card.style.transform = ''; card.style.boxShadow = '' }
+        card.addEventListener('mousemove', onTilt)
+        card.addEventListener('mouseleave', onLeave)
       })
     }
 
+    /* LOGO 3D TILT */
+    if (!skipHeavy) {
+      const logoWrp = document.querySelector<HTMLElement>('.logo-3d-wrap')
+      if (logoWrp) {
+        logoWrp.addEventListener('mousemove', (e: MouseEvent) => {
+          const r = logoWrp.getBoundingClientRect()
+          const x = (e.clientX - r.left) / r.width - .5
+          const y = (e.clientY - r.top) / r.height - .5
+          logoWrp.style.animation = 'none'
+          logoWrp.style.transform = `perspective(500px) rotateY(${x * 28}deg) rotateX(${-y * 28}deg) scale(1.06)`
+        })
+        logoWrp.addEventListener('mouseleave', () => {
+          logoWrp.style.animation = ''
+          logoWrp.style.transform = ''
+        })
+      }
+    }
+
     /* MAGNETIC BUTTONS */
-    document.querySelectorAll<HTMLElement>('.mag-btn').forEach(btn => {
-      btn.addEventListener('mousemove', e => { const r = btn.getBoundingClientRect(); btn.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .28}px,${(e.clientY - r.top - r.height / 2) * .28}px)` })
-      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; btn.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)'; setTimeout(() => btn.style.transition = '', 500) })
-    })
+    if (!skipHeavy) {
+      document.querySelectorAll<HTMLElement>('.mag-btn').forEach(btn => {
+        btn.addEventListener('mousemove', e => { const r = btn.getBoundingClientRect(); btn.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .28}px,${(e.clientY - r.top - r.height / 2) * .28}px)` })
+        btn.addEventListener('mouseleave', () => { btn.style.transform = ''; btn.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)'; setTimeout(() => btn.style.transition = '', 500) })
+      })
+    }
 
     /* SPOTLIGHT */
-    const galSec = document.querySelector<HTMLElement>('.gal-sec'), galSpot = document.getElementById('gal-spotlight')
-    if (galSec && galSpot) galSec.addEventListener('mousemove', e => { const r = galSec.getBoundingClientRect(); galSpot.style.setProperty('--sx', (e.clientX - r.left) + 'px'); galSpot.style.setProperty('--sy', (e.clientY - r.top) + 'px') })
-    const ctaSec = document.querySelector<HTMLElement>('.cta-sec'), ctaSpot = document.getElementById('cta-spotlight')
-    if (ctaSec && ctaSpot) ctaSec.addEventListener('mousemove', e => { const r = ctaSec.getBoundingClientRect(); ctaSpot.style.setProperty('--sx', (e.clientX - r.left) + 'px'); ctaSpot.style.setProperty('--sy', (e.clientY - r.top) + 'px') })
+    if (!skipHeavy) {
+      const galSec = document.querySelector<HTMLElement>('.gal-sec'), galSpot = document.getElementById('gal-spotlight')
+      if (galSec && galSpot) galSec.addEventListener('mousemove', e => { const r = galSec.getBoundingClientRect(); galSpot.style.setProperty('--sx', (e.clientX - r.left) + 'px'); galSpot.style.setProperty('--sy', (e.clientY - r.top) + 'px') })
+      const ctaSec = document.querySelector<HTMLElement>('.cta-sec'), ctaSpot = document.getElementById('cta-spotlight')
+      if (ctaSec && ctaSpot) ctaSec.addEventListener('mousemove', e => { const r = ctaSec.getBoundingClientRect(); ctaSpot.style.setProperty('--sx', (e.clientX - r.left) + 'px'); ctaSpot.style.setProperty('--sy', (e.clientY - r.top) + 'px') })
+    }
 
     /* COUNTERS */
     const animCount = (el: Element, target: number, pre: string, suf: string) => {
@@ -214,6 +237,7 @@ export default function Home() {
     const strip = document.querySelector('.strip'); if (strip) sro.observe(strip)
 
     /* GALLERY PARTICLES */
+    if (!skipHeavy) {
     ;(function () {
       const COLORS = ['#c8921e', '#dba94a', '#f2d07e', 'rgba(200,146,30,.4)', 'rgba(255,255,255,.12)', 'rgba(255,255,255,.08)']
       const gc = document.getElementById('gallery-particles') as HTMLCanvasElement
@@ -248,29 +272,32 @@ export default function Home() {
       const loopGc = () => { if (particles.length < MAX - 4) while (particles.length < MAX) particles.push(mkP()); particles = particles.filter(p => updateP(p)); gctx.clearRect(0, 0, gc.width, gc.height); particles.forEach(p => drawP(p)); requestAnimationFrame(loopGc) }
       resizeGc(); loopGc(); window.addEventListener('resize', resizeGc)
     })()
+    }
 
     /* DIRECTION AWARE CUBES */
-    const cubeMap: Record<string, {init: string, flip: string, back: string}> = {
-      left:   { init: 'rotateY(-12deg)', flip: 'rotateY(180deg)',  back: 'rotateY(180deg)' },
-      right:  { init: 'rotateY(12deg)',  flip: 'rotateY(-180deg)', back: 'rotateY(180deg)' },
-      top:    { init: 'rotateX(12deg)',  flip: 'rotateX(-180deg)', back: 'rotateX(-180deg)' },
-      bottom: { init: 'rotateX(-12deg)', flip: 'rotateX(180deg)', back: 'rotateX(180deg)' },
+    if (!skipHeavy) {
+      const cubeMap: Record<string, {init: string, flip: string, back: string}> = {
+        left:   { init: 'rotateY(-12deg)', flip: 'rotateY(180deg)',  back: 'rotateY(180deg)' },
+        right:  { init: 'rotateY(12deg)',  flip: 'rotateY(-180deg)', back: 'rotateY(180deg)' },
+        top:    { init: 'rotateX(12deg)',  flip: 'rotateX(-180deg)', back: 'rotateX(-180deg)' },
+        bottom: { init: 'rotateX(-12deg)', flip: 'rotateX(180deg)', back: 'rotateX(180deg)' },
+      }
+      document.querySelectorAll<HTMLElement>('.cw').forEach(wrap2 => {
+        const cube = wrap2.querySelector<HTMLElement>('.cube')!, back = wrap2.querySelector<HTMLElement>('.cb')!
+        let tid: ReturnType<typeof setTimeout> | null = null
+        const getDir = (e: MouseEvent) => { const r = wrap2.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, t = y / r.height, b = 1 - t, l = x / r.width, ri = 1 - l, m = Math.min(t, b, l, ri); return m === t ? 'top' : m === b ? 'bottom' : m === l ? 'left' : 'right' }
+        wrap2.addEventListener('mouseenter', (e: Event) => {
+          if (tid) { clearTimeout(tid); tid = null }
+          const t = cubeMap[getDir(e as MouseEvent)]
+          back.style.transform = t.back; cube.style.transition = 'none'; cube.style.transform = t.init
+          requestAnimationFrame(() => { cube.style.transition = 'transform .65s cubic-bezier(.16,1,.3,1)'; cube.style.transform = t.flip })
+        })
+        wrap2.addEventListener('mouseleave', () => {
+          cube.style.transition = 'transform .65s cubic-bezier(.16,1,.3,1)'; cube.style.transform = ''
+          tid = setTimeout(() => { back.style.transform = 'rotateY(180deg)'; tid = null }, 660)
+        })
+      })
     }
-    document.querySelectorAll<HTMLElement>('.cw').forEach(wrap2 => {
-      const cube = wrap2.querySelector<HTMLElement>('.cube')!, back = wrap2.querySelector<HTMLElement>('.cb')!
-      let tid: ReturnType<typeof setTimeout> | null = null
-      const getDir = (e: MouseEvent) => { const r = wrap2.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, t = y / r.height, b = 1 - t, l = x / r.width, ri = 1 - l, m = Math.min(t, b, l, ri); return m === t ? 'top' : m === b ? 'bottom' : m === l ? 'left' : 'right' }
-      wrap2.addEventListener('mouseenter', (e: Event) => {
-        if (tid) { clearTimeout(tid); tid = null }
-        const t = cubeMap[getDir(e as MouseEvent)]
-        back.style.transform = t.back; cube.style.transition = 'none'; cube.style.transform = t.init
-        requestAnimationFrame(() => { cube.style.transition = 'transform .65s cubic-bezier(.16,1,.3,1)'; cube.style.transform = t.flip })
-      })
-      wrap2.addEventListener('mouseleave', () => {
-        cube.style.transition = 'transform .65s cubic-bezier(.16,1,.3,1)'; cube.style.transform = ''
-        tid = setTimeout(() => { back.style.transform = 'rotateY(180deg)'; tid = null }, 660)
-      })
-    })
 
     /* HAMBURGER */
     const ham = document.getElementById('nham')
@@ -291,12 +318,12 @@ export default function Home() {
     })
 
     return () => {
-      document.removeEventListener('mousemove', onMove)
+      if (onMove) document.removeEventListener('mousemove', onMove)
       window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('scroll', onScrollP)
-      window.removeEventListener('scroll', onScrollVan)
-      cancelAnimationFrame(rafId)
-      if (drawRaf) cancelAnimationFrame(drawRaf)
+      if (onScrollP) window.removeEventListener('scroll', onScrollP)
+      if (onScrollVan) window.removeEventListener('scroll', onScrollVan)
+      if (rafId !== undefined) cancelAnimationFrame(rafId)
+      if (drawRaf !== undefined) cancelAnimationFrame(drawRaf)
       ro.disconnect()
       sro.disconnect()
     }

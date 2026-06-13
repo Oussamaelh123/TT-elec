@@ -65,7 +65,7 @@ function BeforeAfterSlider({ media, onOpen }: { media: MediaItem[]; onOpen?: () 
     }
     if (isSupabase(item.url)) {
       return (
-        <div key={item.url} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        <div key={item.url} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: '#13203a' }}>
           <Image
             fill
             src={item.url}
@@ -103,7 +103,7 @@ function BeforeAfterSlider({ media, onOpen }: { media: MediaItem[]; onOpen?: () 
     }
     if (isSupabase(item.url)) {
       return (
-        <div style={{ position: 'absolute', inset: 0 }}>
+        <div style={{ position: 'absolute', inset: 0, background: '#13203a' }}>
           <Image fill src={item.url} alt="" sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} quality={85} />
         </div>
       )

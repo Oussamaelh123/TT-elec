@@ -646,3 +646,12 @@ nav.stuck .nham span{background:var(--navy)}
 .van-road{position:absolute;bottom:0;left:10%;right:10%;height:1.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.3;z-index:0}
 @media(max-width:1024px){.van-inner{grid-template-columns:1fr}.van-right{order:-1}}
 @media(max-width:768px){.van-sec{padding:60px 5%}.van-img{animation-name:vanFloatMobile}}
+@media(max-width:768px){
+  body::after{display:none}
+  .hl1,.hl2,.hl3{animation:none}
+  .bc7-ring,.bc8-wave{animation:none;display:none}
+  .e-divider::after{animation:none}
+  .van-img{animation:none}
+  .strip-col::before,.bc-urgence-glow{animation:none}
+  nav.stuck{backdrop-filter:blur(8px)}
+}
