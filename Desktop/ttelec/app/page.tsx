@@ -297,6 +297,15 @@ export default function Home() {
           tid = setTimeout(() => { back.style.transform = 'rotateY(180deg)'; tid = null }, 660)
         })
       })
+    } else {
+      document.querySelectorAll<HTMLElement>('.cw').forEach(wrap2 => {
+        const cube = wrap2.querySelector<HTMLElement>('.cube')!
+        wrap2.addEventListener('click', () => {
+          const flipped = cube.style.transform === 'rotateY(180deg)'
+          cube.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)'
+          cube.style.transform = flipped ? '' : 'rotateY(180deg)'
+        })
+      })
     }
 
     /* HAMBURGER */
