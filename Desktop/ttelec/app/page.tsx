@@ -469,7 +469,7 @@ export default function Home() {
             <div className="van-circle" />
             <div className="van-img-wrap rv d1">
               <Image
-                src="/images/camionnette-tt-elec.jpeg"
+                src="/images/camionnette-tt-elec-nobg.webp"
                 alt="Camionnette TT Elec — Électricien à Bruxelles"
                 width={620}
                 height={380}
