@@ -248,8 +248,8 @@ section{padding:120px 6%}
 /* PROCESS CUBES */
 .proc-sec{background:var(--warm);border-top:1px solid var(--border)}
 .cube-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.cw{height:210px;perspective:900px;cursor:pointer}
-.cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.16,1,.3,1)}
+.cw{height:210px;perspective:900px;-webkit-perspective:900px;cursor:pointer}
+.cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .65s cubic-bezier(.16,1,.3,1)}
 .cf,.cb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;overflow:hidden}
 .cf{background:var(--navy);border:1px solid rgba(200,146,30,.13);display:flex;flex-direction:column;justify-content:flex-end;padding:26px 28px;position:relative}
 .cf::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 15%,rgba(200,146,30,.09),transparent 55%);pointer-events:none}
