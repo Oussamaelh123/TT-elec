@@ -119,21 +119,23 @@ export default function Home() {
         H = canvas.height = canvas.offsetHeight || Math.round(window.innerHeight * .70)
         if (W < 10 || H < 10) { requestAnimationFrame(initCanvas); return }
         nodes.length = 0
-        for (let i = 0; i < 80; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .7, vy: (Math.random() - .5) * .7, r: Math.random() * 2.2 + .8, a: Math.random() * .6 + .2 })
+        for (let i = 0; i < 65; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .7, vy: (Math.random() - .5) * .7, r: Math.random() * 2.2 + .8, a: Math.random() * .6 + .2 })
         draw()
       }
       const resize = () => { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight }
       window.addEventListener('resize', resize)
       const zz = (x1: number, y1: number, x2: number, y2: number, s: number, sp: number) => { ctx.beginPath(); ctx.moveTo(x1, y1); for (let i = 1; i < s; i++) { const t = i / s; ctx.lineTo(x1 + (x2 - x1) * t + (Math.random() - .5) * sp, y1 + (y2 - y1) * t + (Math.random() - .5) * sp) } ctx.lineTo(x2, y2) }
-      let tick = 0
+      let tick = 0, sparksPaused = false
       const draw = () => {
         ctx.clearRect(0, 0, W, H); tick++
         nodes.forEach(n => { n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > W) n.vx *= -1; if (n.y < 0 || n.y > H) n.vy *= -1; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(200,146,30,${n.a * .5})`; ctx.fill() })
-        for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) { const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx * dx + dy * dy); if (d < 240) { ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.strokeStyle = `rgba(200,146,30,${(1 - d / 240) * .18})`; ctx.lineWidth = .7; ctx.stroke() } }
+        for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) { const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx * dx + dy * dy); if (d < 200) { ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.strokeStyle = `rgba(200,146,30,${(1 - d / 200) * .18})`; ctx.lineWidth = .7; ctx.stroke() } }
         if (tick % 40 === 0 && Math.random() < .75) { const i = Math.floor(Math.random() * nodes.length), j = Math.floor(Math.random() * nodes.length); if (i !== j) arcs.push({ x1: nodes[i].x, y1: nodes[i].y, x2: nodes[j].x, y2: nodes[j].y, life: 1 }) }
         arcs = arcs.filter(f => { f.life -= .06; if (f.life <= 0) return false; ctx.save(); ctx.globalAlpha = f.life * .65; zz(f.x1, f.y1, f.x2, f.y2, 6, 22); ctx.strokeStyle = `rgba(242,208,126,${f.life * .8})`; ctx.lineWidth = 1; ctx.shadowColor = 'rgba(200,146,30,.6)'; ctx.shadowBlur = 6; ctx.stroke(); ctx.restore(); return true })
-        drawRaf = requestAnimationFrame(draw)
+        if (!sparksPaused) drawRaf = requestAnimationFrame(draw); else drawRaf = undefined
       }
+      const sparksIO = new IntersectionObserver(entries => { sparksPaused = !entries[0].isIntersecting; if (!sparksPaused && drawRaf === undefined) draw() }, { rootMargin: '100px' })
+      sparksIO.observe(canvas)
       initCanvas()
       }
     }
@@ -151,21 +153,16 @@ export default function Home() {
     /* SCROLL PARALLAX */
     if (!skipHeavy) {
       const heroInner = document.getElementById('hero-inner')!
-      onScrollP = () => { const y = window.scrollY; if (y < window.innerHeight) { heroInner.style.transform = `translateY(${y * .18}px)`; heroInner.style.opacity = String(Math.max(0, 1 - Math.max(0, y - 200) / (window.innerHeight * .9))) } }
+      let scrollPRaf: number | undefined
+      onScrollP = () => { if (scrollPRaf) return; scrollPRaf = requestAnimationFrame(() => { scrollPRaf = undefined; const y = window.scrollY; if (y < window.innerHeight) { heroInner.style.transform = `translateY(${y * .18}px)`; heroInner.style.opacity = String(Math.max(0, 1 - Math.max(0, y - 200) / (window.innerHeight * .9))) } }) }
       window.addEventListener('scroll', onScrollP, { passive: true })
     }
 
     /* VAN PARALLAX */
     if (!skipHeavy) {
       const vanWrap = document.getElementById('van-wrap')
-      onScrollVan = () => {
-        if (!vanWrap) return
-        const rect = vanWrap.getBoundingClientRect()
-        const viewH = window.innerHeight
-        if (rect.bottom < 0 || rect.top > viewH) return
-        const progress = (viewH / 2 - rect.top - rect.height / 2) / viewH
-        vanWrap.style.transform = `translateY(${progress * -25}px)`
-      }
+      let scrollVanRaf: number | undefined
+      onScrollVan = () => { if (scrollVanRaf) return; scrollVanRaf = requestAnimationFrame(() => { scrollVanRaf = undefined; if (!vanWrap) return; const rect = vanWrap.getBoundingClientRect(); const viewH = window.innerHeight; if (rect.bottom < 0 || rect.top > viewH) return; const progress = (viewH / 2 - rect.top - rect.height / 2) / viewH; vanWrap.style.transform = `translateY(${progress * -25}px)` }) }
       window.addEventListener('scroll', onScrollVan, { passive: true })
     }
 
@@ -179,15 +176,24 @@ export default function Home() {
     /* 3D TILT */
     if (!skipHeavy) {
       document.querySelectorAll<HTMLElement>('.bc,.tkc,.gc').forEach(card => {
+        let cachedRect: DOMRect | null = null, tiltRaf: number | undefined, lastEx = 0, lastEy = 0
+        card.addEventListener('mouseenter', () => { cachedRect = card.getBoundingClientRect() })
         const onTilt = (e: MouseEvent) => {
-          const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5
-          const deg = card.classList.contains('bc') ? 10 : 12
-          card.style.transform = `perspective(800px) rotateY(${x * deg}deg) rotateX(${-y * deg}deg) translateY(-6px) scale(1.01)`
-          card.style.boxShadow = `${-x * 20}px ${y * 20 + 20}px 50px rgba(12,20,40,${card.classList.contains('gc') ? '.35' : '.1'})`
-          card.style.setProperty('--shx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%')
-          card.style.setProperty('--shy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%')
+          lastEx = e.clientX; lastEy = e.clientY
+          if (tiltRaf) return
+          tiltRaf = requestAnimationFrame(() => {
+            tiltRaf = undefined
+            if (!cachedRect) return
+            const r = cachedRect
+            const x = (lastEx - r.left) / r.width - .5, y = (lastEy - r.top) / r.height - .5
+            const deg = card.classList.contains('bc') ? 10 : 12
+            card.style.transform = `perspective(800px) rotateY(${x * deg}deg) rotateX(${-y * deg}deg) translateY(-6px) scale(1.01)`
+            card.style.boxShadow = `${-x * 20}px ${y * 20 + 20}px 50px rgba(12,20,40,${card.classList.contains('gc') ? '.35' : '.1'})`
+            card.style.setProperty('--shx', ((lastEx - r.left) / r.width * 100).toFixed(1) + '%')
+            card.style.setProperty('--shy', ((lastEy - r.top) / r.height * 100).toFixed(1) + '%')
+          })
         }
-        const onLeave = () => { card.style.transform = ''; card.style.boxShadow = '' }
+        const onLeave = () => { if (tiltRaf) { cancelAnimationFrame(tiltRaf); tiltRaf = undefined }; cachedRect = null; card.style.transform = ''; card.style.boxShadow = '' }
         card.addEventListener('mousemove', onTilt)
         card.addEventListener('mouseleave', onLeave)
       })
@@ -197,14 +203,23 @@ export default function Home() {
     if (!skipHeavy) {
       const logoWrp = document.querySelector<HTMLElement>('.logo-3d-wrap')
       if (logoWrp) {
+        let logoRect: DOMRect | null = null, logoRaf: number | undefined, logoEx = 0, logoEy = 0
+        logoWrp.addEventListener('mouseenter', () => { logoRect = logoWrp.getBoundingClientRect() })
         logoWrp.addEventListener('mousemove', (e: MouseEvent) => {
-          const r = logoWrp.getBoundingClientRect()
-          const x = (e.clientX - r.left) / r.width - .5
-          const y = (e.clientY - r.top) / r.height - .5
-          logoWrp.style.animation = 'none'
-          logoWrp.style.transform = `perspective(500px) rotateY(${x * 28}deg) rotateX(${-y * 28}deg) scale(1.06)`
+          logoEx = e.clientX; logoEy = e.clientY
+          if (logoRaf) return
+          logoRaf = requestAnimationFrame(() => {
+            logoRaf = undefined
+            const r = logoRect!
+            const x = (logoEx - r.left) / r.width - .5
+            const y = (logoEy - r.top) / r.height - .5
+            logoWrp.style.animation = 'none'
+            logoWrp.style.transform = `perspective(500px) rotateY(${x * 28}deg) rotateX(${-y * 28}deg) scale(1.06)`
+          })
         })
         logoWrp.addEventListener('mouseleave', () => {
+          if (logoRaf) { cancelAnimationFrame(logoRaf); logoRaf = undefined }
+          logoRect = null
           logoWrp.style.animation = ''
           logoWrp.style.transform = ''
         })
@@ -214,8 +229,18 @@ export default function Home() {
     /* MAGNETIC BUTTONS */
     if (!skipHeavy) {
       document.querySelectorAll<HTMLElement>('.mag-btn').forEach(btn => {
-        btn.addEventListener('mousemove', e => { const r = btn.getBoundingClientRect(); btn.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .28}px,${(e.clientY - r.top - r.height / 2) * .28}px)` })
-        btn.addEventListener('mouseleave', () => { btn.style.transform = ''; btn.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)'; setTimeout(() => btn.style.transition = '', 500) })
+        let btnRect: DOMRect | null = null, btnRaf: number | undefined, btnEx = 0, btnEy = 0
+        btn.addEventListener('mouseenter', () => { btnRect = btn.getBoundingClientRect() })
+        btn.addEventListener('mousemove', e => {
+          btnEx = e.clientX; btnEy = e.clientY
+          if (btnRaf) return
+          btnRaf = requestAnimationFrame(() => {
+            btnRaf = undefined
+            const r = btnRect!
+            btn.style.transform = `translate(${(btnEx - r.left - r.width / 2) * .28}px,${(btnEy - r.top - r.height / 2) * .28}px)`
+          })
+        })
+        btn.addEventListener('mouseleave', () => { if (btnRaf) { cancelAnimationFrame(btnRaf); btnRaf = undefined }; btnRect = null; btn.style.transform = ''; btn.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)'; setTimeout(() => { btn.style.transition = '' }, 500) })
       })
     }
 
@@ -246,7 +271,7 @@ export default function Home() {
       const rnd = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)]
       type Particle = { type: string; coords: {x:number,y:number}; velocity: {x:number,y:number}; alpha: number; hexColor: string; strokeWidth: number; diameter?: number; angle?: number; length?: number; rotateSpeed?: number; rotateClockwise?: boolean }
       let particles: Particle[] = []
-      const MAX = 130
+      const MAX = 100
       const mkP = (): Particle => {
         const type = rnd(['bubble', 'bubble', 'bubble', 'bubble', 'line'])
         const p: Particle = { type, coords: { x: Math.round(Math.random() * gc.width), y: Math.round(Math.random() * gc.height) }, velocity: { x: (Math.random() < .5 ? -1 : 1) * (Math.random() * 1.1 + .2), y: (Math.random() < .5 ? -1 : 1) * (Math.random() * 1.1 + .2) }, alpha: 0.1, hexColor: rnd(COLORS), strokeWidth: Math.random() * (Math.random() > .5 ? 1.2 : 2) }
@@ -269,7 +294,10 @@ export default function Home() {
         gctx.stroke(); gctx.restore()
       }
       const resizeGc = () => { const par = gc.parentNode as HTMLElement; gc.width = par.offsetWidth * 2; gc.height = par.offsetHeight * 2; gc.style.width = par.offsetWidth + 'px'; gc.style.height = par.offsetHeight + 'px' }
-      const loopGc = () => { if (particles.length < MAX - 4) while (particles.length < MAX) particles.push(mkP()); particles = particles.filter(p => updateP(p)); gctx.clearRect(0, 0, gc.width, gc.height); particles.forEach(p => drawP(p)); requestAnimationFrame(loopGc) }
+      let gcPaused = false, gcRafId: number | undefined
+      const loopGc = () => { if (particles.length < MAX - 4) while (particles.length < MAX) particles.push(mkP()); particles = particles.filter(p => updateP(p)); gctx.clearRect(0, 0, gc.width, gc.height); particles.forEach(p => drawP(p)); if (!gcPaused) gcRafId = requestAnimationFrame(loopGc); else gcRafId = undefined }
+      const galSection = document.getElementById('gallery')
+      if (galSection) { const gcIO = new IntersectionObserver(entries => { gcPaused = !entries[0].isIntersecting; if (!gcPaused && gcRafId === undefined) loopGc() }, { rootMargin: '200px' }); gcIO.observe(galSection) }
       resizeGc(); loopGc(); window.addEventListener('resize', resizeGc)
     })()
     }

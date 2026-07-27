@@ -32,14 +32,23 @@ export default function PageEffects() {
     /* LOGO 3D TILT */
     const logoWrp = document.querySelector<HTMLElement>('.logo-3d-wrap')
     if (logoWrp) {
+      let logoRect: DOMRect | null = null, logoRaf: number | undefined, logoEx = 0, logoEy = 0
+      logoWrp.addEventListener('mouseenter', () => { logoRect = logoWrp.getBoundingClientRect() })
       logoWrp.addEventListener('mousemove', (e: MouseEvent) => {
-        const r = logoWrp.getBoundingClientRect()
-        const x = (e.clientX - r.left) / r.width - .5
-        const y = (e.clientY - r.top) / r.height - .5
-        logoWrp.style.animation = 'none'
-        logoWrp.style.transform = `perspective(500px) rotateY(${x * 28}deg) rotateX(${-y * 28}deg) scale(1.06)`
+        logoEx = e.clientX; logoEy = e.clientY
+        if (logoRaf) return
+        logoRaf = requestAnimationFrame(() => {
+          logoRaf = undefined
+          const r = logoRect!
+          const x = (logoEx - r.left) / r.width - .5
+          const y = (logoEy - r.top) / r.height - .5
+          logoWrp.style.animation = 'none'
+          logoWrp.style.transform = `perspective(500px) rotateY(${x * 28}deg) rotateX(${-y * 28}deg) scale(1.06)`
+        })
       })
       logoWrp.addEventListener('mouseleave', () => {
+        if (logoRaf) { cancelAnimationFrame(logoRaf); logoRaf = undefined }
+        logoRect = null
         logoWrp.style.animation = ''
         logoWrp.style.transform = ''
       })
@@ -103,8 +112,8 @@ export default function PageEffects() {
       loop()
       return () => cancelAnimationFrame(pRaf)
     }
-    const stopGal = runParticles('gallery-particles', 130)
-    const stopReal = runParticles('real-particles', 220)
+    const stopGal = runParticles('gallery-particles', 100)
+    const stopReal = runParticles('real-particles', 160)
 
     /* REVEAL */
     const ro = new IntersectionObserver(
