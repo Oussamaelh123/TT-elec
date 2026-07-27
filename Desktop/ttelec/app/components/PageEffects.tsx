@@ -10,18 +10,20 @@ export default function PageEffects() {
     let mx = 0, my = 0, rx = 0, ry = 0
 
     if (cur && curR) {
+      let pSettled = true
+      const loop = () => {
+        const dx = mx - rx, dy = my - ry
+        rx += dx * .1; ry += dy * .1
+        curR.style.left = rx + 'px'; curR.style.top = ry + 'px'
+        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) { pSettled = true; return }
+        rafId = requestAnimationFrame(loop)
+      }
       onMove = (e: MouseEvent) => {
         mx = e.clientX; my = e.clientY
         cur.style.left = mx + 'px'; cur.style.top = my + 'px'
+        if (pSettled) { pSettled = false; rafId = requestAnimationFrame(loop) }
       }
       document.addEventListener('mousemove', onMove)
-
-      const loop = () => {
-        rx += (mx - rx) * .1; ry += (my - ry) * .1
-        curR.style.left = rx + 'px'; curR.style.top = ry + 'px'
-        rafId = requestAnimationFrame(loop)
-      }
-      rafId = requestAnimationFrame(loop)
 
       document.querySelectorAll('a,button,.svcf-card,.svcw-card,.ncta,.btn-fill,.btn-cta,.svch-acts a').forEach(el => {
         el.addEventListener('mouseenter', () => { cur.style.width = '15px'; cur.style.height = '15px'; curR.style.width = '52px'; curR.style.height = '52px' })

@@ -87,11 +87,10 @@ export default function Home() {
     if (!skipHeavy) {
       const cur = document.getElementById('cur')!
       const curR = document.getElementById('curR')!
-      let mx = 0, my = 0, rx = 0, ry = 0
-      onMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px' }
+      let mx = 0, my = 0, rx = 0, ry = 0, curSettled = true
+      const aR = () => { const dx = mx - rx, dy = my - ry; rx += dx * .1; ry += dy * .1; curR.style.left = rx + 'px'; curR.style.top = ry + 'px'; if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) { curSettled = true; return }; rafId = requestAnimationFrame(aR) }
+      onMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; if (curSettled) { curSettled = false; rafId = requestAnimationFrame(aR) } }
       document.addEventListener('mousemove', onMove)
-      const aR = () => { rx += (mx - rx) * .1; ry += (my - ry) * .1; curR.style.left = rx + 'px'; curR.style.top = ry + 'px'; rafId = requestAnimationFrame(aR) }
-      rafId = requestAnimationFrame(aR)
       document.querySelectorAll('a,button,.bc,.tkc,.gc,.dopt,.spo,.mag-btn').forEach(el => {
         el.addEventListener('mouseenter', () => { cur.style.width = '15px'; cur.style.height = '15px'; curR.style.width = '52px'; curR.style.height = '52px' })
         el.addEventListener('mouseleave', () => { cur.style.width = '9px'; cur.style.height = '9px'; curR.style.width = '34px'; curR.style.height = '34px' })
@@ -119,7 +118,7 @@ export default function Home() {
         H = canvas.height = canvas.offsetHeight || Math.round(window.innerHeight * .70)
         if (W < 10 || H < 10) { requestAnimationFrame(initCanvas); return }
         nodes.length = 0
-        for (let i = 0; i < 65; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .7, vy: (Math.random() - .5) * .7, r: Math.random() * 2.2 + .8, a: Math.random() * .6 + .2 })
+        for (let i = 0; i < 50; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .7, vy: (Math.random() - .5) * .7, r: Math.random() * 2.2 + .8, a: Math.random() * .6 + .2 })
         draw()
       }
       const resize = () => { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight }
@@ -131,7 +130,7 @@ export default function Home() {
         nodes.forEach(n => { n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > W) n.vx *= -1; if (n.y < 0 || n.y > H) n.vy *= -1; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(200,146,30,${n.a * .5})`; ctx.fill() })
         for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) { const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx * dx + dy * dy); if (d < 200) { ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.strokeStyle = `rgba(200,146,30,${(1 - d / 200) * .18})`; ctx.lineWidth = .7; ctx.stroke() } }
         if (tick % 40 === 0 && Math.random() < .75) { const i = Math.floor(Math.random() * nodes.length), j = Math.floor(Math.random() * nodes.length); if (i !== j) arcs.push({ x1: nodes[i].x, y1: nodes[i].y, x2: nodes[j].x, y2: nodes[j].y, life: 1 }) }
-        arcs = arcs.filter(f => { f.life -= .06; if (f.life <= 0) return false; ctx.save(); ctx.globalAlpha = f.life * .65; zz(f.x1, f.y1, f.x2, f.y2, 6, 22); ctx.strokeStyle = `rgba(242,208,126,${f.life * .8})`; ctx.lineWidth = 1; ctx.shadowColor = 'rgba(200,146,30,.6)'; ctx.shadowBlur = 6; ctx.stroke(); ctx.restore(); return true })
+        arcs = arcs.filter(f => { f.life -= .06; if (f.life <= 0) return false; ctx.save(); ctx.globalAlpha = f.life * .65; zz(f.x1, f.y1, f.x2, f.y2, 6, 22); ctx.strokeStyle = `rgba(242,208,126,${f.life * .8})`; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore(); return true })
         if (!sparksPaused) drawRaf = requestAnimationFrame(draw); else drawRaf = undefined
       }
       const sparksIO = new IntersectionObserver(entries => { sparksPaused = !entries[0].isIntersecting; if (!sparksPaused && drawRaf === undefined) draw() }, { rootMargin: '100px' })
@@ -247,9 +246,9 @@ export default function Home() {
     /* SPOTLIGHT */
     if (!skipHeavy) {
       const galSec = document.querySelector<HTMLElement>('.gal-sec'), galSpot = document.getElementById('gal-spotlight')
-      if (galSec && galSpot) galSec.addEventListener('mousemove', e => { const r = galSec.getBoundingClientRect(); galSpot.style.setProperty('--sx', (e.clientX - r.left) + 'px'); galSpot.style.setProperty('--sy', (e.clientY - r.top) + 'px') })
+      if (galSec && galSpot) { let galR: DOMRect|null=null; galSec.addEventListener('mouseenter',()=>{galR=galSec.getBoundingClientRect()}); galSec.addEventListener('mousemove', e => { if(!galR)galR=galSec.getBoundingClientRect(); galSpot.style.setProperty('--sx', (e.clientX - galR.left) + 'px'); galSpot.style.setProperty('--sy', (e.clientY - galR.top) + 'px') }) }
       const ctaSec = document.querySelector<HTMLElement>('.cta-sec'), ctaSpot = document.getElementById('cta-spotlight')
-      if (ctaSec && ctaSpot) ctaSec.addEventListener('mousemove', e => { const r = ctaSec.getBoundingClientRect(); ctaSpot.style.setProperty('--sx', (e.clientX - r.left) + 'px'); ctaSpot.style.setProperty('--sy', (e.clientY - r.top) + 'px') })
+      if (ctaSec && ctaSpot) { let ctaR: DOMRect|null=null; ctaSec.addEventListener('mouseenter',()=>{ctaR=ctaSec.getBoundingClientRect()}); ctaSec.addEventListener('mousemove', e => { if(!ctaR)ctaR=ctaSec.getBoundingClientRect(); ctaSpot.style.setProperty('--sx', (e.clientX - ctaR.left) + 'px'); ctaSpot.style.setProperty('--sy', (e.clientY - ctaR.top) + 'px') }) }
     }
 
     /* COUNTERS */
@@ -556,7 +555,7 @@ export default function Home() {
         </div>
         <div className="bento">
           <Link href="/services/tableau-electrique" className="bc bc1 bc-has-img rv">
-            <div className="bc-bg" style={{ backgroundImage: "url('/images/panneau-electrique.png')" }} />
+            <div className="bc-bg"><Image src="/images/panneau-electrique.png" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
             <div className="bc-overlay" />
             <div className="bc1-glow" />
             <div className="bc-tag-img"><span className="btdot" />&nbsp;Service phare</div>
@@ -566,35 +565,35 @@ export default function Home() {
             <div className="bcarr" style={{ borderColor: 'rgba(200,146,30,.4)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c8921e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/cablage" className="bc bc2 bc-has-img rv d1">
-            <div className="bc-bg" style={{ backgroundImage: "url('/images/cablage.jpg')" }} />
+            <div className="bc-bg"><Image src="/images/cablage.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
             <div className="bc-overlay" />
             <div className="bcn">02</div><div className="bct">Câblage complet</div>
             <div className="bcd">Installation et rénovation du câblage pour habitations, bureaux et commerces.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/eclairage" className="bc bc3 bc-has-img rv d2">
-            <div className="bc-bg" style={{ backgroundImage: "url('/images/eclairage.jpg')", backgroundPosition: 'center 30%' }} />
+            <div className="bc-bg"><Image src="/images/eclairage.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 30%' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
             <div className="bc-overlay" />
             <div className="bcn">03</div><div className="bct">Éclairage</div>
             <div className="bcd">Systèmes LED modernes, spots encastrés et luminaires architecturaux.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/domotique" className="bc bc4 bc-has-img rv d3">
-            <div className="bc-bg" style={{ backgroundImage: "url('/images/domotique.jpg')" }} />
+            <div className="bc-bg"><Image src="/images/domotique.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
             <div className="bc-overlay" />
             <div className="bcn">04</div><div className="bct">Domotique</div>
             <div className="bcd">Automatisation intelligente : volets, éclairage et thermostats connectés.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/mise-en-conformite" className="bc bc5 bc-has-img rv d4">
-            <div className="bc-bg" style={{ backgroundImage: "url('/images/mise-en-conformite.jpg')" }} />
+            <div className="bc-bg"><Image src="/images/mise-en-conformite.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
             <div className="bc-overlay" />
             <div className="bcn">05</div><div className="bct">Mise en conformité</div>
             <div className="bcd">Diagnostic complet et mise aux normes RGIE de votre installation existante.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/borne-recharge" className="bc bc6 bc-has-img rv d5">
-            <div className="bc-bg" style={{ backgroundImage: "url('/images/borne-recharge.jpg')" }} />
+            <div className="bc-bg"><Image src="/images/borne-recharge.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
             <div className="bc-overlay" />
             <div className="bcn">06</div>
             <div className="bct">Borne de recharge</div>
@@ -602,7 +601,7 @@ export default function Home() {
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/alarme-incendie" className="bc bc7 bc-has-img rv d6">
-            <div className="bc-bg" style={{ backgroundImage: "url('/images/alarme-incendie.jpg')" }} />
+            <div className="bc-bg"><Image src="/images/alarme-incendie.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
             <div className="bc-overlay" style={{ background: 'linear-gradient(170deg,rgba(20,4,6,.5) 0%,rgba(8,2,3,.85) 65%,rgba(8,2,3,.97) 100%)' }} />
             <div className="bc7-rings">
               <div className="bc7-ring" /><div className="bc7-ring" /><div className="bc7-ring" /><div className="bc7-ring" />
@@ -615,7 +614,7 @@ export default function Home() {
             <div className="bcarr" style={{ borderColor: 'rgba(220,38,38,.3)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(239,68,68,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/parlophone-visiophone" className="bc bc8 bc-has-img rv d7">
-            <div className="bc-bg" style={{ backgroundImage: "url('/images/parlophone-visiophone.png')" }} />
+            <div className="bc-bg"><Image src="/images/parlophone-visiophone.png" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
             <div className="bc-overlay" style={{ background: 'linear-gradient(170deg,rgba(2,6,18,.5) 0%,rgba(2,4,14,.85) 65%,rgba(2,4,14,.97) 100%)' }} />
             <div className="bc8-waves">
               <div className="bc8-wave" /><div className="bc8-wave" /><div className="bc8-wave" /><div className="bc8-wave" />
