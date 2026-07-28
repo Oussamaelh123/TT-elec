@@ -536,8 +536,9 @@ export default function Home() {
                 alt="Camionnette TT Elec — Électricien à Bruxelles"
                 width={620}
                 height={380}
-                quality={90}
+                quality={100}
                 priority={false}
+                sizes="(max-width:640px) 90vw, (max-width:1024px) 50vw, 620px"
                 className="van-img"
               />
             </div>
