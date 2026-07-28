@@ -551,11 +551,11 @@ export default function Home() {
       <section className="svc-sec" id="services">
         <div className="sh rv">
           <div><div className="ovl">Nos expertises</div><h2 className="stitle">Solutions <em>complètes</em></h2></div>
-          <a href="#devis" className="sh-link">Tous les services&nbsp;<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
+          <Link href="/services" className="sh-link">Tous les services&nbsp;<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></Link>
         </div>
         <div className="bento">
           <Link href="/services/tableau-electrique" className="bc bc1 bc-has-img rv">
-            <div className="bc-bg"><Image src="/images/panneau-electrique.png" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/panneau-electrique.png')" }} />
             <div className="bc-overlay" />
             <div className="bc1-glow" />
             <div className="bc-tag-img"><span className="btdot" />&nbsp;Service phare</div>
@@ -565,35 +565,35 @@ export default function Home() {
             <div className="bcarr" style={{ borderColor: 'rgba(200,146,30,.4)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c8921e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/cablage" className="bc bc2 bc-has-img rv d1">
-            <div className="bc-bg"><Image src="/images/cablage.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/cablage.jpg')" }} />
             <div className="bc-overlay" />
             <div className="bcn">02</div><div className="bct">Câblage complet</div>
             <div className="bcd">Installation et rénovation du câblage pour habitations, bureaux et commerces.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/eclairage" className="bc bc3 bc-has-img rv d2">
-            <div className="bc-bg"><Image src="/images/eclairage.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 30%' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/eclairage.jpg')", backgroundPosition: 'center 30%' }} />
             <div className="bc-overlay" />
             <div className="bcn">03</div><div className="bct">Éclairage</div>
             <div className="bcd">Systèmes LED modernes, spots encastrés et luminaires architecturaux.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/domotique" className="bc bc4 bc-has-img rv d3">
-            <div className="bc-bg"><Image src="/images/domotique.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/domotique.jpg')" }} />
             <div className="bc-overlay" />
             <div className="bcn">04</div><div className="bct">Domotique</div>
             <div className="bcd">Automatisation intelligente : volets, éclairage et thermostats connectés.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/mise-en-conformite" className="bc bc5 bc-has-img rv d4">
-            <div className="bc-bg"><Image src="/images/mise-en-conformite.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/mise-en-conformite.jpg')" }} />
             <div className="bc-overlay" />
             <div className="bcn">05</div><div className="bct">Mise en conformité</div>
             <div className="bcd">Diagnostic complet et mise aux normes RGIE de votre installation existante.</div>
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/borne-recharge" className="bc bc6 bc-has-img rv d5">
-            <div className="bc-bg"><Image src="/images/borne-recharge.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/borne-recharge.jpg')" }} />
             <div className="bc-overlay" />
             <div className="bcn">06</div>
             <div className="bct">Borne de recharge</div>
@@ -601,7 +601,7 @@ export default function Home() {
             <div className="bcarr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/alarme-incendie" className="bc bc7 bc-has-img rv d6">
-            <div className="bc-bg"><Image src="/images/alarme-incendie.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/alarme-incendie.jpg')" }} />
             <div className="bc-overlay" style={{ background: 'linear-gradient(170deg,rgba(20,4,6,.5) 0%,rgba(8,2,3,.85) 65%,rgba(8,2,3,.97) 100%)' }} />
             <div className="bc7-rings">
               <div className="bc7-ring" /><div className="bc7-ring" /><div className="bc7-ring" /><div className="bc7-ring" />
@@ -614,7 +614,7 @@ export default function Home() {
             <div className="bcarr" style={{ borderColor: 'rgba(220,38,38,.3)' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(239,68,68,.8)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></div>
           </Link>
           <Link href="/services/parlophone-visiophone" className="bc bc8 bc-has-img rv d7">
-            <div className="bc-bg"><Image src="/images/parlophone-visiophone.png" alt="" fill style={{ objectFit:'cover', objectPosition:'center' }} sizes="(max-width:640px) 100vw, 50vw" /></div>
+            <div className="bc-bg" style={{ backgroundImage: "url('/images/parlophone-visiophone.png')" }} />
             <div className="bc-overlay" style={{ background: 'linear-gradient(170deg,rgba(2,6,18,.5) 0%,rgba(2,4,14,.85) 65%,rgba(2,4,14,.97) 100%)' }} />
             <div className="bc8-waves">
               <div className="bc8-wave" /><div className="bc8-wave" /><div className="bc8-wave" /><div className="bc8-wave" />
