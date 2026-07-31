@@ -482,7 +482,23 @@ export default function Home() {
             <span className="bl">Tranquillité</span>
             <span className="it">assurée.</span>
           </h1>
-          <div className="hero-foot rv d2">
+          <div className="hero-cstrip rv d2">
+            <a href="tel:0465466240" className="hcs-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.42 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>0465 46 62 40</span>
+            </a>
+            <span className="hcs-sep" />
+            <a href="https://wa.me/32465904372" target="_blank" rel="noopener noreferrer" className="hcs-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              <span>WhatsApp</span>
+            </a>
+            <span className="hcs-sep" />
+            <a href="mailto:tt-elec@hotmail.com" className="hcs-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span>tt-elec@hotmail.com</span>
+            </a>
+          </div>
+          <div className="hero-foot rv d3">
             <p className="hero-desc">Installation, rénovation et dépannage électrique par des professionnels <strong>certifiés RGIE</strong>. Intervention rapide à <strong>Bruxelles</strong> et dans toute la Belgique — disponible <strong>24h/24</strong>.</p>
             <div className="hero-acts">
               <a href="#devis" className="btn-fill mag-btn">✦ Demander un devis</a>
@@ -490,22 +506,6 @@ export default function Home() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
               </a>
             </div>
-          </div>
-          <div className="hero-contacts rv d3">
-            <a href="tel:0465466240" className="hc-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.42 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              <span>0465 46 62 40</span>
-            </a>
-            <span className="hc-sep" />
-            <a href="https://wa.me/32465904372" target="_blank" rel="noopener noreferrer" className="hc-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-              <span>WhatsApp</span>
-            </a>
-            <span className="hc-sep" />
-            <a href="mailto:tt-elec@hotmail.com" className="hc-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              <span>tt-elec@hotmail.com</span>
-            </a>
           </div>
         </div>
         <div className="hero-scr"><div className="scr-line" /><span className="scr-lbl">Défiler</span></div>
