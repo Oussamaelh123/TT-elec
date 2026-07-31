@@ -33,7 +33,7 @@ export default function Header() {
           <div className="nav-cta">
             <div className="nav-phone">
               <div className="nav-phone-dot" />
-              0465 90 43 72
+              0465 46 62 40
             </div>
             <a
               href="#contact"

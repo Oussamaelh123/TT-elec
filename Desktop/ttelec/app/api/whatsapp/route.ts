@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
 
       const buildList = async () => {
         const [{ data: active }, { data: inactive }] = await Promise.all([
-          supabaseAdmin.from('realisations').select('id, titre, lieu, publie').eq('publie', true).order('created_at', { ascending: false }).limit(8),
+          supabaseAdmin.from('realisations').select('id, titre, lieu, publie').eq('publie', true).order('created_at', { ascending: false }).limit(50),
           supabaseAdmin.from('realisations').select('id, titre, lieu, publie, media').eq('publie', false).order('created_at', { ascending: false }).limit(10),
         ])
         const drafts = (inactive ?? []).filter((r: ChantierRow) => {

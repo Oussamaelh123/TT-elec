@@ -448,7 +448,7 @@ export default function Home() {
         </div>
         <div className="mob-cta">
           <a href="#devis" className="mob-cta-btn">✦ Demander un devis</a>
-          <a href="tel:0465904372" className="mob-tel">0465.90.43.72</a>
+          <a href="tel:0465466240" className="mob-tel">0465.46.62.40</a>
         </div>
       </div>
 
@@ -490,6 +490,22 @@ export default function Home() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
               </a>
             </div>
+          </div>
+          <div className="hero-contacts rv d3">
+            <a href="tel:0465466240" className="hc-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.42 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>0465 46 62 40</span>
+            </a>
+            <span className="hc-sep" />
+            <a href="https://wa.me/32465904372" target="_blank" rel="noopener noreferrer" className="hc-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              <span>WhatsApp</span>
+            </a>
+            <span className="hc-sep" />
+            <a href="mailto:tt-elec@hotmail.com" className="hc-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span>tt-elec@hotmail.com</span>
+            </a>
           </div>
         </div>
         <div className="hero-scr"><div className="scr-line" /><span className="scr-lbl">Défiler</span></div>
@@ -637,7 +653,7 @@ export default function Home() {
                 <Link href="/services/depannage-urgence" className="bcarr" style={{ borderColor: 'rgba(200,146,30,.3)', opacity: 1, transform: 'scale(1)', position: 'relative', display: 'inline-flex', marginTop: '18px' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></Link>
               </div>
               <div className="bc9-right">
-                <a href="tel:0465904372" className="bc9-tel">0465.90.43.72</a>
+                <a href="tel:0465466240" className="bc9-tel">0465.46.62.40</a>
                 <div className="bc9-avail"><span className="ndot" />&nbsp;Disponible maintenant</div>
               </div>
             </div>
@@ -809,7 +825,7 @@ export default function Home() {
           <div className="rv">
             <p style={{ fontSize: '.95rem', color: 'var(--mid)', lineHeight: '1.88', fontWeight: 300, maxWidth: '360px' }}>Décrivez votre besoin et recevez un devis personnalisé sous 24h.</p>
             <div className="dv-card">
-              <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.38 2 2 0 0 1 3.04 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.64a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z" /></svg></div><div><div className="dv-lbl">Téléphone</div><div className="dv-val"><a href="tel:0465904372">0465.90.43.72</a></div></div></div>
+              <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.38 2 2 0 0 1 3.04 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.64a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z" /></svg></div><div><div className="dv-lbl">Téléphone</div><div className="dv-val"><a href="tel:0465466240">0465.46.62.40</a></div></div></div>
               <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg></div><div><div className="dv-lbl">WhatsApp</div><div className="dv-val"><a href="https://wa.me/32465904372">Envoyer un message</a></div></div></div>
               <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg></div><div><div className="dv-lbl">Zone</div><div className="dv-val">Bruxelles &amp; toute la Belgique</div></div></div>
               <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></div><div><div className="dv-lbl">Disponibilité</div><div className="dv-val">24h/24 — 7j/7</div></div></div>
@@ -849,11 +865,11 @@ export default function Home() {
         <div className="cta-blob" />
         <div className="cta-spotlight" id="cta-spotlight" />
         <div className="ovl rv">Appelez-nous</div>
-        <a href="tel:0465904372" className="cta-phone rv d1">0465.90.43.72</a>
+        <a href="tel:0465466240" className="cta-phone rv d1">0465.46.62.40</a>
         <p className="cta-sub rv d2">Bruxelles &amp; alentours · Toute la Belgique · 24h/24</p>
         <div className="cta-btns rv d3">
           <a href="#devis" className="btn-cta mag-btn">✦ Demander un devis</a>
-          <a href="tel:0465904372" className="btn-cta-o">Appeler maintenant</a>
+          <a href="tel:0465466240" className="btn-cta-o">Appeler maintenant</a>
         </div>
       </section>
 
@@ -876,7 +892,7 @@ export default function Home() {
           </div>
           <div className="fcol"><h4>Navigation</h4><a href="#">Accueil</a><a href="#services">Services</a><a href="#gallery">Réalisations</a><a href="#devis">Contact</a></div>
           <div className="fcol"><h4>Services</h4><Link href="/services/tableau-electrique">Tableau électrique</Link><Link href="/services/cablage">Câblage</Link><Link href="/services/eclairage">Éclairage</Link><Link href="/services/domotique">Domotique</Link><Link href="/services/depannage-urgence">Dépannage</Link><Link href="/services/mise-en-conformite">Conformité</Link><Link href="/services/borne-recharge">Borne EV</Link><Link href="/services/alarme-incendie">Alarme & Incendie</Link><Link href="/services/parlophone-visiophone">Parlophone</Link></div>
-          <div className="fcol"><h4>Contact</h4><a href="tel:0465904372">0465.90.43.72</a><a href="https://wa.me/32465904372">WhatsApp</a><a href="#">Bruxelles, Belgique</a><a href="#">24h/24 — 7j/7</a></div>
+          <div className="fcol"><h4>Contact</h4><a href="tel:0465466240">0465.46.62.40</a><a href="https://wa.me/32465904372">WhatsApp</a><a href="#">Bruxelles, Belgique</a><a href="#">24h/24 — 7j/7</a></div>
         </div>
         <div className="fb2"><p>© 2026 <strong>TT Elec</strong> · Tous droits réservés</p><p><a href="#">Mentions légales</a></p></div>
       </footer>

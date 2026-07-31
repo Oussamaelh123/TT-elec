@@ -52,7 +52,7 @@ const schemaOrg = {
   "@context": "https://schema.org",
   "@type": "ElectricalContractor",
   name: "TT Elec",
-  telephone: "+32465904372",
+  telephone: "+32465466240",
   areaServed: "Bruxelles",
   priceRange: "€€",
   openingHours: "Mo-Su 00:00-24:00",

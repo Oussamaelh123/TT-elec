@@ -49,13 +49,13 @@ export default function PrivacyPage() {
 
       <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0c1428', marginTop: '36px', marginBottom: '12px' }}>5. Vos droits</h2>
       <p style={{ marginBottom: '24px' }}>
-        Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de rectification et de suppression de vos données. Pour exercer ces droits, contactez-nous par WhatsApp au <a href="tel:0465904372" style={{ color: '#c8921e' }}>0465 90 43 72</a>.
+        Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de rectification et de suppression de vos données. Pour exercer ces droits, contactez-nous par WhatsApp au <a href="https://wa.me/32465904372" style={{ color: '#c8921e' }}>0465 90 43 72</a>.
       </p>
 
       <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0c1428', marginTop: '36px', marginBottom: '12px' }}>6. Contact</h2>
       <p>
         TT Elec · Bruxelles, Belgique<br />
-        Téléphone : <a href="tel:0465904372" style={{ color: '#c8921e' }}>0465 90 43 72</a><br />
+        Téléphone : <a href="tel:0465466240" style={{ color: '#c8921e' }}>0465 46 62 40</a><br />
         WhatsApp : <a href="https://wa.me/32465904372" style={{ color: '#c8921e' }}>wa.me/32465904372</a>
       </p>
     </div>

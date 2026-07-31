@@ -30,7 +30,7 @@ export default function Contact() {
               <div>
                 <div className="contact-item-title">Téléphone / WhatsApp</div>
                 <div className="contact-item-val">
-                  <a href="tel:0465904372">0465 90 43 72</a>
+                  <a href="tel:0465466240">0465 46 62 40</a>
                 </div>
                 <div className="contact-item-sub">Disponible 7j/7 · Urgences 24h</div>
               </div>

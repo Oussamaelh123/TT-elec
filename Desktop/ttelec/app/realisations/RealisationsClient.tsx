@@ -190,7 +190,7 @@ export default function RealisationsClient() {
         </div>
         <div className="mob-cta">
           <Link href="/#devis" className="mob-cta-btn">✦ Demander un devis</Link>
-          <a href="tel:0465904372" className="mob-tel">0465.90.43.72</a>
+          <a href="tel:0465466240" className="mob-tel">0465.46.62.40</a>
         </div>
       </div>
 
@@ -345,11 +345,11 @@ export default function RealisationsClient() {
       <section className="cta-sec" style={{ padding: '100px 6%' }}>
         <div className="cta-blob" />
         <div className="ovl" style={{ justifyContent: 'center', display: 'flex', color: 'rgba(200,146,30,.5)' }}>Votre projet</div>
-        <a href="tel:0465904372" className="cta-phone">0465.90.43.72</a>
+        <a href="tel:0465466240" className="cta-phone">0465.46.62.40</a>
         <p className="cta-sub">Bruxelles &amp; alentours · Toute la Belgique · 24h/24</p>
         <div className="cta-btns">
           <a href="https://wa.me/32465904372" target="_blank" rel="noopener noreferrer" className="btn-cta">✦ Demander un devis</a>
-          <a href="tel:0465904372" className="btn-cta-o">Appeler maintenant</a>
+          <a href="tel:0465466240" className="btn-cta-o">Appeler maintenant</a>
         </div>
       </section>
 
@@ -384,7 +384,7 @@ export default function RealisationsClient() {
           </div>
           <div className="fcol">
             <h4>Contact</h4>
-            <a href="tel:0465904372">0465.90.43.72</a>
+            <a href="tel:0465466240">0465.46.62.40</a>
             <a href="https://wa.me/32465904372">WhatsApp</a>
             <span>Bruxelles, Belgique</span>
             <span>24h/24 — 7j/7</span>

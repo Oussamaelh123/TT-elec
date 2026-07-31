@@ -110,7 +110,7 @@ export default function ServicesPage() {
         </div>
         <div className="mob-cta">
           <Link href="/contact" className="mob-cta-btn">✦ Demander un devis</Link>
-          <a href="tel:0465904372" className="mob-tel">0465.90.43.72</a>
+          <a href="tel:0465466240" className="mob-tel">0465.46.62.40</a>
         </div>
       </div>
 
@@ -125,7 +125,7 @@ export default function ServicesPage() {
           <h1 className="svch-h1">Nos <em>services</em></h1>
           <p className="svch-sub">Installation, rénovation, dépannage et mise en conformité électrique à Bruxelles et dans toute la Belgique.</p>
           <div className="svch-acts">
-            <a href="tel:0465904372" className="btn-fill">
+            <a href="tel:0465466240" className="btn-fill">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 012 2.18 2 2 0 014 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z" /></svg>
               ✦ Devis gratuit
             </a>
@@ -191,11 +191,11 @@ export default function ServicesPage() {
       {/* CTA */}
       <section className="cta-sec" style={{ padding: '100px 6%' }}>
         <div className="ovl">Contactez-nous</div>
-        <a href="tel:0465904372" className="cta-phone">0465.90.43.72</a>
+        <a href="tel:0465466240" className="cta-phone">0465.46.62.40</a>
         <p className="cta-sub">Bruxelles &amp; alentours · Toute la Belgique · 24h/24</p>
         <div className="cta-btns">
           <a href="https://wa.me/32465904372" target="_blank" rel="noopener noreferrer" className="btn-cta">✦ Demander un devis</a>
-          <a href="tel:0465904372" className="btn-cta-o">Appeler maintenant</a>
+          <a href="tel:0465466240" className="btn-cta-o">Appeler maintenant</a>
         </div>
       </section>
 
@@ -230,7 +230,7 @@ export default function ServicesPage() {
           </div>
           <div className="fcol">
             <h4>Contact</h4>
-            <a href="tel:0465904372">0465.90.43.72</a>
+            <a href="tel:0465466240">0465.46.62.40</a>
             <a href="https://wa.me/32465904372">WhatsApp</a>
             <span>Bruxelles, Belgique</span>
             <span>24h/24 — 7j/7</span>
