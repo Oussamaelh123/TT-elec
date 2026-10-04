@@ -448,7 +448,7 @@ export default function Home() {
         </div>
         <div className="mob-cta">
           <a href="#devis" className="mob-cta-btn">✦ Demander un devis</a>
-          <a href="tel:0465466240" className="mob-tel">0465.46.62.40</a>
+          <a href="tel:0472245242" className="mob-tel">0472.24.52.42</a>
         </div>
       </div>
 
@@ -483,9 +483,9 @@ export default function Home() {
             <span className="it">assurée.</span>
           </h1>
           <div className="hero-cstrip rv d2">
-            <a href="tel:0465466240" className="hcs-item">
+            <a href="tel:0472245242" className="hcs-item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.42 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              <span>0465 46 62 40</span>
+              <span>0472 24 52 42</span>
             </a>
             <span className="hcs-sep" />
             <a href="https://wa.me/32472245242" target="_blank" rel="noopener noreferrer" className="hcs-item">
@@ -653,7 +653,7 @@ export default function Home() {
                 <Link href="/services/depannage-urgence" className="bcarr" style={{ borderColor: 'rgba(200,146,30,.3)', opacity: 1, transform: 'scale(1)', position: 'relative', display: 'inline-flex', marginTop: '18px' }}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></Link>
               </div>
               <div className="bc9-right">
-                <a href="tel:0465466240" className="bc9-tel">0465.46.62.40</a>
+                <a href="tel:0472245242" className="bc9-tel">0472.24.52.42</a>
                 <div className="bc9-avail"><span className="ndot" />&nbsp;Disponible maintenant</div>
               </div>
             </div>
@@ -825,7 +825,7 @@ export default function Home() {
           <div className="rv">
             <p style={{ fontSize: '.95rem', color: 'var(--mid)', lineHeight: '1.88', fontWeight: 300, maxWidth: '360px' }}>Décrivez votre besoin et recevez un devis personnalisé sous 24h.</p>
             <div className="dv-card">
-              <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.38 2 2 0 0 1 3.04 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.64a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z" /></svg></div><div><div className="dv-lbl">Téléphone</div><div className="dv-val"><a href="tel:0465466240">0465.46.62.40</a></div></div></div>
+              <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.38 2 2 0 0 1 3.04 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.64a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z" /></svg></div><div><div className="dv-lbl">Téléphone</div><div className="dv-val"><a href="tel:0472245242">0472.24.52.42</a></div></div></div>
               <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg></div><div><div className="dv-lbl">WhatsApp</div><div className="dv-val"><a href="https://wa.me/32472245242">Envoyer un message</a></div></div></div>
               <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg></div><div><div className="dv-lbl">Zone</div><div className="dv-val">Bruxelles &amp; toute la Belgique</div></div></div>
               <div className="dv-row"><div className="dv-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></div><div><div className="dv-lbl">Disponibilité</div><div className="dv-val">24h/24 — 7j/7</div></div></div>
@@ -865,11 +865,11 @@ export default function Home() {
         <div className="cta-blob" />
         <div className="cta-spotlight" id="cta-spotlight" />
         <div className="ovl rv">Appelez-nous</div>
-        <a href="tel:0465466240" className="cta-phone rv d1">0465.46.62.40</a>
+        <a href="tel:0472245242" className="cta-phone rv d1">0472.24.52.42</a>
         <p className="cta-sub rv d2">Bruxelles &amp; alentours · Toute la Belgique · 24h/24</p>
         <div className="cta-btns rv d3">
           <a href="#devis" className="btn-cta mag-btn">✦ Demander un devis</a>
-          <a href="tel:0465466240" className="btn-cta-o">Appeler maintenant</a>
+          <a href="tel:0472245242" className="btn-cta-o">Appeler maintenant</a>
         </div>
       </section>
 
@@ -892,7 +892,7 @@ export default function Home() {
           </div>
           <div className="fcol"><h4>Navigation</h4><a href="#">Accueil</a><a href="#services">Services</a><a href="#gallery">Réalisations</a><a href="#devis">Contact</a></div>
           <div className="fcol"><h4>Services</h4><Link href="/services/tableau-electrique">Tableau électrique</Link><Link href="/services/cablage">Câblage</Link><Link href="/services/eclairage">Éclairage</Link><Link href="/services/domotique">Domotique</Link><Link href="/services/depannage-urgence">Dépannage</Link><Link href="/services/mise-en-conformite">Conformité</Link><Link href="/services/borne-recharge">Borne EV</Link><Link href="/services/alarme-incendie">Alarme & Incendie</Link><Link href="/services/parlophone-visiophone">Parlophone</Link></div>
-          <div className="fcol"><h4>Contact</h4><a href="tel:0465466240">0465.46.62.40</a><a href="https://wa.me/32472245242">WhatsApp</a><a href="#">Bruxelles, Belgique</a><a href="#">24h/24 — 7j/7</a></div>
+          <div className="fcol"><h4>Contact</h4><a href="tel:0472245242">0472.24.52.42</a><a href="https://wa.me/32472245242">WhatsApp</a><a href="#">Bruxelles, Belgique</a><a href="#">24h/24 — 7j/7</a></div>
         </div>
         <div className="fb2"><p>© 2026 <strong>TT Elec</strong> · Tous droits réservés</p><p><a href="#">Mentions légales</a></p></div>
       </footer>

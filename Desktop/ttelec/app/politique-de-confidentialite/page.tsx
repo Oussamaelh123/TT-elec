@@ -55,7 +55,7 @@ export default function PrivacyPage() {
       <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0c1428', marginTop: '36px', marginBottom: '12px' }}>6. Contact</h2>
       <p>
         TT Elec · Bruxelles, Belgique<br />
-        Téléphone : <a href="tel:0465466240" style={{ color: '#c8921e' }}>0465 46 62 40</a><br />
+        Téléphone : <a href="tel:0472245242" style={{ color: '#c8921e' }}>0472 24 52 42</a><br />
         WhatsApp : <a href="https://wa.me/32472245242" style={{ color: '#c8921e' }}>wa.me/32472245242</a>
       </p>
     </div>
