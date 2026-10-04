@@ -136,7 +136,7 @@ export default function DiagnosticTool() {
               </button>
               <a
                 className="diag-finish"
-                href={`https://wa.me/32465904372?text=${encodeURIComponent(buildMsg())}`}
+                href={`https://wa.me/32472245242?text=${encodeURIComponent(buildMsg())}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

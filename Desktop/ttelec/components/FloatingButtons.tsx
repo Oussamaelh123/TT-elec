@@ -4,7 +4,7 @@ export default function FloatingButtons() {
   return (
     <div className="float-group">
       <a
-        href="https://wa.me/32465904372"
+        href="https://wa.me/32472245242"
         target="_blank"
         rel="noopener noreferrer"
         className="float-btn float-wa"
